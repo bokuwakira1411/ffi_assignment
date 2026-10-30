@@ -119,7 +119,87 @@ Kế hoạch đã báo và được bạn duyệt ("yes"): kiểm tra đường 
 Lý do cần symlink ngược: môi trường conda `lerobot` cài `lerobot` dạng editable, trỏ tới `/home/student/ffi26/lerobot`
 (`~/.conda/envs/lerobot/lib/python3.12/site-packages/__editable__.lerobot-0.6.2.pth`). Ngoài ra đường dẫn cũ còn nằm trong
 `cmd.txt`, `eval.log`, `eval_info.json` và `logs/*.log` (chỉ là ghi chép lịch sử, không sửa). Đã kiểm tra:
-`import lerobot` vẫn chạy, file nằm tại `.../temp/ffi26/ffi26/lerobot/src/lerobot/__init__.py`. Chưa commit.
+`import lerobot` vẫn chạy, file nằm tại `.../temp/ffi26/ffi26/lerobot/src/lerobot/__init__.py`.
+Sau đó, theo yêu cầu của bạn ("yes"), đã commit `81bc9f4` (1607 file, gồm 1023 video mp4). Chưa push.
+
+### Việc 8: cập nhật `readme.md`
+
+Theo yêu cầu "update the readme file to reflect what has been done so far and what is planned next".
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | `cat readme.md DAY1.md run_steps`, `head train_more.sh`, `ls results/runs logs`, đọc `differences.md` mục 3–5 và `failure_analysis.md` mục 7 | lấy thông tin đã làm / chưa làm | chỉ đọc |
+| 2 | `grep` các biến mặc định trong `run_queue.sh`, `collect_results.py`, `train_more.sh` | kiểm tra lệnh chạy lại ghi trong README | chỉ đọc |
+| 3 | viết lại `readme.md`: tình trạng, kết quả, cấu trúc repo, cách chạy lại, kế hoạch tiếp | cập nhật README | **SỬA REPO** |
+
+Bản README cũ (kế hoạch 29/10) vẫn còn trong git (`3d7a55f`). Phần "đề xuất của Claude" trong README đã ghi rõ là chưa
+được duyệt. Chưa commit.
+
+### Việc 9: tạo template `study.md` cho phần Study
+
+Theo yêu cầu "create a file template for Study Part".
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | tạo `study.md`: quy tắc điền, literature matrix (cột theo `DAY1.md` mục E, 8 bài theo mục D), mẫu ghi chú từng bài, dàn ý diffusion vs flow matching, bảng nối với kết quả, checklist | template cho phần Study | **SỬA REPO** (file mới) |
+
+Không điền nội dung bài báo nào: chỉ có tên bài và mã arXiv lấy từ `DAY1.md`. Chưa commit.
+
+### Việc 10: phân tích thất bại của D_nas50 (libero_10)
+
+Bạn hỏi phân tích thất bại của D_nas50 nằm ở đâu. Kiểm tra cho thấy `failure_analysis.md` mục 6 chỉ có số đo chuyển
+động (6.1) và task 8, nơi NAS=50 tốt hơn (6.2). Chưa có episode thất bại nào của D_nas50 được xem bằng mắt.
+Kế hoạch đã báo và được bạn duyệt ("yes").
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | đọc `n_success` trong `eval_info.json` của D_nas1 và D_nas50 (10 task, seed 1000) | so sánh theo task | chỉ đọc |
+| 2 | `idx.py`: cờ thành công của episode 0–9 cả hai run, số khung, chuyển động | tìm 48 thất bại có video và 22 cặp NAS=1 thành công / NAS=50 thất bại | chỉ đọc + scratch |
+| 3 | `pair.py` cho 22 cặp; `grid.py` cho 26 thất bại còn lại; `crop.py` cho ngăn kéo (task 3), đĩa (task 4), giỏ (task 0) | xem bằng mắt | chỉ đọc + scratch |
+| 4 | đọc lại `motion.csv` của phiên trước | kiểm tra số 1,27 ở mục 6.1 | chỉ đọc |
+| 5 | thêm mục 6.5 vào `failure_analysis.md`; sửa bảng phạm vi (đầu file), mục 7 ý 6, mục 8, mục 9 | ghi kết quả | **SỬA REPO** |
+
+Kết quả: tổng D_nas1 273/500, D_nas50 239/500; NAS=50 kém hơn ở 8/10 task. 48 thất bại có video, tất cả 520 bước.
+Kiểu thất bại mới: gắp trượt rồi vẫn làm tiếp với tay không (10/48). Kiểu lớn nhất vẫn là hỏng ở bước con thứ hai (21/48).
+Kiểm tra số liệu: chỉ số chuyển động tính lại bằng OpenCV cho trung vị 1,51, khác 1,27 của mục 6.1. Nguyên nhân là
+cách thu nhỏ ảnh khác nhau. Chạy lại theo `motion.csv` gốc (ffmpeg) thì ra đúng 1,27, nên giữ 1,27. Số thất bại
+< 0,3 khớp ở cả hai cách (10). Thất bại của D_nas1 vẫn chưa được xem bằng mắt. Không sửa gì trong
+`ffi26/ffi26/results`, không chạy script nào của repo. Chưa commit.
+
+### Việc 11: ước lượng thời gian cho NAS=10 và phân tích thất bại theo từng run
+
+Theo yêu cầu "Evaluate total runtime before starting". Chưa chạy eval, chưa sửa file kết quả.
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | `grep n_action_steps` trong `lerobot/docs`; WebFetch trang model card `lerobot/smolvla_libero` | kiểm tra khuyến nghị NAS=10 | chỉ đọc |
+| 2 | `cat run_D.sh`; tìm `n_action_steps=10` trong `cmd.txt`; `nvidia-smi` | xem đã có run NAS=10 chưa, GPU có rảnh không | chỉ đọc |
+| 3 | cộng `seconds=` trong `status.txt` của mọi job | ước lượng thời gian | chỉ đọc |
+
+Kết quả: khuyến nghị `n_action_steps=10` trong `lerobot/docs/source/libero.mdx:205` là cho **Pi0.5** (theo OpenPI), không
+phải SmolVLA; model card không nhắc tới. Chưa có run NAS=10 nào. GPU rảnh (0 %). Thời gian thực tế (tổng `seconds=`):
+D_nas1 6309 s, D_nas50 1336 s; F_spatial seed 1000 khoảng 774 s, F_spatial_nas50 382 s.
+Ước lượng đã báo: D_nas10 khoảng 30 phút, F_spatial_nas10 khoảng 7 phút. Bạn duyệt: chạy cả hai; Spatial chỉ báo kết quả
+cuối; reward chỉ viết thiết kế; commit ảnh cùng các file khác.
+
+### Việc 12: chạy NAS=10, trích khung thất bại, phân loại theo run, file tổng hợp và thiết kế reward
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | `TAG=D_nas10 NAS=10 CM=relative N_EP=50 SEEDS=1000 bash run_queue.sh`, rồi `TAG=F_spatial_nas10 SUITE=libero_spatial NAS=10 CM=relative N_EP=10 SEEDS=1000 bash run_queue.sh` (log: `ffi26/ffi26/logs/nas10_*.log`) | phép thử NAS=10 | **GPU**, thư mục kết quả mới `results/runs/D_nas10`, `F_spatial_nas10`. 20/20 job rc=0; 1597 s và 424 s |
+| 2 | tạo `docs/failures/tools/extract_frames.py`, chạy cho B_main, D_nas1, D_nas50, D_nas10 | ảnh điển hình + chỉ số chuyển động cho mọi thất bại có video | **SỬA REPO**: `docs/failures/frames/` (262 ảnh + index.csv) |
+| 3 | xem trang ảnh (`sheet.py`), gán nhãn F0–F6 + giai đoạn | phân loại | **SỬA REPO**: `docs/failures/labels/*.csv` |
+| 4 | `make_run_report.py` + `docs/failures/notes/*.md` | file theo từng run | **SỬA REPO**: `docs/failures/{B_main,D_nas1,D_nas10,D_nas50}.md`, `spatial_results.md` |
+| 5 | đọc BDDL goal của libero_10, `base_predicates.py`, `base_object_states.py` | căn cứ cho thiết kế reward | chỉ đọc |
+| 6 | viết `docs/failure_overview.md` | so sánh cấu hình, nguyên nhân chung, reward | **SỬA REPO** |
+| 7 | sửa `failure_analysis.md`: trung vị chuyển động B_main 0,23 → 0,21 (mục 5); câu "N1 chưa thấy ở B_main" (mục 6.5.3); bảng phạm vi; mục 8 | sửa sai và cập nhật | **SỬA REPO** |
+
+Kiểm tra số liệu: `extract_frames.py` tái lập đúng trung vị của `motion.csv` cũ (D_nas50 1,27; D_nas1 0,23; B_main 0,213)
+và số thất bại < 0,3 (10, 26, 91). Số 0,23 ghi cho libero_10 ở mục 5 của `failure_analysis.md` là của D_nas1, không
+phải B_main, nên đã sửa. Ước lượng thời gian: D_nas10 dự kiến ~1740 s, thực tế 1597 s; F_spatial_nas10 dự kiến ~418 s, thực tế 424 s.
+
+Kết quả chính: D_nas10 368/500 = 73,6% (Wilson 69,6–77,3), so với D_nas1 54,6% và D_nas50 47,8%; tốt hơn NAS=1 ở cả 10 task.
+F_spatial_nas10 82/100.
 
 ---
 

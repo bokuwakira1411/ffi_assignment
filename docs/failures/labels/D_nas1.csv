@@ -1,0 +1,45 @@
+task,seed,ep,stage,cause,evidence,last100_motion,image,note
+0,1000,0,0,F3,K,0.065,../frames/D_nas1/t0_e0_s1000.jpg,"giỏ trống, lơ lửng trên vùng lon"
+0,1000,1,1,F3,K,0.112,../frames/D_nas1/t0_e1_s1000.jpg,"một lon trong giỏ, lơ lửng"
+0,1000,2,0,F2,K,0.787,../frames/D_nas1/t0_e2_s1000.jpg,"giỏ trống, các hộp bên phải bị xô đổ"
+0,1000,3,0,F2,K,0.564,../frames/D_nas1/t0_e3_s1000.jpg,lon xanh bị đổ
+0,1000,4,0,F5,K,1.584,../frames/D_nas1/t0_e4_s1000.jpg,nhấc cả giỏ
+0,1000,5,0,F6,K,0.192,../frames/D_nas1/t0_e5_s1000.jpg,"giỏ trống, tay ra mép phải khung"
+0,1000,6,0,F3,K,0.030,../frames/D_nas1/t0_e6_s1000.jpg,"giỏ trống, đứng yên ở mép phải"
+0,1000,8,0,F2,K,0.213,../frames/D_nas1/t0_e8_s1000.jpg,"giỏ trống, hộp nước cam bị đổ"
+0,1000,9,1,F3,K,1.854,../frames/D_nas1/t0_e9_s1000.jpg,"một lon trong giỏ, lơ lửng"
+1,1000,2,?,F6,K,0.102,../frames/D_nas1/t1_e2_s1000.jpg,"cầm hộp xanh đi về góc trên trái, ra khỏi khung; butter còn trên bàn (giống B_main nhóm A)"
+1,1000,3,?,F6,K,0.169,../frames/D_nas1/t1_e3_s1000.jpg,"cầm hộp xanh đi về góc trên trái, ra khỏi khung; butter còn trên bàn (giống B_main nhóm A)"
+1,1000,5,?,F6,K,0.021,../frames/D_nas1/t1_e5_s1000.jpg,"cầm hộp xanh đi về góc trên trái, ra khỏi khung; butter còn trên bàn (giống B_main nhóm A)"
+1,1000,8,?,F6,K,0.147,../frames/D_nas1/t1_e8_s1000.jpg,"cầm hộp xanh đi về góc trên trái, ra khỏi khung; butter còn trên bàn (giống B_main nhóm A)"
+2,1000,1,1,F6,K,1.470,../frames/D_nas1/t2_e1_s1000.jpg,"bếp đã bật, ấm trên bàn, tay ra khỏi khung"
+4,1000,0,0,F2,K,0.213,../frames/D_nas1/t4_e0_s1000.jpg,cốc trắng bị úp đổ giữa bàn
+4,1000,2,?,F6,K,0.217,../frames/D_nas1/t4_e2_s1000.jpg,cốc vàng-trắng chưa đụng tới; tay ra mép phải khung
+4,1000,3,?,F6,K,0.451,../frames/D_nas1/t4_e3_s1000.jpg,cốc vàng-trắng chưa đụng tới; tay ra mép phải khung
+4,1000,4,?,F5,K,0.006,../frames/D_nas1/t4_e4_s1000.jpg,cả hai cốc đặt cùng đĩa trái ảnh
+4,1000,6,?,F6,K,0.465,../frames/D_nas1/t4_e6_s1000.jpg,cốc vàng-trắng chưa đụng tới; tay ra mép phải khung
+4,1000,7,1,F2,K,0.172,../frames/D_nas1/t4_e7_s1000.jpg,cốc trắng ở đĩa phải; cốc vàng-trắng bị nghiêng ở mép đĩa trái
+4,1000,9,?,F6,K,0.151,../frames/D_nas1/t4_e9_s1000.jpg,cốc vàng-trắng chưa đụng tới; tay ở mép phải khung
+6,1000,0,1,F3,K,0.064,../frames/D_nas1/t6_e0_s1000.jpg,cốc trên đĩa; lơ lửng ở pudding
+6,1000,1,1,F3,K,0.533,../frames/D_nas1/t6_e1_s1000.jpg,cốc trên đĩa; lơ lửng ở pudding
+6,1000,2,0,F2,K,0.089,../frames/D_nas1/t6_e2_s1000.jpg,cốc bị cầm nghiêng trên đĩa
+6,1000,3,1,F3,K,0.256,../frames/D_nas1/t6_e3_s1000.jpg,tay vẫn ôm cốc trên đĩa
+6,1000,4,1,F3,K,0.163,../frames/D_nas1/t6_e4_s1000.jpg,tay vẫn ôm cốc trên đĩa
+6,1000,5,1,F3,K,0.224,../frames/D_nas1/t6_e5_s1000.jpg,tay vẫn ôm cốc trên đĩa
+6,1000,8,0,F2,K,0.243,../frames/D_nas1/t6_e8_s1000.jpg,cốc đỏ (vật nhiễu) bị đổ
+7,1000,1,1,F6,K,0.391,../frames/D_nas1/t7_e1_s1000.jpg,lon xanh đã rời bàn; tay ra khỏi khung; hộp cream cheese còn trên bàn
+7,1000,3,0,F2,K,0.568,../frames/D_nas1/t7_e3_s1000.jpg,lon xanh bị đổ
+7,1000,5,0,F2,K,0.831,../frames/D_nas1/t7_e5_s1000.jpg,"lon xanh bị nghiêng, tay lơ lửng"
+7,1000,8,1,F4,K,0.274,../frames/D_nas1/t7_e8_s1000.jpg,hộp cream cheese ở mép giỏ
+7,1000,9,1,F4,K,0.294,../frames/D_nas1/t7_e9_s1000.jpg,hộp cream cheese ở mép giỏ
+8,1000,0,?,F0,K,3.068,../frames/D_nas1/t8_e0_s1000.jpg,tay ở bếp; vị trí ấm 2 không rõ
+8,1000,1,0,F3,K,0.052,../frames/D_nas1/t8_e1_s1000.jpg,không ấm nào trên bếp; lơ lửng cạnh ấm
+8,1000,2,0,F6,K,1.726,../frames/D_nas1/t8_e2_s1000.jpg,tay ra mép phải khung
+8,1000,3,1,F2,K,0.767,../frames/D_nas1/t8_e3_s1000.jpg,một ấm trên bếp; ấm 2 bị kẹp nằm ngang
+8,1000,4,1,F2,K,0.529,../frames/D_nas1/t8_e4_s1000.jpg,một ấm trên bếp; ấm 2 bị kẹp nằm ngang
+8,1000,5,1,F2,K,0.533,../frames/D_nas1/t8_e5_s1000.jpg,một ấm trên bếp; ấm 2 bị kẹp nằm ngang
+8,1000,6,1,F3,K,1.781,../frames/D_nas1/t8_e6_s1000.jpg,một ấm trên bếp; ấm 2 trên bàn
+8,1000,7,0,F2,K,0.059,../frames/D_nas1/t8_e7_s1000.jpg,ấm bị cầm nghiêng/đổ cạnh bếp
+9,1000,7,0,F3,K,0.177,../frames/D_nas1/t9_e7_s1000.jpg,"cầm cốc trước cửa lò, chưa đưa vào"
+9,1000,8,0,F3,K,0.195,../frames/D_nas1/t9_e8_s1000.jpg,"cầm cốc trước cửa lò, chưa đưa vào"
+9,1000,9,0,F3,K,0.319,../frames/D_nas1/t9_e9_s1000.jpg,"cầm cốc trước cửa lò, chưa đưa vào"

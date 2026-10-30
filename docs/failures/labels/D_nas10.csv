@@ -1,0 +1,29 @@
+task,seed,ep,stage,cause,evidence,last100_motion,image,note
+0,1000,0,0,F5,K,0.472,../frames/D_nas10/t0_e0_s1000.jpg,cho hộp nước cam (vật không thuộc mục tiêu) vào giỏ
+0,1000,1,1,F2,K,0.152,../frames/D_nas10/t0_e1_s1000.jpg,"một lon trong giỏ; lon thứ hai bị kẹp nghiêng, lơ lửng"
+0,1000,2,0,F6,K,1.358,../frames/D_nas10/t0_e2_s1000.jpg,giỏ trống; tay ở mép phải khung
+0,1000,4,?,F0,K,2.242,../frames/D_nas10/t0_e4_s1000.jpg,tay ở trong giỏ; lon đỏ không còn trên bàn; vì sao không tính: không xác định
+0,1000,5,0,F6,K,0.729,../frames/D_nas10/t0_e5_s1000.jpg,giỏ trống; tay ở mép phải khung
+0,1000,6,0,F6,K,0.098,../frames/D_nas10/t0_e6_s1000.jpg,giỏ trống; tay ra khỏi khung bên phải
+0,1000,7,0,F6,K,0.316,../frames/D_nas10/t0_e7_s1000.jpg,giỏ trống; tay ở mép phải khung
+0,1000,8,0,F2,K,2.079,../frames/D_nas10/t0_e8_s1000.jpg,hộp nước cam bị làm rơi cạnh giỏ; giỏ trống
+0,1000,9,0,F2,K,0.590,../frames/D_nas10/t0_e9_s1000.jpg,lon xanh bị đổ nằm ngang
+2,1000,1,1,F2,K,1.493,../frames/D_nas10/t2_e1_s1000.jpg,bếp đã bật; ấm moka bị làm đổ nằm cạnh bếp
+4,1000,0,1,F2,K,0.170,../frames/D_nas10/t4_e0_s1000.jpg,cốc trắng ở đĩa phải; cốc vàng-trắng bị nghiêng ở mép đĩa trái
+4,1000,2,?,F6,K,0.487,../frames/D_nas10/t4_e2_s1000.jpg,cốc vàng-trắng chưa đụng tới; cánh tay vươn ra khỏi khung bên phải
+4,1000,6,1,F4,K,0.039,../frames/D_nas10/t4_e6_s1000.jpg,"hai cốc có vẻ ở hai đĩa, robot đứng yên, không được tính"
+4,1000,7,1,F4,K,0.124,../frames/D_nas10/t4_e7_s1000.jpg,"hai cốc có vẻ ở hai đĩa, không được tính"
+5,1000,5,0,F4,K,0.093,../frames/D_nas10/t5_e5_s1000.jpg,sách bị thả nằm nghiêng ở ngăn phải
+6,1000,0,1,F3,K,0.799,../frames/D_nas10/t6_e0_s1000.jpg,cốc trên đĩa; cầm pudding cạnh đĩa
+6,1000,1,1,F3,K,0.221,../frames/D_nas10/t6_e1_s1000.jpg,cốc trên đĩa; cầm pudding cạnh đĩa
+6,1000,4,1,F3,K,0.409,../frames/D_nas10/t6_e4_s1000.jpg,cốc trên đĩa; cầm pudding cạnh đĩa
+6,1000,8,0,F6,K,0.517,../frames/D_nas10/t6_e8_s1000.jpg,cốc trắng chưa đụng tới; tay ra mép phải khung
+6,1000,9,1,F3,K,0.061,../frames/D_nas10/t6_e9_s1000.jpg,"cốc trên đĩa; cầm pudding cạnh đĩa, đứng yên"
+7,1000,3,0,F1,K,0.256,../frames/D_nas10/t7_e3_s1000.jpg,kẹp lon xanh tại chỗ nhưng không nhấc lên
+7,1000,5,1,F2,K,0.946,../frames/D_nas10/t7_e5_s1000.jpg,hộp cream cheese trong giỏ; lon xanh bị đổ nằm ngang trên bàn
+8,1000,2,1,F2,K,0.497,../frames/D_nas10/t8_e2_s1000.jpg,một ấm trên bếp; ấm 2 bị kẹp nằm ngang
+8,1000,3,1,F2,K,0.306,../frames/D_nas10/t8_e3_s1000.jpg,một ấm trên bếp; ấm 2 bị kẹp nằm ngang
+8,1000,4,1,F6,K,0.270,../frames/D_nas10/t8_e4_s1000.jpg,một ấm trên bếp; ấm 2 trên bàn; tay ra mép trên trái khung
+8,1000,9,1,F2,K,0.806,../frames/D_nas10/t8_e9_s1000.jpg,một ấm trên bếp; ấm 2 bị kẹp nghiêng
+9,1000,7,0,F4,K,0.980,../frames/D_nas10/t9_e7_s1000.jpg,"cốc ở mép cửa lò, chưa vào trong"
+9,1000,9,1,F4,K,0.210,../frames/D_nas10/t9_e9_s1000.jpg,cốc không còn trên bàn (có vẻ đã vào lò); cửa lò chưa đóng

@@ -1,0 +1,46 @@
+[queue] policy=lerobot/smolvla_libero suite=libero_10 tasks=[0 1 2 3 4 5 6 7 8 9] seeds=[1000] n_ep=50 bs=5 nas=10 cm=relative
+[queue] output -> /home/student/ffi26/results/runs/D_nas10/lerobot_smolvla_libero
+[run ] task 0 seed 1000  (00:24:54)
+[ ok ] 205s
+[run ] task 1 seed 1000  (00:28:19)
+[ ok ] 154s
+[run ] task 2 seed 1000  (00:30:53)
+[ ok ] 119s
+[run ] task 3 seed 1000  (00:32:52)
+[ ok ] 124s
+[run ] task 4 seed 1000  (00:34:56)
+[ ok ] 190s
+[run ] task 5 seed 1000  (00:38:06)
+[ ok ] 113s
+[run ] task 6 seed 1000  (00:39:59)
+[ ok ] 173s
+[run ] task 7 seed 1000  (00:42:52)
+[ ok ] 177s
+[run ] task 8 seed 1000  (00:45:49)
+[ ok ] 183s
+[run ] task 9 seed 1000  (00:48:52)
+[ ok ] 159s
+[queue] finished D_nas10
+[queue] policy=lerobot/smolvla_libero suite=libero_spatial tasks=[0 1 2 3 4 5 6 7 8 9] seeds=[1000] n_ep=10 bs=5 nas=10 cm=relative
+[queue] output -> /home/student/ffi26/results/runs/F_spatial_nas10/lerobot_smolvla_libero
+[run ] task 0 seed 1000  (00:51:32)
+[ ok ] 30s
+[run ] task 1 seed 1000  (00:52:02)
+[ ok ] 37s
+[run ] task 2 seed 1000  (00:52:39)
+[ ok ] 38s
+[run ] task 3 seed 1000  (00:53:17)
+[ ok ] 30s
+[run ] task 4 seed 1000  (00:53:47)
+[ ok ] 49s
+[run ] task 5 seed 1000  (00:54:36)
+[ ok ] 46s
+[run ] task 6 seed 1000  (00:55:22)
+[ ok ] 43s
+[run ] task 7 seed 1000  (00:56:05)
+[ ok ] 51s
+[run ] task 8 seed 1000  (00:56:56)
+[ ok ] 57s
+[run ] task 9 seed 1000  (00:57:53)
+[ ok ] 43s
+[queue] finished F_spatial_nas10

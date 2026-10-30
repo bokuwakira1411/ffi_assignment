@@ -1,0 +1,143 @@
+task,seed,ep,stage,cause,evidence,last100_motion,image,note
+0,1000,0,0,F3,T,0.065,../frames/B_main/t0_e0_s1000.jpg,"B: không lấy được lon xanh, lơ lửng giữa bàn"
+0,1000,1,1,F3,K,0.112,../frames/B_main/t0_e1_s1000.jpg,A1: lon xanh trong giỏ; cầm lon đỏ lơ lửng (e1 s1000: T)
+0,1000,2,0,F2,T,0.787,../frames/B_main/t0_e2_s1000.jpg,"B: tay len giữa các hộp, làm đổ hộp và lon"
+0,1000,3,0,F2,K,0.564,../frames/B_main/t0_e3_s1000.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1000,4,1,F5,T,1.584,../frames/B_main/t0_e4_s1000.jpg,A4: nhấc cả giỏ
+0,1000,5,0,F2,K,0.192,../frames/B_main/t0_e5_s1000.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1000,6,0,F2,K,0.030,../frames/B_main/t0_e6_s1000.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1000,8,0,F2,K,0.213,../frames/B_main/t0_e8_s1000.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1000,9,1,F0,K,1.854,../frames/B_main/t0_e9_s1000.jpg,"A2: lon xanh trong giỏ, lon đỏ trên bàn, tay trên giỏ"
+0,1001,0,0,F1,K,1.164,../frames/B_main/t0_e0_s1001.jpg,B: tay tới giỏ nhưng lon xanh vẫn ở chỗ cũ sau hộp sữa (tay không)
+0,1001,1,1,F3,K,0.197,../frames/B_main/t0_e1_s1001.jpg,A1: lon xanh trong giỏ; cầm lon đỏ lơ lửng (e1 s1000: T)
+0,1001,2,0,F2,K,0.782,../frames/B_main/t0_e2_s1001.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1001,3,0,F2,K,0.500,../frames/B_main/t0_e3_s1001.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1001,4,1,F3,K,0.029,../frames/B_main/t0_e4_s1001.jpg,A3: lơ lửng đứng yên trên lon đỏ (s1001: T)
+0,1001,5,0,F2,K,0.198,../frames/B_main/t0_e5_s1001.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1001,6,0,F6,K,0.141,../frames/B_main/t0_e6_s1001.jpg,"B: tay ở mép phải khung, ra khỏi khung một phần"
+0,1001,7,0,F2,K,0.041,../frames/B_main/t0_e7_s1001.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1001,8,0,F6,K,0.111,../frames/B_main/t0_e8_s1001.jpg,"B: tay ở mép phải khung, ra khỏi khung một phần"
+0,1001,9,1,F3,K,0.301,../frames/B_main/t0_e9_s1001.jpg,A1
+0,1002,0,0,F1,K,2.025,../frames/B_main/t0_e0_s1002.jpg,B: tay tới giỏ nhưng lon xanh vẫn ở chỗ cũ sau hộp sữa (tay không)
+0,1002,1,1,F3,K,0.255,../frames/B_main/t0_e1_s1002.jpg,A1: lon xanh trong giỏ; cầm lon đỏ lơ lửng (e1 s1000: T)
+0,1002,2,0,F6,K,1.067,../frames/B_main/t0_e2_s1002.jpg,"B: tay ở mép phải khung, ra khỏi khung một phần"
+0,1002,3,0,F2,K,0.869,../frames/B_main/t0_e3_s1002.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1002,4,1,F3,K,0.030,../frames/B_main/t0_e4_s1002.jpg,A3: lơ lửng đứng yên trên lon đỏ (s1001: T)
+0,1002,5,0,F2,K,0.218,../frames/B_main/t0_e5_s1002.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1002,6,0,F6,K,0.250,../frames/B_main/t0_e6_s1002.jpg,"B: tay ở mép phải khung, ra khỏi khung một phần"
+0,1002,7,0,F2,K,0.035,../frames/B_main/t0_e7_s1002.jpg,"B: khung điển hình: với vào cụm hộp bên phải, làm đổ lon xanh hoặc hộp nước cam"
+0,1002,8,0,F6,K,0.066,../frames/B_main/t0_e8_s1002.jpg,"B: tay ở mép phải khung, ra khỏi khung một phần"
+0,1002,9,1,F3,K,0.444,../frames/B_main/t0_e9_s1002.jpg,A1
+1,1000,2,?,F6,K,0.102,../frames/B_main/t1_e2_s1000.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+1,1000,3,?,F6,K,0.169,../frames/B_main/t1_e3_s1000.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+1,1000,5,?,F6,K,0.021,../frames/B_main/t1_e5_s1000.jpg,A (e5 s1000: T)
+1,1000,8,?,F6,K,0.147,../frames/B_main/t1_e8_s1000.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+1,1001,0,0,F1,K,0.578,../frames/B_main/t1_e0_s1001.jpg,"B: kẹt ở hộp xanh, không nhấc lên được (e0 s1002: T)"
+1,1001,2,?,F6,K,0.149,../frames/B_main/t1_e2_s1001.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+1,1001,3,?,F6,K,0.098,../frames/B_main/t1_e3_s1001.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+1,1001,5,?,F6,K,0.061,../frames/B_main/t1_e5_s1001.jpg,A (e5 s1000: T)
+1,1001,8,?,F6,K,0.131,../frames/B_main/t1_e8_s1001.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+1,1002,0,0,F1,K,0.101,../frames/B_main/t1_e0_s1002.jpg,"B: kẹt ở hộp xanh, không nhấc lên được (e0 s1002: T)"
+1,1002,1,0,F1,K,0.019,../frames/B_main/t1_e1_s1002.jpg,B
+1,1002,2,?,F6,K,0.228,../frames/B_main/t1_e2_s1002.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+1,1002,3,?,F6,K,0.195,../frames/B_main/t1_e3_s1002.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+1,1002,8,?,F6,K,0.109,../frames/B_main/t1_e8_s1002.jpg,"A: cầm hộp xanh đi về góc trên trái, ra khỏi khung (e3 s1000: T)"
+2,1000,1,1,F6,K,1.470,../frames/B_main/t2_e1_s1000.jpg,"bếp đã bật, ấm trên bàn; tay ra khỏi khung"
+2,1002,5,1,F4,K,0.490,../frames/B_main/t2_e5_s1002.jpg,"bếp đã bật, cầm ấm ở mép bếp"
+4,1000,0,?,F2,K,0.213,../frames/B_main/t4_e0_s1000.jpg,B: cốc đổ / cầm nghiêng
+4,1000,2,?,F6,T,0.217,../frames/B_main/t4_e2_s1000.jpg,A: mang cốc trắng ra khỏi khung hình
+4,1000,3,?,F6,K,0.451,../frames/B_main/t4_e3_s1000.jpg,"A: mang cốc trắng sang phải, cánh tay vươn ra khỏi khung; cốc vàng-trắng chưa đụng tới"
+4,1000,4,1,F4,T,0.006,../frames/B_main/t4_e4_s1000.jpg,C
+4,1000,6,?,F6,K,0.465,../frames/B_main/t4_e6_s1000.jpg,"A: mang cốc trắng sang phải, cánh tay vươn ra khỏi khung; cốc vàng-trắng chưa đụng tới"
+4,1000,7,?,F2,K,0.172,../frames/B_main/t4_e7_s1000.jpg,B
+4,1000,9,1,F3,T,0.151,../frames/B_main/t4_e9_s1000.jpg,A: đặt cốc trắng rồi lơ lửng tại đĩa
+4,1001,0,1,F4,K,0.006,../frames/B_main/t4_e0_s1001.jpg,"C: gần đích, không tính"
+4,1001,2,?,F6,K,0.278,../frames/B_main/t4_e2_s1001.jpg,"A: mang cốc trắng sang phải, cánh tay vươn ra khỏi khung; cốc vàng-trắng chưa đụng tới"
+4,1001,3,?,F2,K,0.129,../frames/B_main/t4_e3_s1001.jpg,B
+4,1001,4,?,F2,K,0.054,../frames/B_main/t4_e4_s1001.jpg,B
+4,1001,6,?,F6,K,1.210,../frames/B_main/t4_e6_s1001.jpg,"A: mang cốc trắng sang phải, cánh tay vươn ra khỏi khung; cốc vàng-trắng chưa đụng tới"
+4,1001,7,?,F3,K,0.096,../frames/B_main/t4_e7_s1001.jpg,A: lơ lửng/cầm cốc trắng ở đĩa phải đến hết giờ; cốc vàng-trắng chưa đụng tới
+4,1001,9,?,F3,K,0.189,../frames/B_main/t4_e9_s1001.jpg,A: lơ lửng/cầm cốc trắng ở đĩa phải đến hết giờ; cốc vàng-trắng chưa đụng tới
+4,1002,0,?,F2,K,0.419,../frames/B_main/t4_e0_s1002.jpg,B: cốc đổ / cầm nghiêng
+4,1002,2,?,F6,K,0.879,../frames/B_main/t4_e2_s1002.jpg,"A: mang cốc trắng sang phải, cánh tay vươn ra khỏi khung; cốc vàng-trắng chưa đụng tới"
+4,1002,3,?,F6,K,0.502,../frames/B_main/t4_e3_s1002.jpg,"A: mang cốc trắng sang phải, cánh tay vươn ra khỏi khung; cốc vàng-trắng chưa đụng tới"
+4,1002,4,1,F4,K,0.007,../frames/B_main/t4_e4_s1002.jpg,C
+4,1002,5,?,F0,K,0.027,../frames/B_main/t4_e5_s1002.jpg,không phân loại được
+4,1002,6,?,F6,K,1.083,../frames/B_main/t4_e6_s1002.jpg,"A: mang cốc trắng sang phải, cánh tay vươn ra khỏi khung; cốc vàng-trắng chưa đụng tới"
+4,1002,7,?,F3,K,0.112,../frames/B_main/t4_e7_s1002.jpg,A: lơ lửng/cầm cốc trắng ở đĩa phải đến hết giờ; cốc vàng-trắng chưa đụng tới
+4,1002,8,?,F3,K,0.168,../frames/B_main/t4_e8_s1002.jpg,A: lơ lửng/cầm cốc trắng ở đĩa phải đến hết giờ; cốc vàng-trắng chưa đụng tới
+4,1002,9,?,F3,K,0.037,../frames/B_main/t4_e9_s1002.jpg,A: lơ lửng/cầm cốc trắng ở đĩa phải đến hết giờ; cốc vàng-trắng chưa đụng tới
+5,1001,1,0,F4,K,0.058,../frames/B_main/t5_e1_s1001.jpg,sách ở ngăn phải
+5,1002,1,0,F4,K,0.073,../frames/B_main/t5_e1_s1002.jpg,sách ở ngăn phải
+5,1002,7,0,F4,K,0.210,../frames/B_main/t5_e7_s1002.jpg,cầm sách ở ngăn phải
+6,1000,0,1,F3,K,0.064,../frames/B_main/t6_e0_s1000.jpg,A: cốc trên đĩa; lơ lửng/cầm ở pudding
+6,1000,1,0,F4,K,0.533,../frames/B_main/t6_e1_s1000.jpg,D: cốc trước đĩa
+6,1000,2,0,F2,K,0.089,../frames/B_main/t6_e2_s1000.jpg,D: cốc bị cầm nghiêng
+6,1000,3,1,F3,K,0.256,../frames/B_main/t6_e3_s1000.jpg,B: tay vẫn ôm cốc trên đĩa
+6,1000,4,1,F3,K,0.163,../frames/B_main/t6_e4_s1000.jpg,B
+6,1000,5,1,F3,K,0.224,../frames/B_main/t6_e5_s1000.jpg,B: tay vẫn ôm cốc trên đĩa
+6,1000,8,0,F2,K,0.243,../frames/B_main/t6_e8_s1000.jpg,C: làm đổ cốc đỏ
+6,1001,0,1,F3,K,0.018,../frames/B_main/t6_e0_s1001.jpg,A: cốc trên đĩa; lơ lửng/cầm ở pudding
+6,1001,1,1,F3,K,0.157,../frames/B_main/t6_e1_s1001.jpg,A
+6,1001,2,1,F3,K,0.151,../frames/B_main/t6_e2_s1001.jpg,A
+6,1001,3,1,F3,K,0.357,../frames/B_main/t6_e3_s1001.jpg,B: tay vẫn ôm cốc trên đĩa
+6,1001,4,1,F3,K,0.073,../frames/B_main/t6_e4_s1001.jpg,A
+6,1001,5,1,F3,K,0.232,../frames/B_main/t6_e5_s1001.jpg,B: tay vẫn ôm cốc trên đĩa
+6,1001,8,0,F2,K,0.225,../frames/B_main/t6_e8_s1001.jpg,C: làm đổ cốc đỏ
+6,1001,9,1,F3,K,0.269,../frames/B_main/t6_e9_s1001.jpg,A
+6,1002,0,1,F3,K,0.086,../frames/B_main/t6_e0_s1002.jpg,A: cốc trên đĩa; lơ lửng/cầm ở pudding
+6,1002,3,1,F3,K,0.242,../frames/B_main/t6_e3_s1002.jpg,B: tay vẫn ôm cốc trên đĩa
+6,1002,4,1,F3,K,0.038,../frames/B_main/t6_e4_s1002.jpg,A
+6,1002,5,1,F3,K,0.253,../frames/B_main/t6_e5_s1002.jpg,B: tay vẫn ôm cốc trên đĩa
+6,1002,8,0,F2,K,0.868,../frames/B_main/t6_e8_s1002.jpg,C: làm đổ cốc đỏ
+6,1002,9,1,F3,K,0.172,../frames/B_main/t6_e9_s1002.jpg,A
+7,1000,1,?,F6,K,0.391,../frames/B_main/t7_e1_s1000.jpg,tay/vật ra khỏi khung
+7,1000,3,0,F2,K,0.568,../frames/B_main/t7_e3_s1000.jpg,A1
+7,1000,5,0,F1,K,0.831,../frames/B_main/t7_e5_s1000.jpg,A2
+7,1000,8,1,F4,K,0.274,../frames/B_main/t7_e8_s1000.jpg,B: hộp cream cheese ở mép giỏ
+7,1000,9,1,F4,K,0.294,../frames/B_main/t7_e9_s1000.jpg,B
+7,1001,3,0,F2,K,2.094,../frames/B_main/t7_e3_s1001.jpg,A3: lon bị cầm nằm ngang ở mép giỏ
+7,1001,5,0,F2,K,0.929,../frames/B_main/t7_e5_s1001.jpg,A1
+7,1001,7,?,F6,K,0.195,../frames/B_main/t7_e7_s1001.jpg,tay/vật ra khỏi khung
+7,1001,8,1,F4,K,1.217,../frames/B_main/t7_e8_s1001.jpg,B: hộp cream cheese ở mép giỏ
+7,1002,0,0,F2,K,0.200,../frames/B_main/t7_e0_s1002.jpg,A1: lon xanh đổ / cầm nghiêng
+7,1002,3,0,F1,K,0.198,../frames/B_main/t7_e3_s1002.jpg,"A2: lon xanh vẫn đứng, tay gần/đang kẹp"
+7,1002,5,0,F1,K,1.257,../frames/B_main/t7_e5_s1002.jpg,A2
+7,1002,6,0,F2,K,1.160,../frames/B_main/t7_e6_s1002.jpg,A1
+7,1002,8,1,F4,K,1.483,../frames/B_main/t7_e8_s1002.jpg,B: hộp cream cheese ở mép giỏ
+8,1000,0,1,F3,K,2.328,../frames/B_main/t8_e0_s1000.jpg,A4: tay vẫn kẹp ấm trên bếp
+8,1000,1,0,F3,K,0.052,../frames/B_main/t8_e1_s1000.jpg,B2: cầm ấm thẳng đứng giữa bàn
+8,1000,2,0,F2,K,1.749,../frames/B_main/t8_e2_s1000.jpg,B1
+8,1000,3,1,F2,K,0.698,../frames/B_main/t8_e3_s1000.jpg,A1: ấm 2 bị kẹp nằm ngang
+8,1000,4,1,F2,K,0.529,../frames/B_main/t8_e4_s1000.jpg,A1
+8,1000,5,1,F3,K,0.116,../frames/B_main/t8_e5_s1000.jpg,A2
+8,1000,6,1,F3,K,1.692,../frames/B_main/t8_e6_s1000.jpg,A3: ấm 2 vẫn trên bàn
+8,1000,7,0,F2,K,0.051,../frames/B_main/t8_e7_s1000.jpg,B1
+8,1000,8,1,F3,K,0.132,../frames/B_main/t8_e8_s1000.jpg,A2
+8,1001,0,0,F2,K,0.103,../frames/B_main/t8_e0_s1001.jpg,B1: ấm đổ / cầm nghiêng
+8,1001,1,1,F3,K,0.063,../frames/B_main/t8_e1_s1001.jpg,"A2: cầm ấm 2 thẳng đứng, không đặt"
+8,1001,2,0,F3,K,0.066,../frames/B_main/t8_e2_s1001.jpg,B2
+8,1001,3,1,F2,K,0.279,../frames/B_main/t8_e3_s1001.jpg,A1: ấm 2 bị kẹp nằm ngang
+8,1001,4,0,F3,K,0.086,../frames/B_main/t8_e4_s1001.jpg,B2
+8,1001,5,1,F2,K,0.485,../frames/B_main/t8_e5_s1001.jpg,A1
+8,1001,6,1,F3,K,1.743,../frames/B_main/t8_e6_s1001.jpg,A2
+8,1001,7,0,F3,K,0.161,../frames/B_main/t8_e7_s1001.jpg,B2
+8,1001,8,1,F3,K,2.349,../frames/B_main/t8_e8_s1001.jpg,A3
+8,1001,9,1,F3,K,2.722,../frames/B_main/t8_e9_s1001.jpg,A3
+8,1002,0,0,F2,K,1.562,../frames/B_main/t8_e0_s1002.jpg,B1: ấm đổ / cầm nghiêng
+8,1002,1,0,F3,K,0.035,../frames/B_main/t8_e1_s1002.jpg,B2: cầm ấm thẳng đứng giữa bàn
+8,1002,2,0,F2,K,0.653,../frames/B_main/t8_e2_s1002.jpg,B1
+8,1002,3,1,F2,K,0.302,../frames/B_main/t8_e3_s1002.jpg,A1: ấm 2 bị kẹp nằm ngang
+8,1002,4,1,F3,K,0.180,../frames/B_main/t8_e4_s1002.jpg,A2
+8,1002,5,1,F3,K,0.091,../frames/B_main/t8_e5_s1002.jpg,A2
+8,1002,6,0,F2,K,0.588,../frames/B_main/t8_e6_s1002.jpg,B1
+8,1002,7,0,F2,K,0.576,../frames/B_main/t8_e7_s1002.jpg,B1
+8,1002,8,1,F2,K,0.481,../frames/B_main/t8_e8_s1002.jpg,A1
+8,1002,9,0,F3,K,0.057,../frames/B_main/t8_e9_s1002.jpg,B2
+9,1000,7,0,F3,K,0.177,../frames/B_main/t9_e7_s1000.jpg,"cầm cốc trước cửa lò, chưa đưa vào"
+9,1000,8,0,F3,K,0.195,../frames/B_main/t9_e8_s1000.jpg,
+9,1000,9,0,F3,K,0.319,../frames/B_main/t9_e9_s1000.jpg,
+9,1001,7,0,F3,K,0.160,../frames/B_main/t9_e7_s1001.jpg,"cầm cốc trước cửa lò, chưa đưa vào"
+9,1001,9,0,F3,K,0.237,../frames/B_main/t9_e9_s1001.jpg,
+9,1002,7,0,F3,K,0.290,../frames/B_main/t9_e7_s1002.jpg,"cầm cốc trước cửa lò, chưa đưa vào"
+9,1002,8,0,F3,K,0.425,../frames/B_main/t9_e8_s1002.jpg,

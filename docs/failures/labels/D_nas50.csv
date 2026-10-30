@@ -1,0 +1,49 @@
+task,seed,ep,stage,cause,evidence,last100_motion,image,note
+0,1000,0,0,F1,K,2.672,../frames/D_nas50/t0_e0_s1000.jpg,"U→: lượn trên cụm hộp bên phải, không gắp được lon xanh (bị hộp sữa che)"
+0,1000,2,1,F2,K,0.993,../frames/D_nas50/t0_e2_s1000.jpg,"N3: một lon trong giỏ, một lon đổ cạnh giỏ"
+0,1000,3,0,F1,K,1.590,../frames/D_nas50/t0_e3_s1000.jpg,"U→: lượn trên cụm hộp bên phải, không gắp được lon xanh (bị hộp sữa che)"
+0,1000,4,1,F3,K,1.602,../frames/D_nas50/t0_e4_s1000.jpg,N3: một lon trong giỏ
+0,1000,6,1,F3,K,1.350,../frames/D_nas50/t0_e6_s1000.jpg,N3: một lon trong giỏ
+0,1000,7,1,F1,T,0.799,../frames/D_nas50/t0_e7_s1000.jpg,"N1: trượt lon alphabet soup, cho lon khác vào giỏ"
+0,1000,8,0,F1,K,2.267,../frames/D_nas50/t0_e8_s1000.jpg,"U→: lượn trên cụm hộp bên phải, không gắp được lon xanh (bị hộp sữa che)"
+0,1000,9,0,F1,K,2.155,../frames/D_nas50/t0_e9_s1000.jpg,"U→: lượn trên cụm hộp bên phải, không gắp được lon xanh (bị hộp sữa che)"
+1,1000,0,1,F1,T,3.181,../frames/D_nas50/t1_e0_s1000.jpg,N3: không gắp được butter
+1,1000,1,0,F1,T,4.676,../frames/D_nas50/t1_e1_s1000.jpg,"N1: gắp trượt hộp xanh, mang tay không tới giỏ"
+1,1000,5,0,F0,K,2.600,../frames/D_nas50/t1_e5_s1000.jpg,U
+1,1000,7,0,F1,T,2.955,../frames/D_nas50/t1_e7_s1000.jpg,"N1: gắp trượt hộp xanh, mang tay không tới giỏ"
+1,1000,8,0,F1,K,3.341,../frames/D_nas50/t1_e8_s1000.jpg,N1 (khung bước 150 + khung cuối)
+2,1000,1,1,F3,K,0.853,../frames/D_nas50/t2_e1_s1000.jpg,N3: lơ lửng trên quai ấm
+2,1000,2,1,F1,T,0.246,../frames/D_nas50/t2_e2_s1000.jpg,N3: không nhấc được ấm
+2,1000,7,1,F2,T,1.108,../frames/D_nas50/t2_e7_s1000.jpg,N3: làm đổ ấm
+3,1000,0,1,F4,T,0.132,../frames/D_nas50/t3_e0_s1000.jpg,"N3: bát trong ngăn kéo, ngăn kéo chưa đóng hẳn"
+3,1000,8,1,F4,T,0.106,../frames/D_nas50/t3_e8_s1000.jpg,"N3: bát trong ngăn kéo, ngăn kéo chưa đóng hẳn"
+4,1000,1,1,F4,T,0.008,../frames/D_nas50/t4_e1_s1000.jpg,"N6: gần đích, đứng yên, không tính"
+4,1000,3,1,F4,K,0.007,../frames/D_nas50/t4_e3_s1000.jpg,N6
+4,1000,5,1,F4,T,0.011,../frames/D_nas50/t4_e5_s1000.jpg,"N6: gần đích, đứng yên, không tính"
+4,1000,6,1,F4,K,0.038,../frames/D_nas50/t4_e6_s1000.jpg,N6
+4,1000,7,1,F4,K,0.006,../frames/D_nas50/t4_e7_s1000.jpg,N6
+4,1000,8,0,F3,T,2.150,../frames/D_nas50/t4_e8_s1000.jpg,U: cầm cốc trắng lơ lửng cạnh đĩa
+5,1000,5,0,F4,T,0.206,../frames/D_nas50/t5_e5_s1000.jpg,N7: sách sai ngăn
+5,1000,8,0,F4,T,0.030,../frames/D_nas50/t5_e8_s1000.jpg,N7: sách sai ngăn
+6,1000,1,1,F3,K,0.842,../frames/D_nas50/t6_e1_s1000.jpg,N3
+6,1000,4,1,F3,K,0.785,../frames/D_nas50/t6_e4_s1000.jpg,N3
+6,1000,5,1,F3,K,0.606,../frames/D_nas50/t6_e5_s1000.jpg,N3: tay vẫn ôm cốc
+6,1000,6,0,F1,T,3.071,../frames/D_nas50/t6_e6_s1000.jpg,"N1: bỏ qua cốc trắng, chuyển sang pudding"
+6,1000,7,1,F3,T,0.421,../frames/D_nas50/t6_e7_s1000.jpg,N3: cầm pudding cạnh đĩa
+6,1000,8,0,F1,K,2.372,../frames/D_nas50/t6_e8_s1000.jpg,N1
+6,1000,9,1,F3,T,0.611,../frames/D_nas50/t6_e9_s1000.jpg,N3: cầm pudding cạnh đĩa
+7,1000,0,0,F1,T,2.159,../frames/D_nas50/t7_e0_s1000.jpg,"N1: gắp trượt, rồi nhấc cả giỏ"
+7,1000,2,1,F3,T,1.189,../frames/D_nas50/t7_e2_s1000.jpg,N3: lơ lửng trên hộp cream cheese
+7,1000,3,0,F5,K,2.927,../frames/D_nas50/t7_e3_s1000.jpg,N5: nhấc cả giỏ
+7,1000,4,0,F1,T,1.184,../frames/D_nas50/t7_e4_s1000.jpg,N1: tay không tới giỏ
+7,1000,5,0,F1,K,1.615,../frames/D_nas50/t7_e5_s1000.jpg,N1
+7,1000,6,0,F1,T,1.615,../frames/D_nas50/t7_e6_s1000.jpg,N1: tay không tới giỏ
+7,1000,8,0,F5,K,2.204,../frames/D_nas50/t7_e8_s1000.jpg,N5: nhấc cả giỏ
+8,1000,1,1,F3,K,1.931,../frames/D_nas50/t8_e1_s1000.jpg,N3: ấm 2 chưa lên bếp
+8,1000,2,1,F3,K,2.403,../frames/D_nas50/t8_e2_s1000.jpg,N3: ấm 2 chưa lên bếp
+8,1000,3,1,F3,K,1.875,../frames/D_nas50/t8_e3_s1000.jpg,N3: tay vẫn kẹp ấm thứ nhất trên bếp; ấm 2 trên bàn
+8,1000,4,1,F2,K,0.946,../frames/D_nas50/t8_e4_s1000.jpg,N3: ấm 2 bị kẹp nằm ngang
+8,1000,5,1,F3,K,2.337,../frames/D_nas50/t8_e5_s1000.jpg,N3: ấm 2 chưa lên bếp
+8,1000,7,1,F3,K,2.814,../frames/D_nas50/t8_e7_s1000.jpg,N3: ấm 2 chưa lên bếp
+9,1000,0,0,F4,T,0.968,../frames/D_nas50/t9_e0_s1000.jpg,N2: để cốc ngoài lò rồi thao tác cửa lò
+9,1000,2,0,F4,T,0.415,../frames/D_nas50/t9_e2_s1000.jpg,N2: để cốc ngoài lò rồi thao tác cửa lò

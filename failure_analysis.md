@@ -7,7 +7,13 @@ bổ sung LIBERO-Spatial và ablation. Phạm vi:
 |---|---|
 | B_main (libero_10, NAS=1, relative, seed 1000/1001/1002): 142 episode thất bại | **đã phân tích**, 10/10 task (mục 3, 4) |
 | F_spatial (libero_spatial, NAS=1, relative, 3 seed): 63 episode thất bại | **đã phân tích**, 9 task có thất bại (mục 5) |
-| Ablation D_nas1/D_nas50, F_spatial_nas50, F_spatial_abs | **đã phân tích**: số đo chuyển động cho toàn bộ video, và xem bằng mắt một số cặp episode cùng cảnh ban đầu (mục 6) |
+| Ablation D_nas1/D_nas50, F_spatial_nas50, F_spatial_abs | số đo chuyển động cho toàn bộ video, và xem bằng mắt một số cặp episode cùng cảnh ban đầu (mục 6.1–6.4) |
+| D_nas50 (libero_10, NAS=50): 48 thất bại có video | **đã phân tích** (bổ sung 30/10/2026): 22 cặp [timeline], 26 episode [khung cuối] (mục 6.5) |
+| D_nas1 (libero_10, NAS=1): 44 thất bại có video | **đã phân loại** ngày 31/10/2026 (khung điển hình): `docs/failures/D_nas1.md` |
+| D_nas10 (libero_10, NAS=10, chạy 31/10/2026): 28 thất bại có video | **đã phân loại** (khung điển hình): `docs/failures/D_nas10.md` |
+
+Từ 31/10/2026, so sánh giữa các cấu hình, bộ nguyên nhân chung F0–F6 và thiết kế can thiệp reward nằm ở
+`docs/failure_overview.md`. File này giữ phân tích chi tiết ban đầu.
 
 Các đường dẫn `results/...` là tương đối với `~/ffi26/`. Video của một episode nằm ở:
 `results/runs/B_main/lerobot_smolvla_libero/task{T}_seed{S}/videos/libero_10_{T}/eval_episode_{E}.mp4`.
@@ -298,7 +304,7 @@ kỹ năng tách vật chồng, không do hiểu sai câu lệnh. Từ video kh�
 | **Tổng** | **63** | |
 
 So với libero_10, khác biệt rõ nhất là chỉ số chuyển động. Ở Spatial, trung vị chuyển động 100 bước cuối của thất bại là
-0,50 và chỉ 11/63 dưới 0,3. Ở libero_10 trung vị là 0,23 và 91/142 dưới 0,3. Như vậy ở Spatial, robot ít khi
+0,50 và chỉ 11/63 dưới 0,3. Ở libero_10 (B_main) trung vị là 0,21 và 91/142 dưới 0,3. Như vậy ở Spatial, robot ít khi
 "đứng yên" hơn và thường **vẫn đang thao tác ở đĩa** khi hết giờ (nhóm S1).
 
 Hai hành vi đáng chú ý cho phần Analyse **[timeline]**:
@@ -365,6 +371,105 @@ sai lệch nhỏ lúc gắp hoặc lúc thả **[suy luận, chưa kiểm chứn
 (25 và 60 bước) **là do va chạm ngẫu nhiên, không phải kỹ năng** **[suy luận từ timeline và độ dài episode]**.
 Kết quả này củng cố kết luận ở `differences.md` mục 3b: checkpoint phải chạy với `relative`.
 
+### 6.5 libero_10: các thất bại của D_nas50 (bổ sung ngày 30/10/2026)
+
+Mục 6.1 chỉ đo chuyển động, mục 6.2 chỉ xem task 8 (task duy nhất NAS=50 tốt hơn). Mục này xem trực tiếp các thất
+bại của D_nas50, vì NAS=50 **kém hơn NAS=1 ở 8/10 task** của libero_10.
+
+**Số liệu** (đọc từ `per_task[0].n_success` trong `eval_info.json` của từng job, seed 1000, 50 episode mỗi task):
+
+| Task | D_nas1 | D_nas50 | Chênh lệch |
+|---|---|---|---|
+| 0 | 12 | 12 | 0 |
+| 1 | 29 | 21 | −8 |
+| 2 | 45 | 37 | −8 |
+| 3 | 46 | 40 | −6 |
+| 4 | 20 | 17 | −3 |
+| 5 | 43 | 37 | −6 |
+| 6 | 18 | 11 | −7 |
+| 7 | 23 | 18 | −5 |
+| 8 | 7 | 19 | +12 |
+| 9 | 30 | 27 | −3 |
+| **Tổng** | **273/500** | **239/500** | **−34** |
+
+**Phạm vi xem video.** Chỉ có video cho episode 0–9 của mỗi task (mục 6.1). Trong 100 episode này, D_nas50 có
+**48 thất bại**, tất cả đều dài đúng 520 bước (hết giờ). Hai nhóm:
+- **22 cặp** mà NAS=1 thành công còn NAS=50 thất bại, cùng task và cùng episode (nên cùng cảnh ban đầu). Đã xem
+  **[timeline]** 12 khung chia đều của cả hai bên.
+- **26 thất bại còn lại**, nơi NAS=1 cũng thất bại. Chỉ xem khung ở bước 150 và khung cuối (**[khung cuối]**).
+
+Đường dẫn video: `results/runs/D_nas50/lerobot_smolvla_libero/task{T}_seed1000/videos/libero_10_{T}/eval_episode_{E}.mp4`.
+Trong mục này, `tT eE` = task T, episode E. Chỉ số chuyển động lấy từ `motion.csv` của mục 6.1 (cùng script).
+
+#### 6.5.1 Phân loại 48 thất bại
+
+Mỗi episode được xếp vào đúng một nhóm, nên tổng là 48.
+
+| Nhóm | Mô tả | Episode | Số | Tin cậy |
+|---|---|---|---|---|
+| N1 | **Gắp trượt vật thứ nhất nhưng vẫn tiếp tục chuỗi chuyển động**: ở khung bước 48 tay đang ở vật, ở khung bước 95 vật vẫn ở chỗ cũ và ở đó đến cuối episode, sau đó tay đi tới đích (giỏ) **với tay không**, hoặc chuyển sang vật khác | t1 e1, t1 e7, t7 e4, t7 e6 (tay không tới giỏ); t7 e0 (tay không tới giỏ, rồi nhấc cả giỏ lên từ bước ~330); t6 e6 (bỏ qua cốc trắng, chuyển sang hộp pudding); t0 e7 (trượt lon alphabet soup, sau đó cho một lon khác vào giỏ ở bước ~330, rồi lơ lửng trên giỏ) | 7 | [timeline] |
+| | Như trên, nhưng chỉ dựa trên 2 khung: vật thứ nhất vẫn ở chỗ cũ, tay ở giỏ (t1 e8, t7 e5) hoặc ở hộp pudding (t6 e8) | t1 e8, t7 e5, t6 e8 | 3 | [khung cuối] + khung bước 150 |
+| N2 | **Thả vật trước đích rồi làm bước sau**: cầm cốc tới trước lò vi sóng nhưng để cốc lại trên bàn bên ngoài (t9 e2: cốc bị nghiêng), sau đó thao tác với cửa lò đến hết giờ; cửa không đóng | t9 e0, t9 e2 | 2 | [timeline] |
+| N3 | **Xong bước con thứ nhất, hỏng bước thứ hai** (giống kiểu chính của B_main, mục 4) | xem bảng dưới | 21 | xem bảng dưới |
+| N5 | **Nhấc cả giỏ** (cầm nhầm vật) | t7 e3, t7 e8 | 2 | [khung cuối]: giỏ đang bị cầm lơ lửng ở khung cuối. (t7 e0 cũng nhấc giỏ nhưng đã tính ở N1) |
+| N6 | **Hai cốc có vẻ đã nằm ở hai đĩa, robot đứng yên, nhưng env không tính thành công** | t4 e1, t4 e5 [timeline]; t4 e3, t4 e6, t4 e7 [khung cuối] | 5 | Xem ghi chú dưới bảng |
+| N7 | **Sách vào sai ngăn**: sách được thả ở ngăn bên phải của hộp (t5 e8, khoảng bước 236, dựng đứng), hoặc bị đẩy nằm nghiêng ở ngăn phải (t5 e5) | t5 e5, t5 e8 | 2 | [timeline] |
+| U | **Chưa xong bước con thứ nhất, không rõ cơ chế**: giỏ trống, tay ở vùng các lon (t0 e0, e3, e8, e9); hộp cream cheese vẫn trên bàn, tay ở vùng các lon (t1 e5); cầm cốc trắng lơ lửng cạnh đĩa phải đến hết giờ, cốc vàng-trắng chưa đụng tới (t4 e8, [timeline]) | t0 e0, t0 e3, t0 e8, t0 e9, t1 e5, t4 e8 | 6 | [khung cuối], trừ t4 e8 |
+
+Chi tiết nhóm N3 (21 episode):
+
+| Task | Bước 1 đã xong | Bước 2 hỏng như thế nào | Episode | Số | Tin cậy |
+|---|---|---|---|---|---|
+| 0 | Một lon trong giỏ (thấy nắp lon trong giỏ; lon nào: [không xác định]) | lon thứ hai chưa vào giỏ; ở t0 e2 một lon nằm đổ cạnh giỏ | t0 e2, t0 e4, t0 e6 | 3 | [khung cuối] |
+| 1 | Hộp cream cheese đã được mang đi khỏi bàn (có trong giỏ hay không: [không xác định]) | tay lượn qua lại giữa lon soup và butter từ bước ~150 đến 519, không gắp được butter | t1 e0 | 1 | [timeline] |
+| 2 | Bếp đã bật (đỏ) ở bước ~95 | t2 e2: không nhấc được ấm, tay tì lên ấm từ bước ~330 đến hết giờ; t2 e7: ấm bị **làm đổ** ở khoảng bước 236, sau đó tay đẩy quanh ấm đổ; t2 e1: tay lơ lửng trên quai ấm | t2 e1, t2 e2, t2 e7 | 3 | t2 e2, t2 e7 [timeline]; t2 e1 [khung cuối] |
+| 3 | Bát đã ở trong ngăn kéo ở bước ~189 | **ngăn kéo chưa được đóng hẳn** (vẫn thấy bát); tay đứng yên ở trước/dưới mặt ngăn kéo (chuyển động 0,13 và 0,11) | t3 e0, t3 e8 | 2 | [timeline] + cắt vùng ngăn kéo ở khung cuối |
+| 6 | Cốc trắng trên đĩa ở bước ~142 | t6 e7, t6 e9: cầm hộp pudding cạnh đĩa đến hết giờ; t6 e1, t6 e4: pudding chưa được đặt; t6 e5: tay vẫn ôm cốc trắng | t6 e1, t6 e4, t6 e5, t6 e7, t6 e9 | 5 | t6 e7, t6 e9 [timeline]; còn lại [khung cuối]. Vì sao điều kiện "bên phải đĩa" chưa thỏa: [không xác định] |
+| 7 | Lon alphabet soup trong giỏ ở bước ~142 | tay lơ lửng phía trên hộp cream cheese từ bước ~189 đến hết giờ, không gắp | t7 e2 | 1 | [timeline] |
+| 8 | Một ấm trên bếp | ấm thứ hai chưa lên bếp; ở t8 e4 ấm thứ hai bị kẹp nằm ngang | t8 e1, t8 e2, t8 e3, t8 e4, t8 e5, t8 e7 | 6 | [khung cuối] |
+
+Ghi chú nhóm N6 (task 4): ở khung cuối, cốc vàng-trắng nằm ở đĩa trái ảnh và cốc trắng ở đĩa phải ảnh, giống khung
+cuối của episode thành công `t4 e1` của D_nas1. Đĩa trái nằm sát mép ảnh nên không thấy được cốc nằm trọn trên đĩa
+hay không. Vì sao env không tính thành công: **[không xác định]**. Cả 5 episode có chuyển động 100 bước cuối
+≤ 0,04, tức robot đứng yên. Ở `t4 e1` và `t4 e5` [timeline], cả hai cốc đã được đặt xong trước bước ~236, sau đó
+robot rút tay ra và đứng yên gần 300 bước. Nhóm này tương tự nhóm C của B_main ở task 4 (mục 3.4).
+
+#### 6.5.2 22 cặp NAS=1 thành công, NAS=50 thất bại
+
+| Nhóm của NAS=50 | Cặp | Số |
+|---|---|---|
+| N1 gắp trượt rồi vẫn tiếp tục | t0 e7, t1 e1, t1 e7, t6 e6, t7 e0, t7 e4, t7 e6 | 7 |
+| N3 xong bước 1, hỏng bước 2 | t1 e0, t2 e2, t2 e7, t3 e0, t3 e8, t6 e7, t6 e9, t7 e2 | 8 |
+| N2 thả vật trước đích | t9 e0, t9 e2 | 2 |
+| N6 gần đích, không tính | t4 e1, t4 e5 | 2 |
+| N7 sách sai ngăn | t5 e5, t5 e8 | 2 |
+| U | t4 e8 | 1 |
+| **Tổng** | | **22** |
+
+Trong 7 cặp N1, ở cùng cảnh ban đầu, NAS=1 gắp được vật thứ nhất ngay lần đầu (ví dụ `t1 e1`: hộp cream cheese
+được nhấc lên ở khoảng bước 50–74 và vào giỏ ở khoảng bước 150–170).
+
+#### 6.5.3 Nhận xét
+
+1. **Kiểu mới so với B_main: gắp trượt rồi vẫn làm tiếp (N1, 10/48).** Ở cả 7 episode N1 có timeline, khung bước 48
+   cho thấy tay đang ở vật và khung bước 95 cho thấy vật vẫn ở chỗ cũ. Lần gắp trượt vì vậy nằm trước bước 95, nhiều
+   khả năng **bên trong chunk 50 action đầu tiên** (bước 0–49) **[suy luận]**: timeline chỉ lấy mẫu mỗi ~47 bước. Với NAS=50, policy chỉ quan sát lại ở bước 50, 100, ... nên trong
+   chunk đầu tay vẫn thực hiện tiếp đoạn "nhấc lên" dù vật chưa được kẹp **[suy luận]**. Sau đó policy không quay lại
+   gắp lại mà tiếp tục mang tay không tới giỏ hoặc chuyển sang vật khác: đây là quan sát **[timeline]**, còn nguyên
+   nhân là **[suy luận, chưa kiểm chứng]**. Kiểu này giống `t4 e3 s1000` của Spatial (mục 5) và các cặp ở mục 6.3.
+   Cập nhật 31/10/2026: khi xem lại khung điển hình, kiểu này cũng thấy ở B_main (NAS=1) nhưng hiếm hơn: task 0
+   `e0 s1001` và `e0 s1002`, tức 2/142 so với 10/48 ở NAS=50 (`docs/failures/B_main.md`).
+2. **Kiểu chung với NAS=1 vẫn là lớn nhất: hỏng ở bước con thứ hai (N3, 21/48).** NAS=50 không làm kiểu này biến mất.
+3. **Đứng yên khi thất bại không biến mất hoàn toàn với NAS=50.** 10/48 thất bại có chuyển động < 0,3 (mục 6.1).
+   Gồm 5 episode N6 (task 4), 2 episode task 3, 2 episode task 5 và t2 e2 (0,25). Ở 9 episode của task 3, 4, 5,
+   **vật đã ở gần đích và robot dừng lại**, khác với kiểu lơ lửng giữa chừng hay gặp ở B_main.
+4. **Task 4, 3, 5 thất bại "gần đích" (N6, N3-task 3, N7: 9/48).** Ở các task này, thao tác đặt cuối cùng (đặt cốc
+   trọn trên đĩa, đẩy ngăn kéo đóng hẳn, đưa sách vào đúng ngăn) không hoàn thành. Giả thuyết: thao tác chính xác ở
+   cuối cần sửa nhỏ dựa trên quan sát, mà NAS=50 không làm được **[suy luận, chưa kiểm chứng]**, cùng hướng với giả
+   thuyết ở mục 6.3.
+5. Các nhận xét về cơ chế dựa trên 22 cặp ở episode 0–9 của seed 1000. Không có video cho episode 10–49, nên không
+   kiểm chứng được tỉ lệ các nhóm trên toàn bộ 261 thất bại của D_nas50.
+
 ## 7. Kết luận chung (để dùng cho phần Analyse)
 
 1. **Mọi thất bại đều là hết giờ** (mục 2.1). Cần video để phân loại.
@@ -377,6 +482,9 @@ Kết quả này củng cố kết luận ở `differences.md` mục 3b: checkpo
 6. **NAS=1 so với 50:** NAS=1 hay đứng yên khi thất bại, NAS=50 thì không. NAS=50 tốt hơn ở libero_10 task 8 (2 cặp
    cho thấy NAS=1 chậm và chần chừ khi gắp) nhưng kém hơn ở Spatial (2 cặp: trượt khi gắp, không thả). Các nhận xét
    cơ chế dựa trên 2 cặp mỗi bên, chỉ nên trình bày như ví dụ minh họa.
+   Bổ sung (mục 6.5): trên libero_10, NAS=50 kém hơn ở 8/10 task (tổng 239/500 so với 273/500). Trong 22 cặp cùng
+   cảnh mà NAS=1 thành công còn NAS=50 thất bại: 7 cặp **gắp trượt trong chunk đầu rồi vẫn làm tiếp với tay không**,
+   8 cặp hỏng ở bước con thứ hai, 6 cặp hỏng ở thao tác đặt cuối cùng (task 4, 5, 9), 1 cặp không rõ.
 7. **absolute:** chuyển động bất thường; 2 "thành công" là do va chạm.
 
 ## 8. Giới hạn của phân tích
@@ -385,7 +493,7 @@ Kết quả này củng cố kết luận ở `differences.md` mục 3b: checkpo
   thành công" đều là [không xác định].
 - Phân loại bằng mắt do Claude thực hiện, một người, không có người thứ hai kiểm tra chéo. Nhãn [khung cuối] có độ tin
   cậy thấp hơn [timeline].
-- Ablation D: chỉ có video cho episode 0–9 trên tổng 50 episode của mỗi task.
+- Ablation D: chỉ có video cho episode 0–9 trên tổng 50 episode của mỗi task. Thất bại của D_nas1 và D_nas10 chỉ được phân loại bằng khung điển hình (`docs/failures/`).
 - Ngưỡng chuyển động 0,3 do Claude chọn (mục 2.3).
 
 ## 9. Công cụ đã dùng (để tái lập)
@@ -402,3 +510,16 @@ và có thể bị xóa khi hết phiên. Nếu bạn muốn giữ, Claude có t
 | `sheet.py` | Dòng thời gian N khung chia đều của từng episode, tùy chọn cắt vùng (`CROP`) và khoảng bước (`video|bắt đầu|kết thúc`) |
 | `pairs.py` | Khung đầu và khung cuối đặt cạnh nhau cho từng episode |
 | `mk.py` | Liệt kê các video thất bại của một task, kèm nhãn |
+
+Mục 6.5 dùng các script khác, nằm trong thư mục nháp của một phiên sau
+(`/tmp/claude-1003/-home-student-Lan-K68AI-temp/02a22dbf-5493-45c5-a81f-8cbc51c58a97/scratchpad/`), cũng **ngoài repo**:
+
+| Script | Chức năng |
+|---|---|
+| `idx.py` / `idx_lib.py` | Lập bảng episode 0–9 của D_nas50 với cờ thành công của D_nas1 và D_nas50 → `out/idx.txt` |
+| `pair.py` | Timeline 12 khung của NAS=50 (trên) và NAS=1 (dưới) cho cùng một task/episode |
+| `grid.py` | Khung bước 150 và khung cuối của các episode D_nas50 |
+| `crop.py` | Cắt một vùng của khung bất kỳ, đặt cạnh nhau |
+
+`idx.py` cũng tính chỉ số chuyển động, nhưng thu nhỏ ảnh bằng OpenCV thay vì ffmpeg nên ra trung vị 1,51 thay vì
+1,27 (số thất bại < 0,3 vẫn là 10). Mục 6.5 dùng số của `motion.csv` (mục 6.1), đã chạy lại và khớp 1,27.
