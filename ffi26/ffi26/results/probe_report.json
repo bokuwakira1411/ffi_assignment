@@ -1,0 +1,444 @@
+{
+  "sections": {
+    "0_versions": {
+      "torch": "2.11.0+cu128",
+      "device": "cuda",
+      "gpu": "NVIDIA GeForce RTX 5070 Ti",
+      "lerobot": "0.6.2",
+      "policy_commit_sha": "a24f1f380461b665158d52acd140152c79e8b36d",
+      "ok": true
+    },
+    "1_load_policy_and_config": {
+      "config": {
+        "chunk_size": 50,
+        "n_action_steps": 50,
+        "num_steps": 10,
+        "max_state_dim": 32,
+        "max_action_dim": 32,
+        "resize_imgs_with_padding": [
+          512,
+          512
+        ],
+        "tokenizer_max_length": 48,
+        "vlm_model_name": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+        "num_vlm_layers": 16,
+        "num_expert_layers": 0,
+        "expert_width_multiplier": 0.75,
+        "self_attn_every_n_layers": 2,
+        "attention_mode": "cross_attn",
+        "freeze_vision_encoder": false,
+        "train_expert_only": false,
+        "train_state_proj": true,
+        "use_cache": true,
+        "min_period": 0.004,
+        "max_period": 4.0,
+        "empty_cameras": 0
+      },
+      "input_features": {
+        "observation.state": {
+          "type": "FeatureType.STATE",
+          "shape": [
+            8
+          ]
+        },
+        "observation.images.camera1": {
+          "type": "FeatureType.VISUAL",
+          "shape": [
+            3,
+            256,
+            256
+          ]
+        },
+        "observation.images.camera2": {
+          "type": "FeatureType.VISUAL",
+          "shape": [
+            3,
+            256,
+            256
+          ]
+        }
+      },
+      "output_features": {
+        "action": {
+          "type": "FeatureType.ACTION",
+          "shape": [
+            7
+          ]
+        }
+      },
+      "normalization_mapping": {
+        "VISUAL": "NormalizationMode.IDENTITY",
+        "STATE": "NormalizationMode.MEAN_STD",
+        "ACTION": "NormalizationMode.MEAN_STD"
+      },
+      "ok": true
+    },
+    "2_parameters": {
+      "total_params": 450046176,
+      "trainable_params": 392904096,
+      "by_top_level_child_of_model": {
+        "vlm_with_expert": {
+          "params": 448411024,
+          "trainable": 391268944
+        },
+        "action_time_mlp_in": {
+          "params": 1037520,
+          "trainable": 1037520
+        },
+        "action_time_mlp_out": {
+          "params": 519120,
+          "trainable": 519120
+        },
+        "state_proj": {
+          "params": 31680,
+          "trainable": 31680
+        },
+        "action_in_proj": {
+          "params": 23760,
+          "trainable": 23760
+        },
+        "action_out_proj": {
+          "params": 23072,
+          "trainable": 23072
+        }
+      },
+      "by_depth_4": {
+        "vlm_with_expert.vlm.model.text_model": {
+          "params": 204626880,
+          "trainable": 194793600
+        },
+        "vlm_with_expert.vlm.model.vision_model": {
+          "params": 86433024,
+          "trainable": 86433024
+        },
+        "vlm_with_expert.vlm.lm_head.weight": {
+          "params": 47308800,
+          "trainable": 0
+        },
+        "vlm_with_expert.vlm.model.connector": {
+          "params": 11796480,
+          "trainable": 11796480
+        },
+        "vlm_with_expert.lm_expert.layers.0": {
+          "params": 6268320,
+          "trainable": 6268320
+        },
+        "vlm_with_expert.lm_expert.layers.2": {
+          "params": 6268320,
+          "trainable": 6268320
+        },
+        "vlm_with_expert.lm_expert.layers.4": {
+          "params": 6268320,
+          "trainable": 6268320
+        },
+        "vlm_with_expert.lm_expert.layers.6": {
+          "params": 6268320,
+          "trainable": 6268320
+        },
+        "vlm_with_expert.lm_expert.layers.8": {
+          "params": 6268320,
+          "trainable": 6268320
+        },
+        "vlm_with_expert.lm_expert.layers.10": {
+          "params": 6268320,
+          "trainable": 6268320
+        },
+        "vlm_with_expert.lm_expert.layers.12": {
+          "params": 6268320,
+          "trainable": 6268320
+        },
+        "vlm_with_expert.lm_expert.layers.14": {
+          "params": 6268320,
+          "trainable": 6268320
+        },
+        "vlm_with_expert.lm_expert.layers.1": {
+          "params": 6012320,
+          "trainable": 6012320
+        },
+        "vlm_with_expert.lm_expert.layers.3": {
+          "params": 6012320,
+          "trainable": 6012320
+        },
+        "vlm_with_expert.lm_expert.layers.5": {
+          "params": 6012320,
+          "trainable": 6012320
+        },
+        "vlm_with_expert.lm_expert.layers.7": {
+          "params": 6012320,
+          "trainable": 6012320
+        },
+        "vlm_with_expert.lm_expert.layers.9": {
+          "params": 6012320,
+          "trainable": 6012320
+        },
+        "vlm_with_expert.lm_expert.layers.11": {
+          "params": 6012320,
+          "trainable": 6012320
+        },
+        "vlm_with_expert.lm_expert.layers.13": {
+          "params": 6012320,
+          "trainable": 6012320
+        },
+        "vlm_with_expert.lm_expert.layers.15": {
+          "params": 6012320,
+          "trainable": 6012320
+        },
+        "action_time_mlp_in.weight": {
+          "params": 1036800,
+          "trainable": 1036800
+        },
+        "action_time_mlp_out.weight": {
+          "params": 518400,
+          "trainable": 518400
+        },
+        "state_proj.weight": {
+          "params": 30720,
+          "trainable": 30720
+        },
+        "action_in_proj.weight": {
+          "params": 23040,
+          "trainable": 23040
+        },
+        "action_out_proj.weight": {
+          "params": 23040,
+          "trainable": 23040
+        },
+        "state_proj.bias": {
+          "params": 960,
+          "trainable": 960
+        },
+        "vlm_with_expert.lm_expert.norm.weight": {
+          "params": 720,
+          "trainable": 720
+        },
+        "action_in_proj.bias": {
+          "params": 720,
+          "trainable": 720
+        },
+        "action_time_mlp_in.bias": {
+          "params": 720,
+          "trainable": 720
+        },
+        "action_time_mlp_out.bias": {
+          "params": 720,
+          "trainable": 720
+        },
+        "action_out_proj.bias": {
+          "params": 32,
+          "trainable": 32
+        }
+      },
+      "modulelist_lengths": {
+        "vlm_with_expert.vlm.model.vision_model.encoder.layers": 12,
+        "vlm_with_expert.vlm.model.text_model.layers": 16,
+        "vlm_with_expert.lm_expert.layers": 16
+      },
+      "ok": true
+    },
+    "3_data_and_preprocess": {
+      "dataset": {
+        "repo_id": "lerobot/libero",
+        "revision": "a1aaacb7f6cd6ee5fb43120f673cebb0cfea7dd4",
+        "fps": 10.0,
+        "frames": 273465,
+        "episodes": 1693,
+        "features": [
+          "observation.images.image",
+          "observation.images.image2",
+          "observation.state",
+          "action",
+          "timestamp",
+          "frame_index",
+          "episode_index",
+          "index",
+          "task_index"
+        ],
+        "camera_keys": [
+          "observation.images.image",
+          "observation.images.image2"
+        ]
+      },
+      "raw_batch_shapes": {
+        "observation.state": [
+          8,
+          8
+        ],
+        "action": [
+          8,
+          50,
+          7
+        ],
+        "timestamp": [
+          8
+        ],
+        "frame_index": [
+          8
+        ],
+        "episode_index": [
+          8
+        ],
+        "index": [
+          8
+        ],
+        "task_index": [
+          8
+        ],
+        "action_is_pad": [
+          8,
+          50
+        ],
+        "observation.images.image": [
+          8,
+          3,
+          256,
+          256
+        ],
+        "observation.images.image2": [
+          8,
+          3,
+          256,
+          256
+        ]
+      },
+      "tasks_sampled": [
+        "pick up the bbq sauce and place it in the basket",
+        "pick up the black bowl between the plate and the ramekin and place it on the plate",
+        "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate",
+        "pick up the black bowl next to the ramekin and place it on the plate",
+        "pick up the black bowl on the ramekin and place it on the plate",
+        "pick up the black bowl on the wooden cabinet and place it on the plate",
+        "pick up the chocolate pudding and place it in the basket",
+        "pick up the cream cheese and place it in the basket",
+        "pick up the milk and place it in the basket",
+        "pick up the salad dressing and place it in the basket",
+        "pick up the tomato sauce and place it in the basket",
+        "push the plate to the front of the stove"
+      ],
+      "processor_overrides_used": [
+        "device_processor",
+        "rename_observations_processor"
+      ],
+      "processed_batch_shapes": {
+        "action": [
+          8,
+          50,
+          7
+        ],
+        "action_is_pad": [
+          8,
+          50
+        ],
+        "index": [
+          8
+        ],
+        "task_index": [
+          8
+        ],
+        "episode_index": [
+          8
+        ],
+        "frame_index": [
+          8
+        ],
+        "timestamp": [
+          8
+        ],
+        "observation.state": [
+          8,
+          8
+        ],
+        "observation.images.camera1": [
+          8,
+          3,
+          256,
+          256
+        ],
+        "observation.images.camera2": [
+          8,
+          3,
+          256,
+          256
+        ],
+        "observation.language.tokens": [
+          8,
+          48
+        ],
+        "observation.language.attention_mask": [
+          8,
+          48
+        ]
+      },
+      "ok": true
+    },
+    "4_pipeline_trace": {
+      "images_after_prepare (B,3,H,W, range [-1,1])": [
+        [
+          8,
+          3,
+          512,
+          512
+        ],
+        [
+          8,
+          3,
+          512,
+          512
+        ]
+      ],
+      "state_after_pad": [
+        8,
+        32
+      ],
+      "tokens_per_image": 64,
+      "image_embed_dim": 960,
+      "language_tokens": [
+        8,
+        48
+      ],
+      "prefix_len (images + language + 1 state token)": 177,
+      "action_chunk_target (B, chunk, max_action_dim)": [
+        8,
+        50,
+        32
+      ],
+      "suffix_len (one token per chunk step)": 50,
+      "ok": true
+    },
+    "5_loss_one_forward_no_update": {
+      "loss_by_flow_time (t=1 is pure noise)": {
+        "0.1": 0.2753186821937561,
+        "0.3": 0.06764881188670795,
+        "0.5": 0.030725705126921337,
+        "0.7": 0.019210444142421085,
+        "0.9": 0.014666953434546789
+      },
+      "loss_default_time_sampling": 0.036486586555838585,
+      "zero_velocity_baseline_mse (approx, padding mask applied if present)": 1.4300300280253093,
+      "weights_unchanged": true,
+      "note": "Loss = MSE between predicted velocity and (noise - action). Convention NOISE_AT_ONE: x_t = t*noise + (1-t)*action. Batches: 3 x 8 samples spread over the dataset.",
+      "ok": true
+    },
+    "6_inference_trace": {
+      "action_chunk_shape (B, chunk, action_dim)": [
+        1,
+        50,
+        7
+      ],
+      "denoise_calls_per_chunk": 10,
+      "median_latency_ms_per_chunk (batch 1)": 96.5,
+      "peak_vram_gb": 1.06,
+      "policy_forward_calls_per_100_env_steps": 2.0,
+      "note": "Euler integration from noise (t=1) to action (t=0) with num_steps=10; a new chunk is generated every n_action_steps=50 env steps.",
+      "ok": true
+    }
+  },
+  "args": {
+    "policy": "lerobot/smolvla_libero",
+    "dataset": "lerobot/libero",
+    "dataset_revision": "a1aaacb7f6cd6ee5fb43120f673cebb0cfea7dd4",
+    "batch_size": 8,
+    "n_batches": 3,
+    "skip_data": false,
+    "out": "/home/student/ffi26/results/probe_report.json"
+  }
+}

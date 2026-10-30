@@ -1,0 +1,4 @@
+# Bản clone upstream của lerobot (có .git riêng, 421 MB) — không commit được dạng file thường
+ffi26/ffi26/lerobot/
+# Cache HuggingFace
+ffi26/ffi26/ckpt_files/.cache/

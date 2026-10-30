@@ -104,6 +104,23 @@ Với NAS=50, thất bại gần như không kết thúc bằng trạng thái đ
 (25 và 60 bước, trong khi thành công ngắn nhất với relative là 71 bước). Đã bỏ một câu suy đoán về absolute vì không có
 bằng chứng. Không sửa file nào trong `~/ffi26`, không chạy script nào của repo.
 
+### Việc 7: chuyển thư mục thật `ffi26` vào repo (thay cho symlink)
+
+Bạn hỏi vì sao `ffi26/ffi26` hiện như shortcut: đó là symlink (tạo ngày 29/10 lúc 10:53) trỏ tới `/home/student/ffi26`.
+Kế hoạch đã báo và được bạn duyệt ("yes"): kiểm tra đường dẫn cứng, chuyển thư mục, tạo symlink ngược, cập nhật `.gitignore`.
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | `ls -la`, `readlink -f`, `du`, `df`, `git ls-files`, `ps aux` | xác nhận là symlink, kích thước 604 MB, cùng ổ đĩa, không có tiến trình nào đang dùng | chỉ đọc |
+| 2 | `grep -rIl "/home/student/ffi26"`; tìm `direct_url.json`/`*.pth` trong site-packages | tìm chỗ phụ thuộc đường dẫn cũ | chỉ đọc |
+| 3 | `rm ffi26/ffi26` (chỉ xoá symlink); `mv /home/student/ffi26 ffi26/ffi26`; `ln -s .../temp/ffi26/ffi26 /home/student/ffi26` | đưa dữ liệu thật vào repo; giữ đường dẫn cũ hoạt động | **SỬA REPO** và `~/ffi26` (đã được duyệt) |
+| 4 | tạo `.gitignore` (bỏ qua `ffi26/ffi26/lerobot/` và `ffi26/ffi26/ckpt_files/.cache/`) | `lerobot` là bản clone upstream có `.git` riêng (421 MB) | **SỬA REPO** |
+
+Lý do cần symlink ngược: môi trường conda `lerobot` cài `lerobot` dạng editable, trỏ tới `/home/student/ffi26/lerobot`
+(`~/.conda/envs/lerobot/lib/python3.12/site-packages/__editable__.lerobot-0.6.2.pth`). Ngoài ra đường dẫn cũ còn nằm trong
+`cmd.txt`, `eval.log`, `eval_info.json` và `logs/*.log` (chỉ là ghi chép lịch sử, không sửa). Đã kiểm tra:
+`import lerobot` vẫn chạy, file nằm tại `.../temp/ffi26/ffi26/lerobot/src/lerobot/__init__.py`. Chưa commit.
+
 ---
 
 ## Quy tắc Claude tuân theo từ nay trong repo này

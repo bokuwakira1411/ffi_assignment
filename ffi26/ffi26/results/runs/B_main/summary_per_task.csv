@@ -1,0 +1,11 @@
+policy,task,n_seeds,mean_success_pct,std_between_seeds
+lerobot_smolvla_libero,0,1,10.0,
+lerobot_smolvla_libero,1,1,60.0,
+lerobot_smolvla_libero,2,1,90.0,
+lerobot_smolvla_libero,3,1,100.0,
+lerobot_smolvla_libero,4,1,30.0,
+lerobot_smolvla_libero,5,1,100.0,
+lerobot_smolvla_libero,6,1,30.0,
+lerobot_smolvla_libero,7,1,50.0,
+lerobot_smolvla_libero,8,1,10.0,
+lerobot_smolvla_libero,9,1,70.0,

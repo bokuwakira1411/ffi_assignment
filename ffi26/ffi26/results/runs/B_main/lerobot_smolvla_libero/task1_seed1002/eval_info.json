@@ -1,0 +1,118 @@
+{
+  "per_task": [
+    {
+      "task_group": "libero_10",
+      "task_id": 1,
+      "metrics": {
+        "sum_rewards": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "max_rewards": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "successes": [
+          false,
+          false,
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true
+        ],
+        "video_paths": [
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_0.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_1.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_2.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_3.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_4.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_5.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_6.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_7.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_8.mp4",
+          "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_9.mp4"
+        ],
+        "predicted_video_paths": []
+      },
+      "n_episodes": 10,
+      "n_success": 5,
+      "pc_success": 50.0,
+      "pc_success_ci95": [
+        23.659309051256404,
+        76.3406909487436
+      ]
+    }
+  ],
+  "per_group": {
+    "libero_10": {
+      "avg_sum_reward": 0.5,
+      "avg_max_reward": 0.5,
+      "pc_success": 50.0,
+      "n_episodes": 10,
+      "n_success": 5,
+      "pc_success_ci95": [
+        23.659309051256404,
+        76.3406909487436
+      ],
+      "video_paths": [
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_0.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_1.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_2.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_3.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_4.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_5.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_6.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_7.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_8.mp4",
+        "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_9.mp4"
+      ],
+      "predicted_video_paths": []
+    }
+  },
+  "overall": {
+    "avg_sum_reward": 0.5,
+    "avg_max_reward": 0.5,
+    "pc_success": 50.0,
+    "n_episodes": 10,
+    "n_success": 5,
+    "pc_success_ci95": [
+      23.659309051256404,
+      76.3406909487436
+    ],
+    "eval_s": 143.0655481815338,
+    "eval_ep_s": 14.30655484199524,
+    "video_paths": [
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_0.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_1.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_2.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_3.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_4.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_5.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_6.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_7.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_8.mp4",
+      "/home/student/ffi26/results/runs/B_main/lerobot_smolvla_libero/task1_seed1002/videos/libero_10_1/eval_episode_9.mp4"
+    ],
+    "predicted_video_paths": []
+  }
+}

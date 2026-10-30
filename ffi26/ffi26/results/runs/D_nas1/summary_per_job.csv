@@ -1,0 +1,11 @@
+policy,task,seed,done,n_ep,n_success,success_pct,seconds,source
+lerobot_smolvla_libero,0,1000,True,50,12,24.0,702,eval_info.json
+lerobot_smolvla_libero,1,1000,True,50,29,58.0,687,eval_info.json
+lerobot_smolvla_libero,2,1000,True,50,45,90.0,546,eval_info.json
+lerobot_smolvla_libero,3,1000,True,50,46,92.0,483,eval_info.json
+lerobot_smolvla_libero,4,1000,True,50,20,40.0,695,eval_info.json
+lerobot_smolvla_libero,5,1000,True,50,43,86.0,496,eval_info.json
+lerobot_smolvla_libero,6,1000,True,50,18,36.0,708,eval_info.json
+lerobot_smolvla_libero,7,1000,True,50,23,46.0,689,eval_info.json
+lerobot_smolvla_libero,8,1000,True,50,7,14.0,684,eval_info.json
+lerobot_smolvla_libero,9,1000,True,50,30,60.0,619,eval_info.json

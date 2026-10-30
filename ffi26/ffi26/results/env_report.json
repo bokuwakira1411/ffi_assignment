@@ -1,0 +1,59 @@
+{
+  "python": "3.12.16",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "MUJOCO_GL": "egl",
+  "checks": {
+    "cuda_available": {
+      "ok": true,
+      "detail": "torch 2.11.0+cu128, cuda 12.8"
+    },
+    "arch_supported": {
+      "ok": true,
+      "detail": "NVIDIA GeForce RTX 5070 Ti is sm_120; wheel arch list = ['sm_75', 'sm_80', 'sm_86', 'sm_90', 'sm_100', 'sm_120']"
+    },
+    "gpu_kernels_fp32_bf16": {
+      "ok": true,
+      "detail": "matmul ok (-10330.0, -10353.5)"
+    },
+    "mujoco_offscreen_render": {
+      "ok": true,
+      "detail": "backend=egl frame shape (64, 64, 3)"
+    },
+    "import_lerobot": {
+      "ok": true,
+      "detail": "0.6.2"
+    },
+    "import_smolvla_policy": {
+      "ok": true,
+      "detail": "SmolVLAPolicy importable"
+    },
+    "import_libero": {
+      "ok": true,
+      "detail": "libero importable"
+    },
+    "cli_lerobot-eval": {
+      "ok": true,
+      "detail": "/home/student/.conda/envs/lerobot/bin/lerobot-eval"
+    },
+    "cli_lerobot-train": {
+      "ok": true,
+      "detail": "/home/student/.conda/envs/lerobot/bin/lerobot-train"
+    }
+  },
+  "torch": "2.11.0+cu128",
+  "torch_cuda": "12.8",
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 5070 Ti",
+    "capability": "sm_120",
+    "memory_gb": 16.6,
+    "arch_list": [
+      "sm_75",
+      "sm_80",
+      "sm_86",
+      "sm_90",
+      "sm_100",
+      "sm_120"
+    ]
+  },
+  "lerobot": "0.6.2"
+}

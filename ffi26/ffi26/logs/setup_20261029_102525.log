@@ -1,0 +1,543 @@
+[setup] log file: /home/student/ffi26/logs/setup_20261029_102525.log
+[0/7] GPU and driver check
+name, driver_version, memory.total [MiB]
+NVIDIA GeForce RTX 5070 Ti, 580.178.04, 16303 MiB
+[1/7] conda (miniforge)
+[2/7] conda env 'lerobot' (Python 3.12) + ffmpeg
+2 channel Terms of Service accepted
+Channels:
+ - conda-forge
+ - defaults
+Platform: linux-64
+Collecting package metadata (repodata.json): - \ | / - done
+Solving environment: | / done
+
+
+==> WARNING: A newer version of conda exists. <==
+    current version: 25.7.0
+    latest version: 26.9.4
+
+Please update conda by running
+
+    $ conda update -n base -c defaults conda
+
+
+
+# All requested packages already installed.
+
+[3/7] PyTorch from https://download.pytorch.org/whl/cu128
+Requirement already satisfied: pip in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (26.2.2)
+Looking in indexes: https://download.pytorch.org/whl/cu128
+Requirement already satisfied: torch in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (2.11.0+cu128)
+Requirement already satisfied: torchvision in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (0.26.0+cu128)
+Requirement already satisfied: filelock in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (4.2.4)
+Requirement already satisfied: typing-extensions>=4.10.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (4.16.0)
+Requirement already satisfied: setuptools<82 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (78.1.0)
+Requirement already satisfied: sympy>=1.13.3 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (1.14.0)
+Requirement already satisfied: networkx>=2.5.1 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (3.7)
+Requirement already satisfied: jinja2 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (3.1.6)
+Requirement already satisfied: fsspec>=0.8.5 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (2026.9.0)
+Requirement already satisfied: cuda-toolkit==12.8.1 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (12.8.1)
+Requirement already satisfied: cuda-bindings<13,>=12.9.4 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (12.9.7)
+Requirement already satisfied: nvidia-cudnn-cu12==9.19.0.56 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (9.19.0.56)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (0.7.1)
+Requirement already satisfied: nvidia-nccl-cu12==2.28.9 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (2.28.9)
+Requirement already satisfied: nvidia-nvshmem-cu12==3.4.5 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (3.4.5)
+Requirement already satisfied: triton==3.6.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch) (3.6.0)
+Requirement already satisfied: nvidia-cublas-cu12==12.8.4.1.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (12.8.4.1)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (12.8.90)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.3.83.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (11.3.3.83)
+Requirement already satisfied: nvidia-cufile-cu12==1.13.1.3.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (1.13.1.3)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (12.8.90)
+Requirement already satisfied: nvidia-curand-cu12==10.3.9.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (10.3.9.90)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.3.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (11.7.3.90)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.8.93.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (12.5.8.93)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.93.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (12.8.93)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.93.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (12.8.93)
+Requirement already satisfied: nvidia-nvtx-cu12==12.8.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch) (12.8.90)
+Requirement already satisfied: cuda-pathfinder~=1.1 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-bindings<13,>=12.9.4->torch) (1.6.0)
+Requirement already satisfied: numpy in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torchvision) (2.5.4)
+Requirement already satisfied: pillow!=8.3.*,>=5.3.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torchvision) (13.0.0)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from sympy>=1.13.3->torch) (1.3.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from jinja2->torch) (3.0.3)
+torch 2.11.0+cu128 | cuda 12.8 | available True
+[4/7] LeRobot (main) + extras
+Cloning into 'lerobot'...
+Filtering content:   2% (1/46)Filtering content:   4% (2/46)Filtering content:   6% (3/46)Filtering content:   8% (4/46)Filtering content:  10% (5/46)Filtering content:  13% (6/46)Filtering content:  15% (7/46)Filtering content:  17% (8/46)Filtering content:  19% (9/46)Filtering content:  21% (10/46)Filtering content:  23% (11/46), 25.08 MiB | 41.28 MiB/sFiltering content:  26% (12/46), 25.08 MiB | 41.28 MiB/sFiltering content:  28% (13/46), 25.08 MiB | 41.28 MiB/sFiltering content:  30% (14/46), 25.08 MiB | 41.28 MiB/sFiltering content:  32% (15/46), 25.08 MiB | 41.28 MiB/sFiltering content:  34% (16/46), 25.08 MiB | 41.28 MiB/sFiltering content:  36% (17/46), 25.08 MiB | 41.28 MiB/sFiltering content:  39% (18/46), 25.78 MiB | 20.12 MiB/sFiltering content:  41% (19/46), 25.78 MiB | 20.12 MiB/sFiltering content:  43% (20/46), 25.78 MiB | 20.12 MiB/sFiltering content:  45% (21/46), 25.78 MiB | 20.12 MiB/sFiltering content:  47% (22/46), 25.78 MiB | 20.12 MiB/sFiltering content:  50% (23/46), 25.78 MiB | 20.12 MiB/sFiltering content:  52% (24/46), 25.78 MiB | 20.12 MiB/sFiltering content:  54% (25/46), 25.78 MiB | 20.12 MiB/sFiltering content:  56% (26/46), 25.78 MiB | 20.12 MiB/sFiltering content:  58% (27/46), 25.78 MiB | 20.12 MiB/sFiltering content:  60% (28/46), 25.78 MiB | 20.12 MiB/sFiltering content:  63% (29/46), 25.78 MiB | 20.12 MiB/sFiltering content:  65% (30/46), 25.78 MiB | 20.12 MiB/sFiltering content:  67% (31/46), 26.43 MiB | 13.24 MiB/sFiltering content:  69% (32/46), 26.43 MiB | 13.24 MiB/sFiltering content:  71% (33/46), 26.43 MiB | 13.24 MiB/sFiltering content:  73% (34/46), 26.43 MiB | 13.24 MiB/sFiltering content:  76% (35/46), 26.43 MiB | 13.24 MiB/sFiltering content:  78% (36/46), 26.43 MiB | 13.24 MiB/sFiltering content:  80% (37/46), 26.43 MiB | 13.24 MiB/sFiltering content:  82% (38/46), 26.43 MiB | 13.24 MiB/sFiltering content:  84% (39/46), 26.43 MiB | 13.24 MiB/sFiltering content:  86% (40/46), 26.43 MiB | 13.24 MiB/sFiltering content:  89% (41/46), 26.43 MiB | 13.24 MiB/sFiltering content:  91% (42/46), 26.43 MiB | 13.24 MiB/sFiltering content:  93% (43/46), 26.43 MiB | 13.24 MiB/sFiltering content:  95% (44/46), 26.43 MiB | 13.24 MiB/sFiltering content:  97% (45/46), 26.53 MiB | 9.82 MiB/s Filtering content: 100% (46/46), 26.53 MiB | 9.82 MiB/sFiltering content: 100% (46/46), 68.56 MiB | 3.85 MiB/s, done.
+Already on 'main'
+Your branch is up to date with 'origin/main'.
+Obtaining file:///home/student/ffi26/lerobot
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: torch<2.12.0,>=2.7 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from lerobot==0.6.2) (2.11.0+cu128)
+Requirement already satisfied: torchvision<0.27.0,>=0.22.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from lerobot==0.6.2) (0.26.0+cu128)
+Collecting numpy<2.3.0,>=2.0.0 (from lerobot==0.6.2)
+  Using cached numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (62 kB)
+Collecting opencv-python-headless<4.14.0,>=4.9.0 (from lerobot==0.6.2)
+  Using cached opencv_python_headless-4.13.0.92-cp37-abi3-manylinux_2_28_x86_64.whl.metadata (19 kB)
+Collecting Pillow<13.0.0,>=10.0.0 (from lerobot==0.6.2)
+  Using cached pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)
+Collecting einops<0.9.0,>=0.8.0 (from lerobot==0.6.2)
+  Using cached einops-0.8.2-py3-none-any.whl.metadata (13 kB)
+Collecting draccus<0.12.0,>=0.11.6 (from lerobot==0.6.2)
+  Using cached draccus-0.11.6-py3-none-any.whl.metadata (22 kB)
+Collecting huggingface-hub<2.0.0,>=1.6.0 (from lerobot==0.6.2)
+  Using cached huggingface_hub-1.33.0-py3-none-any.whl.metadata (16 kB)
+Collecting filelock<4.0.0,>=3.12.0 (from lerobot==0.6.2)
+  Using cached filelock-3.32.7-py3-none-any.whl.metadata (2.0 kB)
+Requirement already satisfied: fsspec<2027.0.0,>=2023.5.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from lerobot==0.6.2) (2026.9.0)
+Collecting httpx<1.0.0,>=0.27.0 (from lerobot==0.6.2)
+  Using cached httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting requests<3.0.0,>=2.32.0 (from lerobot==0.6.2)
+  Using cached requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting gymnasium<2.0.0,>=1.1.1 (from lerobot==0.6.2)
+  Using cached gymnasium-1.4.0-py3-none-any.whl.metadata (9.0 kB)
+Collecting safetensors<1.0.0,>=0.4.3 (from lerobot==0.6.2)
+  Using cached safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+Collecting packaging<26.0,>=24.2 (from lerobot==0.6.2)
+  Using cached packaging-25.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting termcolor<4.0.0,>=2.4.0 (from lerobot==0.6.2)
+  Using cached termcolor-3.3.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting tqdm<5.0.0,>=4.66.0 (from lerobot==0.6.2)
+  Using cached tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+Collecting cmake<4.2.0,>=3.29.0.1 (from lerobot==0.6.2)
+  Using cached cmake-4.1.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (6.5 kB)
+Requirement already satisfied: setuptools<82.0.0,>=71.0.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from lerobot==0.6.2) (78.1.0)
+Collecting wandb<0.28.0,>=0.24.0 (from lerobot==0.6.2)
+  Using cached wandb-0.27.2-py3-none-manylinux_2_28_x86_64.whl.metadata (11 kB)
+Collecting num2words<0.6.0,>=0.5.14 (from lerobot==0.6.2)
+  Using cached num2words-0.5.14-py3-none-any.whl.metadata (13 kB)
+Collecting hf-libero<0.2.0,>=0.1.4 (from lerobot==0.6.2)
+  Using cached hf_libero-0.1.4-py3-none-any.whl.metadata (10 kB)
+Collecting mergedeep~=1.3 (from draccus<0.12.0,>=0.11.6->lerobot==0.6.2)
+  Using cached mergedeep-1.3.4-py3-none-any.whl.metadata (4.3 kB)
+Collecting pyyaml~=6.0 (from draccus<0.12.0,>=0.11.6->lerobot==0.6.2)
+  Using cached pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+Collecting toml~=0.10 (from draccus<0.12.0,>=0.11.6->lerobot==0.6.2)
+  Using cached toml-0.10.2-py2.py3-none-any.whl.metadata (7.1 kB)
+Collecting typing-inspect~=0.9.0 (from draccus<0.12.0,>=0.11.6->lerobot==0.6.2)
+  Using cached typing_inspect-0.9.0-py3-none-any.whl.metadata (1.5 kB)
+Collecting cloudpickle>=1.2.0 (from gymnasium<2.0.0,>=1.1.1->lerobot==0.6.2)
+  Using cached cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Requirement already satisfied: typing-extensions>=4.12.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from gymnasium<2.0.0,>=1.1.1->lerobot==0.6.2) (4.16.0)
+Collecting farama-notifications>=0.0.1 (from gymnasium<2.0.0,>=1.1.1->lerobot==0.6.2)
+  Using cached farama_notifications-0.0.6-py3-none-any.whl.metadata (729 bytes)
+Collecting hf-egl-probe>=1.0.1 (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached hf_egl_probe-1.0.2.tar.gz (217 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting hydra-core<1.4,>=1.2 (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached hydra_core-1.3.8-py3-none-any.whl.metadata (5.7 kB)
+Collecting robomimic==0.2.0 (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached robomimic-0.2.0-py3-none-any.whl
+Collecting robosuite==1.4.0 (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached robosuite-1.4.0-py3-none-any.whl.metadata (5.6 kB)
+Collecting bddl==1.0.1 (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached bddl-1.0.1-py3-none-any.whl
+Collecting transformers (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached transformers-5.21.0-py3-none-any.whl.metadata (31 kB)
+Collecting easydict (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached easydict-1.13-py3-none-any.whl.metadata (4.2 kB)
+Collecting thop (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached thop-0.1.1.post2209072238-py3-none-any.whl.metadata (2.7 kB)
+Collecting matplotlib>=3.5.3 (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (80 kB)
+Collecting opencv-python (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached opencv_python-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl.metadata (19 kB)
+Collecting mujoco<3.9.0,>=3.0.0 (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached mujoco-3.8.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (42 kB)
+Collecting future>=0.18.2 (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached future-1.0.0-py3-none-any.whl.metadata (4.0 kB)
+Collecting pytest (from bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached pytest-9.2.0-py3-none-any.whl.metadata (7.9 kB)
+Requirement already satisfied: networkx in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2) (3.7)
+Collecting jupytext (from bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached jupytext-1.19.6-py3-none-any.whl.metadata (15 kB)
+Collecting h5py (from robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached h5py-3.16.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+Collecting psutil (from robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl.metadata (22 kB)
+Collecting tensorboard (from robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached tensorboard-2.21.0-py3-none-any.whl.metadata (1.8 kB)
+Collecting tensorboardX (from robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached tensorboardx-2.6.5-py3-none-any.whl.metadata (6.6 kB)
+Collecting imageio (from robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached imageio-2.38.1-py3-none-any.whl.metadata (9.7 kB)
+Collecting imageio-ffmpeg (from robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached imageio_ffmpeg-0.7.0-py3-none-manylinux2014_x86_64.whl.metadata (1.5 kB)
+Collecting egl_probe>=1.0.1 (from robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached egl_probe-1.0.2.tar.gz (217 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting numba>=0.49.1 (from robosuite==1.4.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached numba-0.68.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (2.8 kB)
+Collecting scipy>=1.2.3 (from robosuite==1.4.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached scipy-1.18.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Collecting anyio (from httpx<1.0.0,>=0.27.0->lerobot==0.6.2)
+  Using cached anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting certifi (from httpx<1.0.0,>=0.27.0->lerobot==0.6.2)
+  Using cached certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+Collecting httpcore==1.* (from httpx<1.0.0,>=0.27.0->lerobot==0.6.2)
+  Using cached httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting idna (from httpx<1.0.0,>=0.27.0->lerobot==0.6.2)
+  Using cached idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0.0,>=0.27.0->lerobot==0.6.2)
+  Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting click<9.0.0,>=8.4.2 (from huggingface-hub<2.0.0,>=1.6.0->lerobot==0.6.2)
+  Using cached click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+Collecting hf-xet<2.0.0,>=1.6.0 (from huggingface-hub<2.0.0,>=1.6.0->lerobot==0.6.2)
+  Using cached hf_xet-1.7.1-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)
+Collecting omegaconf<2.4,>=2.2 (from hydra-core<1.4,>=1.2->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached omegaconf-2.3.1-py3-none-any.whl.metadata (4.5 kB)
+Collecting antlr4-python3-runtime==4.9.* (from hydra-core<1.4,>=1.2->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached antlr4_python3_runtime-4.9.3-py3-none-any.whl
+Collecting absl-py (from mujoco<3.9.0,>=3.0.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached absl_py-2.5.1-py3-none-any.whl.metadata (3.3 kB)
+Collecting etils[epath] (from mujoco<3.9.0,>=3.0.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached etils-1.14.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting glfw (from mujoco<3.9.0,>=3.0.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached glfw-2.11.0-py2.py3-none-manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+Collecting pyopengl (from mujoco<3.9.0,>=3.0.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached pyopengl-3.1.10-py3-none-any.whl.metadata (3.3 kB)
+Collecting docopt>=0.6.2 (from num2words<0.6.0,>=0.5.14->lerobot==0.6.2)
+  Using cached docopt-0.6.2-py2.py3-none-any.whl
+Collecting charset_normalizer<4,>=2 (from requests<3.0.0,>=2.32.0->lerobot==0.6.2)
+  Using cached charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+Collecting urllib3<3,>=1.26 (from requests<3.0.0,>=2.32.0->lerobot==0.6.2)
+  Using cached urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+Requirement already satisfied: sympy>=1.13.3 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch<2.12.0,>=2.7->lerobot==0.6.2) (1.14.0)
+Requirement already satisfied: jinja2 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch<2.12.0,>=2.7->lerobot==0.6.2) (3.1.6)
+Requirement already satisfied: cuda-toolkit==12.8.1 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (12.8.1)
+Requirement already satisfied: cuda-bindings<13,>=12.9.4 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch<2.12.0,>=2.7->lerobot==0.6.2) (12.9.7)
+Requirement already satisfied: nvidia-cudnn-cu12==9.19.0.56 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch<2.12.0,>=2.7->lerobot==0.6.2) (9.19.0.56)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch<2.12.0,>=2.7->lerobot==0.6.2) (0.7.1)
+Requirement already satisfied: nvidia-nccl-cu12==2.28.9 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch<2.12.0,>=2.7->lerobot==0.6.2) (2.28.9)
+Requirement already satisfied: nvidia-nvshmem-cu12==3.4.5 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch<2.12.0,>=2.7->lerobot==0.6.2) (3.4.5)
+Requirement already satisfied: triton==3.6.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from torch<2.12.0,>=2.7->lerobot==0.6.2) (3.6.0)
+Requirement already satisfied: nvidia-cublas-cu12==12.8.4.1.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (12.8.4.1)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (12.8.90)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.3.83.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (11.3.3.83)
+Requirement already satisfied: nvidia-cufile-cu12==1.13.1.3.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (1.13.1.3)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (12.8.90)
+Requirement already satisfied: nvidia-curand-cu12==10.3.9.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (10.3.9.90)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.3.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (11.7.3.90)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.8.93.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (12.5.8.93)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.93.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (12.8.93)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.93.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (12.8.93)
+Requirement already satisfied: nvidia-nvtx-cu12==12.8.90.* in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==12.8.1; platform_system == "Linux"->torch<2.12.0,>=2.7->lerobot==0.6.2) (12.8.90)
+Requirement already satisfied: cuda-pathfinder~=1.1 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from cuda-bindings<13,>=12.9.4->torch<2.12.0,>=2.7->lerobot==0.6.2) (1.6.0)
+Collecting mypy-extensions>=0.3.0 (from typing-inspect~=0.9.0->draccus<0.12.0,>=0.11.6->lerobot==0.6.2)
+  Using cached mypy_extensions-1.1.0-py3-none-any.whl.metadata (1.1 kB)
+Collecting gitpython!=3.1.29,>=1.0.0 (from wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached gitpython-3.2.1-py3-none-any.whl.metadata (13 kB)
+Collecting platformdirs (from wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached platformdirs-4.14.0-py3-none-any.whl.metadata (5.4 kB)
+Collecting protobuf!=5.28.0,!=5.29.0,<8,>4.21.0 (from wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+Collecting pydantic<3,>=2.6 (from wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+Collecting sentry-sdk>=2.0.0 (from wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached sentry_sdk-2.73.0-py3-none-any.whl.metadata (11 kB)
+Collecting annotated-types>=0.6.0 (from pydantic<3,>=2.6->wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.50.1 (from pydantic<3,>=2.6->wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+Collecting typing-inspection>=0.4.4 (from pydantic<3,>=2.6->wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting gitdb<5,>=4.0.1 (from gitpython!=3.1.29,>=1.0.0->wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached gitdb-4.0.12-py3-none-any.whl.metadata (1.2 kB)
+Collecting smmap<6,>=3.0.1 (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb<0.28.0,>=0.24.0->lerobot==0.6.2)
+  Using cached smmap-5.0.3-py3-none-any.whl.metadata (4.6 kB)
+Collecting contourpy>=1.0.1 (from matplotlib>=3.5.3->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (3.8 kB)
+Collecting cycler>=0.10 (from matplotlib>=3.5.3->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+Collecting fonttools>=4.28.2 (from matplotlib>=3.5.3->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached fonttools-4.68.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (139 kB)
+Collecting kiwisolver>=1.3.1 (from matplotlib>=3.5.3->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.2 kB)
+Collecting pyparsing>=3 (from matplotlib>=3.5.3->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+Collecting python-dateutil>=2.7 (from matplotlib>=3.5.3->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached python_dateutil-3.0.0-py2.py3-none-any.whl.metadata (8.2 kB)
+Collecting llvmlite<0.51,>=0.50.0dev0 (from numba>=0.49.1->robosuite==1.4.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached llvmlite-0.50.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.1 kB)
+Collecting six>=1.6 (from python-dateutil>=2.7->matplotlib>=3.5.3->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting tzdata (from python-dateutil>=2.7->matplotlib>=3.5.3->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached tzdata-2026.6-py2.py3-none-any.whl.metadata (1.4 kB)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from sympy>=1.13.3->torch<2.12.0,>=2.7->lerobot==0.6.2) (1.3.0)
+Collecting zipp (from etils[epath]->mujoco<3.9.0,>=3.0.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached zipp-4.1.2-py3-none-any.whl.metadata (3.6 kB)
+Requirement already satisfied: MarkupSafe>=2.0 in /home/student/.conda/envs/lerobot/lib/python3.12/site-packages (from jinja2->torch<2.12.0,>=2.7->lerobot==0.6.2) (3.0.3)
+Collecting markdown-it-py>=1.0 (from jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting mdit-py-plugins (from jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached mdit_py_plugins-0.6.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting nbformat (from jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached nbformat-5.11.1-py3-none-any.whl.metadata (3.7 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=1.0->jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Collecting accelerate<2.0.0,>=1.14.0 (from lerobot==0.6.2)
+  Using cached accelerate-1.15.0-py3-none-any.whl.metadata (19 kB)
+Collecting av<16.0.0,>=15.0.0 (from lerobot==0.6.2)
+  Using cached av-15.1.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (4.6 kB)
+Collecting datasets<5.0.0,>=4.8.0 (from lerobot==0.6.2)
+  Using cached datasets-4.8.5-py3-none-any.whl.metadata (19 kB)
+Collecting pandas<3.0.0,>=2.0.0 (from lerobot==0.6.2)
+  Using cached pandas-2.3.3-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (91 kB)
+Collecting pyarrow<30.0.0,>=21.0.0 (from lerobot==0.6.2)
+  Using cached pyarrow-26.0.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+Collecting torchcodec<0.12.0,>=0.3.0 (from lerobot==0.6.2)
+  Using cached torchcodec-0.11.1-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (11 kB)
+Collecting jsonlines<5.0.0,>=4.0.0 (from lerobot==0.6.2)
+  Using cached jsonlines-4.0.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting dill<0.4.2,>=0.3.0 (from datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached dill-0.4.1-py3-none-any.whl.metadata (10 kB)
+Collecting xxhash (from datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached xxhash-4.0.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (17 kB)
+Collecting multiprocess<0.70.20 (from datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached multiprocess-0.70.19-py312-none-any.whl.metadata (7.5 kB)
+Collecting fsspec<2027.0.0,>=2023.5.0 (from lerobot==0.6.2)
+  Using cached fsspec-2026.2.0-py3-none-any.whl.metadata (10 kB)
+Collecting aiohttp!=4.0.0a0,!=4.0.0a1 (from fsspec[http]<=2026.2.0,>=2023.1.0->datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached aiohttp-3.14.5-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.3 kB)
+Collecting attrs>=19.2.0 (from jsonlines<5.0.0,>=4.0.0->lerobot==0.6.2)
+  Using cached attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Collecting pytz>=2020.1 (from pandas<3.0.0,>=2.0.0->lerobot==0.6.2)
+  Using cached pytz-2026.5-py2.py3-none-any.whl.metadata (22 kB)
+Collecting aiohappyeyeballs>=2.5.0 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2026.2.0,>=2023.1.0->datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached aiohappyeyeballs-2.7.1-py3-none-any.whl.metadata (5.9 kB)
+Collecting aiosignal>=1.4.0 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2026.2.0,>=2023.1.0->datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+Collecting frozenlist>=1.1.1 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2026.2.0,>=2023.1.0->datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached frozenlist-1.8.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+Collecting multidict<8.0,>=4.5 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2026.2.0,>=2023.1.0->datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached multidict-7.2.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (6.1 kB)
+Collecting propcache>=0.2.0 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2026.2.0,>=2023.1.0->datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached propcache-0.5.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (25 kB)
+Collecting yarl<2.0,>=1.25.1 (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2026.2.0,>=2023.1.0->datasets<5.0.0,>=4.8.0->lerobot==0.6.2)
+  Using cached yarl-1.25.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (111 kB)
+Collecting transformers (from hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached transformers-5.5.4-py3-none-any.whl.metadata (32 kB)
+Collecting regex>=2025.10.22 (from transformers->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached regex-2026.9.29-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+Collecting tokenizers<=0.23.0,>=0.22.0 (from transformers->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (7.3 kB)
+Collecting typer (from transformers->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached typer-0.27.3-py3-none-any.whl.metadata (16 kB)
+Collecting fastjsonschema>=2.15 (from nbformat->jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached fastjsonschema-2.22.2-py3-none-any.whl.metadata (2.1 kB)
+Collecting jsonschema>=2.6 (from nbformat->jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting jupyter-core!=5.0.*,>=4.12 (from nbformat->jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached jupyter_core-5.9.1-py3-none-any.whl.metadata (1.5 kB)
+Collecting traitlets>=5.1 (from nbformat->jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached traitlets-5.16.1-py3-none-any.whl.metadata (10 kB)
+Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=2.6->nbformat->jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting referencing>=0.28.4 (from jsonschema>=2.6->nbformat->jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+Collecting rpds-py>=0.25.0 (from jsonschema>=2.6->nbformat->jupytext->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+Collecting iniconfig>=2 (from pytest->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+Collecting pluggy<2,>=1.6 (from pytest->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+Collecting pygments>=2.15 (from pytest->bddl==1.0.1->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting grpcio<2.0,>=1.74.0 (from tensorboard->robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached grpcio-1.85.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.8 kB)
+Collecting markdown>=2.6.8 (from tensorboard->robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached markdown-3.11.2-py3-none-any.whl.metadata (5.1 kB)
+Collecting tensorboard-data-server<0.8.0,>=0.7.0 (from tensorboard->robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached tensorboard_data_server-0.7.2-py3-none-manylinux_2_31_x86_64.whl.metadata (1.1 kB)
+Collecting werkzeug>=1.0.1 (from tensorboard->robomimic==0.2.0->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+Collecting shellingham>=1.3.0 (from typer->transformers->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached shellingham-1.5.4-py2.py3-none-any.whl.metadata (3.5 kB)
+Collecting rich>=13.8.0 (from typer->transformers->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+Collecting annotated-doc>=0.0.2 (from typer->transformers->hf-libero<0.2.0,>=0.1.4->lerobot==0.6.2)
+  Using cached annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+Using cached cmake-4.1.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (29.7 MB)
+Using cached draccus-0.11.6-py3-none-any.whl (85 kB)
+Using cached einops-0.8.2-py3-none-any.whl (65 kB)
+Using cached filelock-3.32.7-py3-none-any.whl (100 kB)
+Using cached gymnasium-1.4.0-py3-none-any.whl (476 kB)
+Using cached hf_libero-0.1.4-py3-none-any.whl (3.2 MB)
+Using cached robosuite-1.4.0-py3-none-any.whl (193.5 MB)
+Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+Using cached httpcore-1.0.9-py3-none-any.whl (78 kB)
+Using cached huggingface_hub-1.33.0-py3-none-any.whl (846 kB)
+Using cached click-8.5.0-py3-none-any.whl (125 kB)
+Using cached hf_xet-1.7.1-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.2 MB)
+Using cached hydra_core-1.3.8-py3-none-any.whl (168 kB)
+Using cached mergedeep-1.3.4-py3-none-any.whl (6.4 kB)
+Using cached mujoco-3.8.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (7.3 MB)
+Using cached num2words-0.5.14-py3-none-any.whl (163 kB)
+Using cached numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.5 MB)
+Using cached omegaconf-2.3.1-py3-none-any.whl (79 kB)
+Using cached opencv_python_headless-4.13.0.92-cp37-abi3-manylinux_2_28_x86_64.whl (60.4 MB)
+Using cached packaging-25.0-py3-none-any.whl (66 kB)
+Using cached pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)
+Using cached pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+Using cached requests-2.34.2-py3-none-any.whl (73 kB)
+Using cached charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+Using cached idna-3.20-py3-none-any.whl (69 kB)
+Using cached safetensors-0.8.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (516 kB)
+Using cached termcolor-3.3.0-py3-none-any.whl (7.7 kB)
+Using cached toml-0.10.2-py2.py3-none-any.whl (16 kB)
+Using cached tqdm-4.70.1-py3-none-any.whl (80 kB)
+Using cached typing_inspect-0.9.0-py3-none-any.whl (8.8 kB)
+Using cached urllib3-2.8.0-py3-none-any.whl (135 kB)
+Using cached wandb-0.27.2-py3-none-manylinux_2_28_x86_64.whl (26.4 MB)
+Using cached protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+Using cached pydantic-2.14.1-py3-none-any.whl (488 kB)
+Using cached pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+Using cached annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Using cached certifi-2026.10.23-py3-none-any.whl (135 kB)
+Using cached cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+Using cached farama_notifications-0.0.6-py3-none-any.whl (2.9 kB)
+Using cached future-1.0.0-py3-none-any.whl (491 kB)
+Using cached gitpython-3.2.1-py3-none-any.whl (231 kB)
+Using cached gitdb-4.0.12-py3-none-any.whl (62 kB)
+Using cached smmap-5.0.3-py3-none-any.whl (24 kB)
+Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+Using cached matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (9.9 MB)
+Using cached contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (383 kB)
+Using cached cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Using cached fonttools-4.68.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.4 MB)
+Using cached kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.5 MB)
+Using cached mypy_extensions-1.1.0-py3-none-any.whl (5.0 kB)
+Using cached numba-0.68.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (3.9 MB)
+Using cached llvmlite-0.50.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (59.7 MB)
+Using cached pyparsing-3.3.3-py3-none-any.whl (126 kB)
+Using cached python_dateutil-3.0.0-py2.py3-none-any.whl (94 kB)
+Using cached scipy-1.18.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+Using cached sentry_sdk-2.73.0-py3-none-any.whl (549 kB)
+Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Using cached typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Using cached absl_py-2.5.1-py3-none-any.whl (137 kB)
+Using cached anyio-4.15.1-py3-none-any.whl (132 kB)
+Using cached easydict-1.13-py3-none-any.whl (6.8 kB)
+Using cached etils-1.14.0-py3-none-any.whl (172 kB)
+Using cached glfw-2.11.0-py2.py3-none-manylinux_2_28_x86_64.whl (248 kB)
+Using cached h5py-3.16.0-cp312-cp312-manylinux_2_28_x86_64.whl (5.4 MB)
+Using cached imageio-2.38.1-py3-none-any.whl (328 kB)
+Using cached imageio_ffmpeg-0.7.0-py3-none-manylinux2014_x86_64.whl (29.5 MB)
+Using cached jupytext-1.19.6-py3-none-any.whl (230 kB)
+Using cached markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+Using cached mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Using cached accelerate-1.15.0-py3-none-any.whl (394 kB)
+Using cached av-15.1.0-cp312-cp312-manylinux_2_28_x86_64.whl (39.9 MB)
+Using cached datasets-4.8.5-py3-none-any.whl (528 kB)
+Using cached dill-0.4.1-py3-none-any.whl (120 kB)
+Using cached fsspec-2026.2.0-py3-none-any.whl (202 kB)
+Using cached jsonlines-4.0.0-py3-none-any.whl (8.7 kB)
+Using cached multiprocess-0.70.19-py312-none-any.whl (150 kB)
+Using cached pandas-2.3.3-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (12.4 MB)
+Using cached pyarrow-26.0.0-cp312-cp312-manylinux_2_28_x86_64.whl (53.9 MB)
+Using cached torchcodec-0.11.1-cp312-cp312-manylinux_2_28_x86_64.whl (2.3 MB)
+Using cached aiohttp-3.14.5-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.9 MB)
+Using cached multidict-7.2.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (516 kB)
+Using cached yarl-1.25.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (117 kB)
+Using cached aiohappyeyeballs-2.7.1-py3-none-any.whl (15 kB)
+Using cached aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+Using cached attrs-26.1.0-py3-none-any.whl (67 kB)
+Using cached frozenlist-1.8.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (242 kB)
+Using cached propcache-0.5.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (250 kB)
+Using cached pytz-2026.5-py2.py3-none-any.whl (506 kB)
+Using cached tzdata-2026.6-py2.py3-none-any.whl (348 kB)
+Using cached transformers-5.5.4-py3-none-any.whl (10.2 MB)
+Using cached tokenizers-0.22.2-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.3 MB)
+Using cached regex-2026.9.29-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+Using cached mdit_py_plugins-0.6.1-py3-none-any.whl (66 kB)
+Using cached nbformat-5.11.1-py3-none-any.whl (79 kB)
+Using cached fastjsonschema-2.22.2-py3-none-any.whl (27 kB)
+Using cached jsonschema-4.26.0-py3-none-any.whl (90 kB)
+Using cached jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+Using cached jupyter_core-5.9.1-py3-none-any.whl (29 kB)
+Using cached platformdirs-4.14.0-py3-none-any.whl (35 kB)
+Using cached referencing-0.37.0-py3-none-any.whl (26 kB)
+Using cached rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (371 kB)
+Using cached traitlets-5.16.1-py3-none-any.whl (86 kB)
+Using cached opencv_python-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl (73.8 MB)
+Using cached psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl (155 kB)
+Using cached pyopengl-3.1.10-py3-none-any.whl (3.2 MB)
+Using cached pytest-9.2.0-py3-none-any.whl (411 kB)
+Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+Using cached pygments-2.21.0-py3-none-any.whl (1.3 MB)
+Using cached tensorboard-2.21.0-py3-none-any.whl (5.5 MB)
+Using cached grpcio-1.85.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (7.4 MB)
+Using cached tensorboard_data_server-0.7.2-py3-none-manylinux_2_31_x86_64.whl (6.6 MB)
+Using cached markdown-3.11.2-py3-none-any.whl (114 kB)
+Using cached werkzeug-3.1.9-py3-none-any.whl (228 kB)
+Using cached tensorboardx-2.6.5-py3-none-any.whl (87 kB)
+Using cached thop-0.1.1.post2209072238-py3-none-any.whl (15 kB)
+Using cached typer-0.27.3-py3-none-any.whl (123 kB)
+Using cached annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+Using cached rich-15.0.0-py3-none-any.whl (310 kB)
+Using cached shellingham-1.5.4-py2.py3-none-any.whl (9.8 kB)
+Using cached xxhash-4.0.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (261 kB)
+Using cached zipp-4.1.2-py3-none-any.whl (10 kB)
+Building wheels for collected packages: lerobot, egl_probe, hf-egl-probe
+  Building editable for lerobot (pyproject.toml): started
+  Building editable for lerobot (pyproject.toml): finished with status 'done'
+  Created wheel for lerobot: filename=lerobot-0.6.2-0.editable-py3-none-any.whl size=15249 sha256=86bbcd92df2067ee6253ce6a25d4207deb6dd7d049e61521ed2e23b91b65ddc6
+  Stored in directory: /tmp/pip-ephem-wheel-cache-qybhzz88/wheels/9e/a9/b1/2b5633d8f909953fbc0ecb29849de1b902ca47681e39b6fdbc
+  Building wheel for egl_probe (pyproject.toml): started
+  Building wheel for egl_probe (pyproject.toml): finished with status 'done'
+  Created wheel for egl_probe: filename=egl_probe-1.0.2-cp312-cp312-linux_x86_64.whl size=479404 sha256=77d7ad85de7730eaea968fe2705ca3138362382ffb43285b948e0f82f5fea07c
+  Stored in directory: /home/student/.cache/pip/wheels/79/79/d5/1ce453931162956944c27cf061410d79095dd2a4ccc71d4d96
+  Building wheel for hf-egl-probe (pyproject.toml): started
+  Building wheel for hf-egl-probe (pyproject.toml): finished with status 'done'
+  Created wheel for hf-egl-probe: filename=hf_egl_probe-1.0.2-cp312-cp312-linux_x86_64.whl size=437255 sha256=64769ec2a6b25439bdc5430330260b4b6dc8046a71698712eb8ab7ca6eac0986
+  Stored in directory: /home/student/.cache/pip/wheels/8f/f4/14/932472309581103542eb61993cdcca7864a0d46c3deff64d9b
+Successfully built lerobot egl_probe hf-egl-probe
+Installing collected packages: pytz, pyopengl, hf-egl-probe, glfw, farama-notifications, egl_probe, easydict, docopt, antlr4-python3-runtime, zipp, xxhash, werkzeug, urllib3, tzdata, typing-inspection, traitlets, tqdm, torchcodec, toml, termcolor, tensorboard-data-server, smmap, six, shellingham, safetensors, rpds-py, regex, pyyaml, pyparsing, pygments, pydantic-core, pyarrow, psutil, protobuf, propcache, pluggy, platformdirs, Pillow, packaging, numpy, num2words, mypy-extensions, multidict, mergedeep, mdurl, markdown, llvmlite, kiwisolver, iniconfig, imageio-ffmpeg, idna, hf-xet, h11, grpcio, future, fsspec, frozenlist, fonttools, filelock, fastjsonschema, etils, einops, dill, cycler, cmake, cloudpickle, click, charset_normalizer, certifi, av, attrs, annotated-types, annotated-doc, aiohappyeyeballs, absl-py, yarl, typing-inspect, tensorboardX, tensorboard, sentry-sdk, scipy, requests, referencing, python-dateutil, pytest, pydantic, opencv-python-headless, opencv-python, omegaconf, numba, multiprocess, markdown-it-py, jupyter-core, jsonlines, imageio, httpcore, h5py, gymnasium, gitdb, contourpy, anyio, aiosignal, rich, pandas, mdit-py-plugins, matplotlib, jsonschema-specifications, hydra-core, httpx, gitpython, draccus, aiohttp, wandb, typer, mujoco, jsonschema, huggingface-hub, tokenizers, thop, robosuite, nbformat, datasets, accelerate, transformers, robomimic, lerobot, jupytext, bddl, hf-libero
+  Attempting uninstall: Pillow
+    Found existing installation: pillow 13.0.0
+    Uninstalling pillow-13.0.0:
+      Successfully uninstalled pillow-13.0.0
+  Attempting uninstall: packaging
+    Found existing installation: packaging 26.3
+    Uninstalling packaging-26.3:
+      Successfully uninstalled packaging-26.3
+  Attempting uninstall: numpy
+    Found existing installation: numpy 2.5.4
+    Uninstalling numpy-2.5.4:
+      Successfully uninstalled numpy-2.5.4
+  Attempting uninstall: fsspec
+    Found existing installation: fsspec 2026.9.0
+    Uninstalling fsspec-2026.9.0:
+      Successfully uninstalled fsspec-2026.9.0
+  Attempting uninstall: filelock
+    Found existing installation: filelock 4.2.4
+    Uninstalling filelock-4.2.4:
+      Successfully uninstalled filelock-4.2.4
+
+Successfully installed Pillow-12.3.0 absl-py-2.5.1 accelerate-1.15.0 aiohappyeyeballs-2.7.1 aiohttp-3.14.5 aiosignal-1.4.0 annotated-doc-0.0.5 annotated-types-0.8.0 antlr4-python3-runtime-4.9.3 anyio-4.15.1 attrs-26.1.0 av-15.1.0 bddl-1.0.1 certifi-2026.10.23 charset_normalizer-3.5.2 click-8.5.0 cloudpickle-3.1.2 cmake-4.1.3 contourpy-1.4.0 cycler-0.12.1 datasets-4.8.5 dill-0.4.1 docopt-0.6.2 draccus-0.11.6 easydict-1.13 egl_probe-1.0.2 einops-0.8.2 etils-1.14.0 farama-notifications-0.0.6 fastjsonschema-2.22.2 filelock-3.32.7 fonttools-4.68.0 frozenlist-1.8.0 fsspec-2026.2.0 future-1.0.0 gitdb-4.0.12 gitpython-3.2.1 glfw-2.11.0 grpcio-1.85.0 gymnasium-1.4.0 h11-0.16.0 h5py-3.16.0 hf-egl-probe-1.0.2 hf-libero-0.1.4 hf-xet-1.7.1 httpcore-1.0.9 httpx-0.28.1 huggingface-hub-1.33.0 hydra-core-1.3.8 idna-3.20 imageio-2.38.1 imageio-ffmpeg-0.7.0 iniconfig-2.3.1 jsonlines-4.0.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 jupyter-core-5.9.1 jupytext-1.19.6 kiwisolver-1.5.1 lerobot-0.6.2 llvmlite-0.50.0 markdown-3.11.2 markdown-it-py-4.2.0 matplotlib-3.11.2 mdit-py-plugins-0.6.1 mdurl-0.1.2 mergedeep-1.3.4 mujoco-3.8.1 multidict-7.2.1 multiprocess-0.70.19 mypy-extensions-1.1.0 nbformat-5.11.1 num2words-0.5.14 numba-0.68.1 numpy-2.2.6 omegaconf-2.3.1 opencv-python-5.0.0.93 opencv-python-headless-4.13.0.92 packaging-25.0 pandas-2.3.3 platformdirs-4.14.0 pluggy-1.7.0 propcache-0.5.4 protobuf-7.36.2 psutil-7.2.2 pyarrow-26.0.0 pydantic-2.14.1 pydantic-core-2.50.1 pygments-2.21.0 pyopengl-3.1.10 pyparsing-3.3.3 pytest-9.2.0 python-dateutil-3.0.0 pytz-2026.5 pyyaml-6.0.3 referencing-0.37.0 regex-2026.9.29 requests-2.34.2 rich-15.0.0 robomimic-0.2.0 robosuite-1.4.0 rpds-py-2026.9.1 safetensors-0.8.0 scipy-1.18.1 sentry-sdk-2.73.0 shellingham-1.5.4 six-1.17.0 smmap-5.0.3 tensorboard-2.21.0 tensorboard-data-server-0.7.2 tensorboardX-2.6.5 termcolor-3.3.0 thop-0.1.1.post2209072238 tokenizers-0.22.2 toml-0.10.2 torchcodec-0.11.1 tqdm-4.70.1 traitlets-5.16.1 transformers-5.5.4 typer-0.27.3 typing-inspect-0.9.0 typing-inspection-0.4.4 tzdata-2026.6 urllib3-2.8.0 wandb-0.27.2 werkzeug-3.1.9 xxhash-4.0.2 yarl-1.25.1 zipp-4.1.2
+[5/7] MUJOCO_GL=egl (persisted inside the conda env)
+To make your changes take effect please reactivate your environment
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['MUJOCO_GL']
+[6/7] recording versions into /home/student/ffi26/results
+[7/7] sanity check
+python: can't open file '/home/student/ffi26/lerobot/check_env.py': [Errno 2] No such file or directory
+check_env.py reported problems. Read the messages above before continuing.

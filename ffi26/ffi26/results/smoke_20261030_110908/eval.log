@@ -1,0 +1,268 @@
+WARNING 2026-10-30 11:09:11 figs/eval.py:69 No job name provided, using 'libero_smolvla' as job name.
+INFO 2026-10-30 11:09:11 bot_eval.py:767 {'env': {'camera_name': 'agentview_image,robot0_eye_in_hand_image',
+         'camera_name_mapping': None,
+         'control_mode': 'relative',
+         'disable_env_checker': True,
+         'episode_length': None,
+         'features': {'action': {'shape': (7,),
+                                 'type': <FeatureType.ACTION: 'ACTION'>},
+                      'pixels/agentview_image': {'shape': (360, 360, 3),
+                                                 'type': <FeatureType.VISUAL: 'VISUAL'>},
+                      'pixels/robot0_eye_in_hand_image': {'shape': (360,
+                                                                    360,
+                                                                    3),
+                                                          'type': <FeatureType.VISUAL: 'VISUAL'>},
+                      'robot_state/eef/mat': {'shape': (3, 3),
+                                              'type': <FeatureType.STATE: 'STATE'>},
+                      'robot_state/eef/pos': {'shape': (3,),
+                                              'type': <FeatureType.STATE: 'STATE'>},
+                      'robot_state/eef/quat': {'shape': (4,),
+                                               'type': <FeatureType.STATE: 'STATE'>},
+                      'robot_state/gripper/qpos': {'shape': (2,),
+                                                   'type': <FeatureType.STATE: 'STATE'>},
+                      'robot_state/gripper/qvel': {'shape': (2,),
+                                                   'type': <FeatureType.STATE: 'STATE'>},
+                      'robot_state/joints/pos': {'shape': (7,),
+                                                 'type': <FeatureType.STATE: 'STATE'>},
+                      'robot_state/joints/vel': {'shape': (7,),
+                                                 'type': <FeatureType.STATE: 'STATE'>}},
+         'features_map': {'action': 'action',
+                          'pixels/agentview_image': 'observation.images.image',
+                          'pixels/robot0_eye_in_hand_image': 'observation.images.image2',
+                          'robot_state/eef/mat': 'observation.state.eef_mat',
+                          'robot_state/eef/pos': 'observation.state.eef_pos',
+                          'robot_state/eef/quat': 'observation.state.eef_quat',
+                          'robot_state/gripper/qpos': 'observation.state.gripper_qpos',
+                          'robot_state/gripper/qvel': 'observation.state.gripper_qvel',
+                          'robot_state/joints/pos': 'observation.state.joint_pos',
+                          'robot_state/joints/vel': 'observation.state.joint_vel'},
+         'fps': 20,
+         'hard_reset': True,
+         'init_states': True,
+         'is_libero_plus': False,
+         'max_parallel_tasks': 1,
+         'obs_type': 'pixels_agent_pos',
+         'observation_height': 360,
+         'observation_width': 360,
+         'render_mode': 'rgb_array',
+         'task': 'libero_spatial',
+         'task_ids': [0]},
+ 'eval': {'batch_size': 5,
+          'n_episodes': 5,
+          'recording': False,
+          'recording_private': False,
+          'recording_repo_id': None,
+          'use_async_envs': True},
+ 'job_name': 'libero_smolvla',
+ 'output_dir': PosixPath('/home/student/ffi26/results/smoke_20261030_110908'),
+ 'policy': {'adapt_to_pi_aloha': False,
+            'add_image_special_tokens': False,
+            'attention_mode': 'cross_attn',
+            'chunk_size': 50,
+            'compile_mode': 'max-autotune',
+            'compile_model': False,
+            'device': 'cuda',
+            'dtype': None,
+            'empty_cameras': 0,
+            'expert_width_multiplier': 0.75,
+            'freeze_vision_encoder': True,
+            'input_features': {'observation.images.camera1': {'shape': (3,
+                                                                        256,
+                                                                        256),
+                                                              'type': <FeatureType.VISUAL: 'VISUAL'>},
+                               'observation.images.camera2': {'shape': (3,
+                                                                        256,
+                                                                        256),
+                                                              'type': <FeatureType.VISUAL: 'VISUAL'>},
+                               'observation.images.camera3': {'shape': (3,
+                                                                        256,
+                                                                        256),
+                                                              'type': <FeatureType.VISUAL: 'VISUAL'>},
+                               'observation.state': {'shape': (6,),
+                                                     'type': <FeatureType.STATE: 'STATE'>}},
+            'license': None,
+            'load_vlm_weights': True,
+            'max_action_dim': 32,
+            'max_period': 4.0,
+            'max_state_dim': 32,
+            'min_period': 0.004,
+            'n_action_steps': 1,
+            'n_obs_steps': 1,
+            'normalization_mapping': {'ACTION': <NormalizationMode.MEAN_STD: 'MEAN_STD'>,
+                                      'STATE': <NormalizationMode.MEAN_STD: 'MEAN_STD'>,
+                                      'VISUAL': <NormalizationMode.IDENTITY: 'IDENTITY'>},
+            'num_expert_layers': 0,
+            'num_steps': 10,
+            'num_vlm_layers': 16,
+            'optimizer_betas': (0.9, 0.95),
+            'optimizer_eps': 1e-08,
+            'optimizer_fused': None,
+            'optimizer_grad_clip_norm': 10.0,
+            'optimizer_lr': 0.0001,
+            'optimizer_weight_decay': 1e-10,
+            'output_features': {'action': {'shape': (6,),
+                                           'type': <FeatureType.ACTION: 'ACTION'>}},
+            'pad_language_to': 'max_length',
+            'prefix_length': 0,
+            'pretrained_path': PosixPath('lerobot/smolvla_base'),
+            'pretrained_revision': None,
+            'private': None,
+            'push_to_hub': True,
+            'repo_id': None,
+            'resize_imgs_with_padding': (512, 512),
+            'rtc_config': None,
+            'scheduler_decay_lr': 2.5e-06,
+            'scheduler_decay_steps': 30000,
+            'scheduler_warmup_steps': 1000,
+            'self_attn_every_n_layers': 2,
+            'tags': None,
+            'tokenizer_max_length': 48,
+            'train_expert_only': True,
+            'train_state_proj': True,
+            'use_amp': False,
+            'use_cache': True,
+            'use_delta_joint_actions_aloha': False,
+            'use_peft': False,
+            'vlm_model_name': 'HuggingFaceTB/SmolVLM2-500M-Video-Instruct'},
+ 'rename_map': {'observation.images.image': 'observation.images.camera1',
+                'observation.images.image2': 'observation.images.camera2'},
+ 'seed': 1000,
+ 'trust_remote_code': False}
+INFO 2026-10-30 11:09:11 bot_eval.py:787 Output dir: /home/student/ffi26/results/smoke_20261030_110908
+INFO 2026-10-30 11:09:11 bot_eval.py:789 Making environment (batch_size=5, async=True).
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING 2026-10-30 11:09:11 e/__init__.py:7 No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING 2026-10-30 11:09:11 e/__init__.py:8 It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING 2026-10-30 11:09:11 e/__init__.py:9 To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+INFO 2026-10-30 11:09:11 tesupport.py:24 No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+INFO 2026-10-30 11:09:12 bot_eval.py:797 Making policy.
+`torch_dtype` is deprecated! Use `dtype` instead!
+Creating LIBERO envs | suites=['libero_spatial'] | n_envs(per task)=5 | init_states=True
+Restricting to task_ids=[0]
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+Built vec env | suite=libero_spatial | task_id=0 | n_envs=5
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7393.76it/s]
+Reducing the number of VLM layers to 16 ...
+Stepping through eval batches:   0%|          | 0/1 [00:00<?, ?it/s][robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+
+Running rollout with at most 280 steps:   0%|          | 0/280 [00:00<?, ?it/s][A/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py:555: UserWarning: [31mERROR: Received the following error from Worker-2 - Shutting it down[0m
+  self._raise_if_errors(successes)
+/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py:555: UserWarning: [31mERROR: Traceback (most recent call last):
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py", line 878, in _async_worker
+    ) = env.step(data)
+        ^^^^^^^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/envs/utils.py", line 229, in step
+    obs, reward, terminated, truncated, info = self.env.step(action)
+                                               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/envs/libero.py", line 374, in step
+    raw_obs, reward, done, info = self._env.step(action)
+                                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/libero/libero/envs/env_wrapper.py", line 88, in step
+    return self.env.step(action)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/libero/libero/envs/bddl_base_domain.py", line 808, in step
+    obs, reward, done, info = super().step(action)
+                              ^^^^^^^^^^^^^^^^^^^^
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/environments/base.py", line 390, in step
+    self._pre_action(action, policy_step)
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/libero/libero/envs/bddl_base_domain.py", line 814, in _pre_action
+    super()._pre_action(action, policy_step=policy_step)
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/environments/robot_env.py", line 575, in _pre_action
+    assert len(action) == self.action_dim, "environment got invalid action dimension -- expected {}, got {}".format(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: environment got invalid action dimension -- expected 7, got 6
+[0m
+  self._raise_if_errors(successes)
+/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py:555: UserWarning: [31mERROR: Received the following error from Worker-0 - Shutting it down[0m
+  self._raise_if_errors(successes)
+/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py:555: UserWarning: [31mERROR: Received the following error from Worker-1 - Shutting it down[0m
+  self._raise_if_errors(successes)
+/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py:555: UserWarning: [31mERROR: Received the following error from Worker-4 - Shutting it down[0m
+  self._raise_if_errors(successes)
+/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py:555: UserWarning: [31mERROR: Received the following error from Worker-3 - Shutting it down[0m
+  self._raise_if_errors(successes)
+/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py:555: UserWarning: [31mERROR: Raising the last exception back to the main process.[0m
+  self._raise_if_errors(successes)
+Stepping through eval batches:   0%|          | 0/1 [00:06<?, ?it/s]
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Traceback (most recent call last):
+  File "/home/student/.conda/envs/lerobot/bin/lerobot-eval", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/scripts/lerobot_eval.py", line 1173, in main
+    eval_main()
+  File "/home/student/ffi26/lerobot/src/lerobot/configs/parser.py", line 438, in wrapper_inner
+    response = fn(cfg, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/scripts/lerobot_eval.py", line 827, in eval_main
+    info = eval_policy_all(
+           ^^^^^^^^^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/scripts/lerobot_eval.py", line 1097, in eval_policy_all
+    tg, tid, metrics = task_runner(task_group, task_id, env)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/scripts/lerobot_eval.py", line 970, in run_one
+    metrics = eval_one(
+              ^^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/scripts/lerobot_eval.py", line 905, in eval_one
+    task_result = eval_policy(
+                  ^^^^^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/scripts/lerobot_eval.py", line 552, in eval_policy
+    rollout_data = rollout(
+                   ^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/scripts/lerobot_eval.py", line 325, in rollout
+    observation, reward, terminated, truncated, info = env.step(action_numpy)
+                                                       ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/student/ffi26/lerobot/src/lerobot/envs/utils.py", line 302, in step
+    return self._env.step(actions)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py", line 480, in step
+    return self.step_wait()
+           ^^^^^^^^^^^^^^^^
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py", line 555, in step_wait
+    self._raise_if_errors(successes)
+  File "/home/student/.conda/envs/lerobot/lib/python3.12/site-packages/gymnasium/vector/async_vector_env.py", line 815, in _raise_if_errors
+    raise exctype(value)
+AssertionError: environment got invalid action dimension -- expected 7, got 6
+
+                                                                               [A
