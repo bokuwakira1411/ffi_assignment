@@ -205,6 +205,33 @@ F_spatial_nas10 82/100.
 Không đưa vào commit: các file kết quả cũ đang bị xoá trong thư mục làm việc (smoke_*, runs/run, demo_spatial_*), `DAY1.md`,
 `train_more.sh`, `readme.md` đã sửa, `docs/DAY1.md`, `docs/study.md`, vì đó là thay đổi không do việc này tạo ra.
 
+### Việc 13: chọn NAS=10 làm cấu hình chính cho Analyse/Improve
+
+Theo yêu cầu "consider the best successful nas case for the analyse/improve work". Ghi quyết định vào
+`docs/failure_overview.md` mục 1, ý 4 (**SỬA REPO**). Không chạy gì. Từ nay Claude không commit; bạn tự kiểm tra và commit.
+Lưu ý: commit `5839ccf` đã được tạo trước khi có yêu cầu này.
+
+### Việc 14: chạy NAS=10 thêm seed 1001, 1002 (libero_10)
+
+Lệnh (bạn đã đồng ý): `TAG=D_nas10 NAS=10 CM=relative N_EP=50 SEEDS="1001 1002" bash run_queue.sh`, log
+`ffi26/ffi26/logs/nas10_seeds_20261031_012247.log`, kết quả trong `ffi26/ffi26/results/runs/D_nas10/` (20 job mới,
+`timing.csv` thêm 20 dòng). Thời gian: 2366 s (seed 1001) + 2392 s (seed 1002).
+
+Kết quả (nguồn `per_task[0].n_success` trong `eval_info.json`):
+
+| Seed | Task 0–9 | Tổng | Wilson 95% |
+|---|---|---|---|
+| 1000 | 16, 44, 48, 49, 36, 45, 27, 36, 26, 41 | 368/500 = 73,6% | 69,6–77,3 |
+| 1001 | 23, 46, 45, 48, 33, 46, 27, 32, 24, 36 | 360/500 = 72,0% | 67,9–75,8 |
+| 1002 | 21, 46, 45, 49, 33, 44, 27, 36, 21, 42 | 364/500 = 72,8% | 68,7–76,5 |
+| Gộp | 60, 136, 138, 146, 102, 135, 81, 104, 71, 119 | 1092/1500 = 72,8% | 70,5–75,0 |
+
+Theo cảnh (500 cảnh x 3 seed): 289 thành công 3/3, 83 là 2/3, 59 là 1/3, 69 thất bại 3/3.
+
+Sửa repo (**SỬA REPO**): `docs/failure_overview.md` (cột 3 seed, ý 5–6 mục 1, mục 5 Giới hạn),
+`docs/failures/notes/D_nas10.md`, sinh lại `docs/failures/D_nas10.md`. Chưa trích khung / gán nhãn cho seed 1001, 1002.
+Không commit.
+
 ---
 
 ## Quy tắc Claude tuân theo từ nay trong repo này

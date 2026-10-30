@@ -1,0 +1,43 @@
+[queue] policy=lerobot/smolvla_libero suite=libero_10 tasks=[0 1 2 3 4 5 6 7 8 9] seeds=[1001 1002] n_ep=50 bs=5 nas=10 cm=relative
+[queue] output -> /home/student/ffi26/results/runs/D_nas10/lerobot_smolvla_libero
+[run ] task 0 seed 1001  (01:22:47)
+[ ok ] 289s
+[run ] task 1 seed 1001  (01:27:36)
+[ ok ] 214s
+[run ] task 2 seed 1001  (01:31:10)
+[ ok ] 183s
+[run ] task 3 seed 1001  (01:34:13)
+[ ok ] 183s
+[run ] task 4 seed 1001  (01:37:16)
+[ ok ] 270s
+[run ] task 5 seed 1001  (01:41:46)
+[ ok ] 168s
+[run ] task 6 seed 1001  (01:44:34)
+[ ok ] 267s
+[run ] task 7 seed 1001  (01:49:01)
+[ ok ] 270s
+[run ] task 8 seed 1001  (01:53:31)
+[ ok ] 269s
+[run ] task 9 seed 1001  (01:58:00)
+[ ok ] 258s
+[run ] task 0 seed 1002  (02:02:18)
+[ ok ] 273s
+[run ] task 1 seed 1002  (02:06:51)
+[ ok ] 225s
+[run ] task 2 seed 1002  (02:10:36)
+[ ok ] 202s
+[run ] task 3 seed 1002  (02:13:58)
+[ ok ] 184s
+[run ] task 4 seed 1002  (02:17:02)
+[ ok ] 284s
+[run ] task 5 seed 1002  (02:21:46)
+[ ok ] 185s
+[run ] task 6 seed 1002  (02:24:51)
+[ ok ] 277s
+[run ] task 7 seed 1002  (02:29:28)
+[ ok ] 256s
+[run ] task 8 seed 1002  (02:33:44)
+[ ok ] 272s
+[run ] task 9 seed 1002  (02:38:16)
+[ ok ] 237s
+[queue] finished D_nas10

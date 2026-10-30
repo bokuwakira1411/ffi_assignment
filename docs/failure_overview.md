@@ -9,7 +9,7 @@ File chi tiết theo từng run (bảng theo task, danh sách từng episode th�
 |---|---|---|
 | B_main | `docs/failures/B_main.md` | NAS=1, relative, 3 seed (1000–1002) x 10 episode/task |
 | D_nas1 | `docs/failures/D_nas1.md` | NAS=1, relative, seed 1000 x 50 episode/task |
-| D_nas10 | `docs/failures/D_nas10.md` | NAS=10, relative, seed 1000 x 50 episode/task (chạy 31/10/2026) |
+| D_nas10 | `docs/failures/D_nas10.md` | NAS=10, relative, seed 1000 x 50 episode/task (chạy 31/10/2026); thêm seed 1001, 1002 (chạy 31/10/2026, chỉ dùng cho tỉ lệ thành công) |
 | D_nas50 | `docs/failures/D_nas50.md` | NAS=50, relative, seed 1000 x 50 episode/task |
 
 NAS = `--policy.n_action_steps`: số action trong một chunk được thực thi trước khi policy quan sát lại. Checkpoint
@@ -21,19 +21,19 @@ bước/episode, `--eval.batch_size=5`.
 Nguồn: `per_task[0].n_success` trong `eval_info.json` của từng job. Khoảng tin cậy: Wilson 95%, cùng công thức với
 `lerobot/src/lerobot/utils/eval_stats.py:45`.
 
-| Task | B_main (/30) | D_nas1 (/50) | **D_nas10 (/50)** | D_nas50 (/50) |
-|---|---|---|---|---|
-| 0 alphabet soup + tomato sauce → giỏ | 1 | 12 | **16** | 12 |
-| 1 cream cheese + butter → giỏ | 16 | 29 | **44** | 21 |
-| 2 bật bếp + đặt ấm moka | 28 | 45 | **48** | 37 |
-| 3 bát vào ngăn kéo + đóng | 30 | 46 | **49** | 40 |
-| 4 cốc trắng → đĩa trái, cốc vàng-trắng → đĩa phải | 7 | 20 | **36** | 17 |
-| 5 sách → ngăn sau | 27 | 43 | **45** | 37 |
-| 6 cốc → đĩa, pudding → bên phải đĩa | 9 | 18 | **27** | 11 |
-| 7 alphabet soup + cream cheese → giỏ | 16 | 23 | **36** | 18 |
-| 8 hai ấm moka → bếp | 1 | 7 | **26** | 19 |
-| 9 cốc → lò vi sóng + đóng | 23 | 30 | **41** | 27 |
-| **Tổng** | **158/300 = 52,7%** (47,0–58,2) | **273/500 = 54,6%** (50,2–58,9) | **368/500 = 73,6%** (69,6–77,3) | **239/500 = 47,8%** (43,5–52,2) |
+| Task | B_main (/30) | D_nas1 (/50) | **D_nas10 (/50)** | D_nas50 (/50) | D_nas10, 3 seed (/150) |
+|---|---|---|---|---|---|
+| 0 alphabet soup + tomato sauce → giỏ | 1 | 12 | **16** | 12 | 60 |
+| 1 cream cheese + butter → giỏ | 16 | 29 | **44** | 21 | 136 |
+| 2 bật bếp + đặt ấm moka | 28 | 45 | **48** | 37 | 138 |
+| 3 bát vào ngăn kéo + đóng | 30 | 46 | **49** | 40 | 146 |
+| 4 cốc trắng → đĩa trái, cốc vàng-trắng → đĩa phải | 7 | 20 | **36** | 17 | 102 |
+| 5 sách → ngăn sau | 27 | 43 | **45** | 37 | 135 |
+| 6 cốc → đĩa, pudding → bên phải đĩa | 9 | 18 | **27** | 11 | 81 |
+| 7 alphabet soup + cream cheese → giỏ | 16 | 23 | **36** | 18 | 104 |
+| 8 hai ấm moka → bếp | 1 | 7 | **26** | 19 | 71 |
+| 9 cốc → lò vi sóng + đóng | 23 | 30 | **41** | 27 | 119 |
+| **Tổng** | **158/300 = 52,7%** (47,0–58,2) | **273/500 = 54,6%** (50,2–58,9) | **368/500 = 73,6%** (69,6–77,3) | **239/500 = 47,8%** (43,5–52,2) | **1092/1500 = 72,8%** (70,5–75,0) |
 
 Nhận xét:
 1. **NAS=10 tốt nhất**, hơn NAS=1 ở cả 10 task, và khoảng tin cậy không chồng với NAS=1. So từng cảnh (cùng task, cùng
@@ -41,9 +41,17 @@ Nhận xét:
    là 71% [CHƯA KIỂM CHỨNG, `differences.md` mục 3]; D_nas10 đạt 73,6%.
 2. B_main và D_nas1 cùng cấu hình (NAS=1), cho 52,7% và 54,6%: hai lần đo nhất quán.
 3. NAS=50 (giá trị trong config của checkpoint) thấp nhất.
-4. **Đề xuất cần bạn quyết định:** dùng NAS=10 làm cấu hình chính cho phần Analyse/Improve thay cho NAS=1. Lưu ý: giá trị
-   10 lấy từ tài liệu LeRobot cho Pi0.5 (`lerobot/docs/source/libero.mdx:205`), không phải khuyến nghị cho SmolVLA, và
-   mới đo với 1 seed.
+4. **Quyết định (31/10/2026, theo yêu cầu của bạn):** phần Analyse/Improve dùng cấu hình NAS tốt nhất đã đo, tức
+   **NAS=10** (relative), thay cho NAS=1. Lưu ý: giá trị 10 lấy từ tài liệu LeRobot cho Pi0.5
+   (`lerobot/docs/source/libero.mdx:205`), không phải khuyến nghị cho SmolVLA. Đã đo lại với 3 seed (ý 5). Kết quả B_main
+   (NAS=1, 3 seed) vẫn giữ làm số tái lập theo cách hiểu paper.
+5. **D_nas10 với 3 seed** (cột cuối): seed 1000 / 1001 / 1002 đạt 368 / 360 / 364 trên 500 (73,6% / 72,0% / 72,8%),
+   gộp 1092/1500 = 72,8% (Wilson 95%: 70,5–75,0). Seed chỉ đổi nhiễu lấy mẫu của policy, không đổi cảnh (episode i luôn
+   dùng init state i, `envs/libero.py:175`), nên đây là độ lặp lại trên cùng 500 cảnh. Các cột khác chỉ có seed 1000,
+   nên so sánh giữa các NAS vẫn dùng cột D_nas10 (/50).
+6. **Độ ổn định theo cảnh** (500 cảnh x 3 seed, nguồn `per_task[0].metrics.successes`): 289 cảnh thành công cả 3 lần,
+   83 cảnh 2/3, 59 cảnh 1/3, 69 cảnh thất bại cả 3 lần. Cảnh thất bại cả 3 lần tập trung ở task 0 (22), task 8 (14),
+   task 6 (12); cảnh có kết quả lẫn lộn (1/3 hoặc 2/3) nhiều nhất ở task 8 (23), task 6 (22), task 7 (18), task 4 (17).
 
 ## 2. Bộ nguyên nhân thất bại chung
 
@@ -75,7 +83,7 @@ Công cụ (trong repo, chạy lại được): `docs/failures/tools/extract_fra
 Chỉ tính các episode thất bại có video. B_main có video cho mọi episode; D_* chỉ có cho episode 0–9 mỗi task.
 
 | Nguyên nhân | B_main (NAS=1) | D_nas1 (NAS=1) | D_nas10 (NAS=10) | D_nas50 (NAS=50) |
-|---|---|---|---|---|
+|---|---|---|---|---|---|
 | F1 gắp hỏng | 8 (6%) | 0 (0%) | 1 (4%) | **16 (33%)** |
 | F2 làm đổ / kẹp sai | 39 (27%) | 13 (30%) | 9 (32%) | 3 (6%) |
 | F3 đứng yên / lơ lửng | **53 (37%)** | **14 (32%)** | 4 (14%) | 15 (31%) |
@@ -158,8 +166,8 @@ dạng hiệu thế (potential-based) để không thay đổi chính sách tố
 
 - D_* chỉ có video cho episode 0–9 mỗi task (`lerobot_eval.py:823`): bảng nguyên nhân của D_nas1, D_nas10, D_nas50 chỉ
   phủ 44/227, 28/132 và 48/261 thất bại.
-- D_nas10 mới đo 1 seed (1000). B_main cho thấy với NAS=1, độ lệch giữa các seed nhỏ (`differences.md` mục 3), nhưng điều
-  này chưa được kiểm tra với NAS=10.
+- D_nas10 có 3 seed cho tỉ lệ thành công (độ lệch giữa các seed: 360–368/500), nhưng bảng nguyên nhân chỉ gán nhãn cho
+  seed 1000; video episode 0–9 của seed 1001, 1002 có sẵn nhưng chưa phân loại. D_nas1, D_nas50 chỉ có 1 seed.
 - Phân loại bằng mắt do Claude làm, không có người thứ hai kiểm tra. Phần lớn nhãn chỉ dựa trên khung điển hình;
   số episode có timeline: B_main 6, D_nas50 22, D_nas1 và D_nas10 0.
 - Chỉ có camera ngoài: không biết vật có nằm trong giỏ / lò vi sóng hay không khi bị che (giai đoạn "?").

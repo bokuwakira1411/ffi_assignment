@@ -1,10 +1,13 @@
-# D_nas10: libero_10, n_action_steps = 10, relative, seed 1000, 50 episode/task
+# D_nas10: libero_10, n_action_steps = 10, relative, seed 1000–1002, 50 episode/task
 
 Chạy ngày 31/10/2026 bằng `TAG=D_nas10 NAS=10 CM=relative N_EP=50 SEEDS=1000 bash run_queue.sh`, giống hệt D_nas1
 và D_nas50 trừ `--policy.n_action_steps=10` (`cmd.txt`). Thời gian thực: 1597 s (tổng `seconds=` trong `status.txt`).
 Lý do chọn 10: `lerobot/docs/source/libero.mdx:205` dùng `n_action_steps=10` cho **Pi0.5** ("matching the original
 OpenPI implementation"); tài liệu không khuyến nghị giá trị này cho SmolVLA, nên đây là một phép thử thêm.
-Chỉ có video cho episode 0–9 mỗi task: 28 trên tổng 132 thất bại. Nhãn chỉ dựa trên khung điển hình.
+Seed 1001, 1002 chạy thêm ngày 31/10/2026 bằng cùng lệnh với `SEEDS="1001 1002"` (2366 s và 2392 s theo `timing.csv`;
+chậm hơn seed 1000, nguyên nhân không xác định). Bảng tỉ lệ thành công bên dưới gộp cả 3 seed. **Phân loại nguyên nhân
+chỉ làm cho seed 1000**: có video cho episode 0–9 mỗi task, 28 trên tổng 132 thất bại; nhãn chỉ dựa trên khung điển hình.
+Video episode 0–9 của seed 1001, 1002 có sẵn nhưng chưa trích khung và chưa gán nhãn.
 
 ## Nhận xét
 
@@ -19,3 +22,7 @@ Chỉ có video cho episode 0–9 mỗi task: 28 trên tổng 132 thất bại. 
    mỗi chunk 10 action vẫn đủ dài để chuyển động mạch lạc, không dừng hay đi lạc như NAS=1.
 4. Phân bố nguyên nhân của 28 thất bại còn lại: F2 làm đổ / kẹp sai tư thế 9, F6 7, F4 5, F3 4. Kiểu "kẹp ấm thứ hai
    nằm ngang" ở task 8 (3 episode) và "cầm pudding cạnh đĩa" ở task 6 (4 episode) vẫn còn.
+5. **Lặp lại với 3 seed**: 368 / 360 / 364 trên 500 (seed 1000 / 1001 / 1002), gộp 1092/1500 = 72,8% (Wilson 95%:
+   70,5–75,0). Theo task (gộp, /150): 60, 136, 138, 146, 102, 135, 81, 104, 71, 119. Seed không đổi cảnh, chỉ đổi nhiễu
+   lấy mẫu. Trên 500 cảnh: 289 thành công 3/3, 83 là 2/3, 59 là 1/3, 69 thất bại 3/3 (nhiều nhất task 0: 22, task 8: 14,
+   task 6: 12). Nguồn: `per_task[0].metrics.successes` trong `eval_info.json`.
