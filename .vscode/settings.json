@@ -1,0 +1,5 @@
+{
+  "claudeCode.environmentVariables": [
+    { "name": "CLAUDE_CONFIG_DIR", "value": "$HOME/Lan_K68AI/claude_lan" }
+  ]
+}

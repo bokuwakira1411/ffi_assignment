@@ -1,0 +1,30 @@
+ conda activate lerobot
+ TAG=B_main NAS=1 CM=relative SEEDS="1000" bash run_queue.sh
+
+# 1. ghim revision của dataset
+python -c "from huggingface_hub import HfApi; print(HfApi().dataset_info('lerobot/libero').sha)"
+
+# 2. nửa đầu (cấu hình, tham số từng khối), nhanh, không tải dataset
+mkdir -p ~/ffi26/logs
+cd ~/Lan_K68AI/temp
+python probe_smolvla.py --skip-data 2>&1 | tee ~/ffi26/logs/probe_part1.log
+
+
+SUITE=libero_spatial TAG=F_spatial NAS=1 CM=relative N_EP=10 SEEDS="1000" bash ~/Lan_K68AI/temp/run_queue.sh
+python ~/Lan_K68AI/temp/collect_results.py --tag F_spatial
+
+cd ~/Lan_K68AI/temp
+SUITE=libero_spatial TAG=F_spatial SEEDS="1001 1002" NAS=1 CM=relative N_EP=10 bash run_queue.sh
+SUITE=libero_spatial TAG=F_spatial_abs SEEDS="1000" NAS=1 CM=absolute N_EP=10 bash run_queue.sh
+SUITE=libero_spatial TAG=F_spatial_nas50 SEEDS="1000" NAS=50 CM=relative N_EP=10 bash run_queue.sh
+
+cd ~/Lan_K68AI/temp && conda activate lerobot
+MODE=PREFLIGHT bash train_more.sh        # 1 phút, kiểm tra các cờ
+MODE=SPEED     bash train_more.sh        # ~15-20 phút, đo giây/step và VRAM với batch 32 và 64
+
+SUITE=libero_spatial TAG=G_spatial_5k NAS=1 CM=relative N_EP=10 SEEDS="1000 1001 1002" \
+  POLICY=<đường dẫn checkpoint>/pretrained_model bash run_queue.sh
+
+
+source ~/Lan_K68AI/claude_env.sh
+(base) student@thanhlt-server:~/Lan_K68AI/temp$ claude
