@@ -1,2 +1,0 @@
-wall_clock_seconds: 41
-episodes: 5  batch_size: 5

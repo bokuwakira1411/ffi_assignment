@@ -1,129 +1,130 @@
-# Kế hoạch FFI26 (bản chỉnh lại)
+# FFI26: Tái lập và phân tích SmolVLA trên LIBERO
 
-Hạn nộp là **08:00 sáng thứ Ba 03/11**, hôm nay là thứ Năm 29/10. Mình khuyên gửi từ tối 02/11 để có dư thời gian.
+Hạn nộp: **08:00 sáng thứ Ba 03/11/2026**. Cập nhật lần cuối: tối thứ Sáu 30/10/2026.
 
-## 1. Quyết định chính
+Bản kế hoạch gốc (viết ngày 29/10) nằm trong lịch sử git (`git show 3d7a55f:readme.md`). File này ghi lại **những gì đã làm**
+và **những gì làm tiếp**. Mọi con số dưới đây lấy từ `differences.md` và `failure_analysis.md`; hai file đó ghi nguồn
+(đường dẫn file kết quả) cho từng số.
 
-| Mục | Chọn |
-|---|---|
-| Model | SmolVLA (flow matching action expert, code trong LeRobot) |
-| Benchmark | LIBERO-10 (long-horizon) |
-| Checkpoint chính | `HuggingFaceVLA/smolvla_libero` (đã fine-tune trên LIBERO) |
-| Checkpoint đối chứng | `lerobot/smolvla_base` (pretrain, chưa fine-tune), chạy ngắn 1–2 giờ |
-| Train lại | **Không**, trừ khi checkpoint hỏng |
+## 1. Tóm tắt tình trạng
 
-Lý do chọn bản fine-tuned sẽ viết **sau khi có kết quả** của bản base (xem Giai đoạn B). Chuỗi nguồn gốc để vẽ vào report: SmolLM2 → SmolVLM2 → smolvla_base → smolvla_libero.
+| Phần | Trạng thái | File chính |
+|---|---|---|
+| Setup (5070 Ti, LeRobot 0.6.2) | **Xong** | `setup_lerobot.sh`, `check_env.py`, `ffi26/ffi26/results/{versions.txt,pip_freeze.txt,environment.yml,env_report.json}` |
+| Reproduce: eval checkpoint chính | **Xong** | `run_queue.sh`, `ffi26/ffi26/results/runs/` |
+| Ablation (n_action_steps, control_mode) | **Xong** | `ffi26/ffi26/results/runs/{D_nas1,D_nas50,F_spatial_nas50,F_spatial_abs}` |
+| Probe pipeline | **Đã chạy** | `probe_smolvla.py`, `ffi26/ffi26/logs/probe_full.log`, `ffi26/ffi26/results/probe_report.json` |
+| Ghi khác biệt so với bản gốc | **Xong** | `differences.md` |
+| Phân tích lỗi từ video | **Xong** (bản để bạn kiểm tra) | `failure_analysis.md` |
+| Study: literature matrix, diffusion vs flow matching | **Chưa làm** | danh sách bài đọc trong `DAY1.md` mục D |
+| Improve | **Chưa chạy** (mới có script) | `train_more.sh` |
+| Report, slide, đóng gói | **Chưa làm** | |
 
-## 2. Phân bổ tài nguyên
+Nhật ký từng lần Claude chạy lệnh trong repo: `WORKLOG.md`.
 
-| Tài nguyên | Dùng cho |
-|---|---|
-| **5070 Ti (lab)** | Toàn bộ eval chính, probe pipeline, RL thu nhỏ |
-| **Kaggle (1 tài khoản)** | Chạy eval phụ (nhiều seed, thu video) khi máy lab bận |
-| **Máy cá nhân** | Đọc paper, viết report và slide |
+## 2. Những gì đã làm
 
-Không dùng nhiều tài khoản Kaggle, vì điều khoản cấm. Kaggle T4 không có bf16 tốt, mỗi session tối đa 12 giờ và phải lưu checkpoint ra Dataset.
+### 2.1 Mô hình và cấu hình
+- Checkpoint chính: `lerobot/smolvla_libero` (commit a24f1f38), chạy trên LeRobot 0.6.2 (commit 72e1d9e5).
+- **Đổi so với kế hoạch gốc:** `HuggingFaceVLA/smolvla_libero` (6721902) bị bỏ vì là model khác; các số chạy bằng nó
+  (smoke 29/10, `demo_tasks`, `demo_spatial`) không được gộp vào kết quả.
+- **Không chạy được bản đối chứng `lerobot/smolvla_base`** trên LIBERO: action 6 chiều, state 6 chiều, 3 camera, trong khi
+  LIBERO cần action 7 chiều, state 8 chiều (lỗi `expected 7, got 6`). Thay bằng số baseline trong paper, ghi rõ là số của họ.
+- Cờ eval bắt buộc: `--rename_map` (image→camera1, image2→camera2), `control_mode=relative`, `n_action_steps` đặt tường minh.
 
-## 3. Setup (5070 Ti, không Docker)
+### 2.2 Kết quả chính (10 episode/task, 3 seed, 3 seed dùng chung 10 init state)
 
-1. Cài `micromamba` hoặc `miniconda` trong thư mục home, tạo env Python 3.10.
-2. Cài **PyTorch bản cu128 trở lên**, vì 5070 Ti là Blackwell (sm_120), bản cũ sẽ lỗi "no kernel image".
-3. Cài LeRobot kèm extras `smolvla` và `libero`. Nếu extras lỗi, cài LIBERO từ repo gốc.
-4. Đặt `MUJOCO_GL=egl` để render headless. Thiếu EGL và không có root thì dùng `osmesa` (chậm hơn nhiều).
-5. Chạy trong `tmux` hoặc `nohup`, log ra file.
-6. Kiểm tra: `nvidia-smi`, `torch.cuda.is_available()`, chạy 1 episode LIBERO ra video.
-7. Lưu `pip freeze`, `environment.yml`, commit hash của LeRobot, và commit hash của từng checkpoint.
+| Run | Suite | Cấu hình | Thành công |
+|---|---|---|---|
+| B_main | libero_10 | NAS=1, relative | **158/300 = 52,7%** (CI 47,0–58,2) |
+| F_spatial | libero_spatial | NAS=1, relative | **237/300 = 79,0%** (CI 74,0–83,2) |
 
-Nếu kẹt setup quá 3 giờ, chuyển sang chạy trên Kaggle.
+Task yếu nhất: libero_10 task 0 và task 8 (1/30 mỗi task), libero_spatial task 5 (0/30).
 
-## 4. Lịch từng ngày
+### 2.3 Ablation (seed 1000, so cặp episode cùng init state, McNemar)
 
-### Thứ Năm 29/10 (tối nay): setup và bắt đầu đọc
-- Hoàn thành setup, chạy thử 1 episode LIBERO.
-- Bắt đầu đọc 8 nguồn RL cho VLA (xem mục 5).
+| Phép thử | Kết quả | p |
+|---|---|---|
+| libero_10, NAS 1 vs 50 (50 ep/task) | 54,6% vs 47,8%; riêng task 8 NAS=50 thắng (19 vs 7) | 0,013 |
+| libero_spatial, NAS 1 vs 50 | 78/100 vs 58/100 | 8,8e-5 |
+| libero_spatial, relative vs absolute | 78/100 vs 2/100 | 2,7e-23 |
 
-### Thứ Sáu 30/10: Reproduce
+Hai lần chạy cùng cấu hình trùng 99/100 episode (gần tất định, không tất định từng bit).
 
-**Giai đoạn A, chạy bản base (1–2 giờ):**
-- Chạy `lerobot/smolvla_base` trên 2–3 task LIBERO-10, vài episode mỗi task.
-- Ghi lại mọi lỗi (shape, tên camera, chiều state/action, normalization).
-- Đánh dấu kết quả thuộc loại nào: không tương thích pipeline, hay chạy được nhưng làm sai.
+### 2.4 Phân tích lỗi (chi tiết trong `failure_analysis.md`)
+- Mọi thất bại đều là **hết giờ**. Thất bại do **cảnh ban đầu** quyết định nhiều hơn seed: 111/142 thất bại libero_10
+  rơi vào 37 cảnh thất bại ở cả 3 seed.
+- libero_10: kiểu phổ biến nhất là **xong bước con thứ nhất rồi không chuyển sang bước thứ hai**, thường đứng yên
+  (91/142 có chuyển động cuối < 0,3).
+- libero_spatial: **mang bát tới đĩa nhưng không đặt được** (14/63). Task 5 thất bại vì bát chồng trên ramekin.
+- NAS=1 hay đứng yên khi thất bại, NAS=50 thì không. Hai "thành công" của absolute là do va chạm.
 
-**Giai đoạn B, chạy bản fine-tuned (phần chính):**
-- Chạy `HuggingFaceVLA/smolvla_libero` trên LIBERO-10, **cùng seed và cùng init state** với bản base.
-- Cấu hình tham khảo: mỗi task 10–50 episode, 1–3 seed, lưu success rate theo task và video. Kiểm tra cờ `n_action_steps` trong docs và issue #2354 của LeRobot rồi ghi rõ giá trị đã dùng.
-- Viết lý do A, B, C chọn bản fine-tuned dựa trên kết quả giai đoạn A.
+## 3. Cấu trúc repo
 
-**Pipeline probe (viết một script):**
-- In shape input (ảnh từ 2 camera, state, câu lệnh), số tham số từng khối, các bước flow matching khi sinh action, và giá trị loss trên vài batch mà không cập nhật trọng số.
+```
+readme.md              # file này
+DAY1.md                # ghi chú setup ngày 1 và danh sách bài đọc
+study.md               # template phần Study (literature matrix, diffusion vs flow matching)
+differences.md         # khác biệt so với bản gốc, kết quả, ablation, nhật ký lỗi
+failure_analysis.md    # phân tích lỗi từ video
+WORKLOG.md             # nhật ký các lệnh Claude đã chạy
+run_steps              # các lệnh đã dùng (ghi tay)
+setup_lerobot.sh, check_env.py, smoke_test.sh
+run_queue.sh, run_D.sh, collect_results.py
+probe_smolvla.py, train_more.sh
+ffi26/ffi26/           # dữ liệu thật (trước 30/10 là symlink tới ~/ffi26; ~/ffi26 giờ là symlink ngược về đây)
+  results/runs/        # B_main, D_nas1, D_nas50, F_spatial, F_spatial_nas50, F_spatial_abs (eval_info.json, video, log)
+  results/smoke_*/     # các lần chạy thử
+  logs/, ckpt_files/
+  lerobot/             # clone upstream, có .git riêng, KHÔNG commit (.gitignore)
+```
 
-### Thứ Bảy 31/10: Analyse và Study
-- Xem video, phân loại lỗi: grasp lỗi, sai thứ tự subgoal, kẹt lặp, sai ngữ nghĩa, rơi vật.
-- Lập bảng success rate theo task. Task thấp nhất là mục tiêu cho phần RL.
-- Viết 3 strengths và 3 limitations, mỗi ý gắn với số liệu hoặc video cụ thể.
+Lưu ý: env conda `lerobot` cài LeRobot dạng editable từ `/home/student/ffi26/lerobot`, nên **không được xoá symlink `~/ffi26`**.
+
+## 4. Chạy lại
+
+```bash
+conda activate lerobot
+cd ~/Lan_K68AI/temp
+TAG=B_main NAS=1 CM=relative SEEDS="1000 1001 1002" bash run_queue.sh
+SUITE=libero_spatial TAG=F_spatial NAS=1 CM=relative N_EP=10 SEEDS="1000 1001 1002" bash run_queue.sh
+python collect_results.py --tag B_main
+```
+
+**Lưu ý:** các CSV tổng hợp hiện có đã cũ, không khớp eval_info.json (xem `differences.md` mục 6). Cần chạy lại
+`collect_results.py` trước khi dùng, hoặc lấy số từ eval_info.json như hai file báo cáo.
+
+## 5. Kế hoạch tiếp theo
+
+### 5.1 Improve
+Kế hoạch gốc (bản 29/10, mục 6): RL thu nhỏ (GRPO/RLOO hoặc PPO kiểu ReinFlow), reward theo subgoal từ predicate BDDL,
+chỉ update action expert, trên 1–2 task yếu nhất. Script đang có là `train_more.sh` (fine-tune tiếp từ checkpoint,
+**chưa chạy lần nào**):
+
+1. `MODE=PREFLIGHT bash train_more.sh`: kiểm tra cờ của `lerobot-train` 0.6.2.
+2. `MODE=SPEED bash train_more.sh`: đo giây/step và VRAM với batch 32 và 64, từ đó chọn số step.
+3. `MODE=RUN`, rồi eval lại bằng `run_queue.sh` (`TAG=G_spatial_5k`, 3 seed), so cặp với F_spatial bằng McNemar.
+
+Đề xuất của Claude dựa trên phân tích lỗi (**chưa được duyệt, bạn quyết định**):
+- Mục tiêu hợp lý cho reward theo subgoal: libero_10 task 0 và 8, nơi robot thường xong bước con thứ nhất rồi dừng.
+  Điều này khớp với giả thuyết gốc ("không biết làm tiếp sau subgoal đầu").
+- Spatial task 5 (0/30) là mục tiêu rõ nhưng có thể là lỗi nhận thức cảnh (bát chồng trên ramekin), nên fine-tune thêm
+  chưa chắc sửa được.
+- Khi đánh giá, kiểm tra cả "quên" trên các task khác, và báo theo init state vì seed không đổi cảnh.
+- `train_more.sh` mặc định ghi checkpoint vào `~/ffi26/train`, giờ nằm **trong repo**. Cần thêm `ffi26/ffi26/train/`
+  vào `.gitignore` trước khi chạy, nếu không checkpoint sẽ lọt vào git.
+
+### 5.2 Study
+- Literature matrix ≥ 5 nguồn: 4 bài đã kiểm chứng (SimpleVLA-RL, ReinFlow, πRL, π\*0.6), cần kiểm chứng thêm ít nhất 1
+  bài trong VLA-RL, RL4VLA, RIPT-VLA, ConRFT (`DAY1.md` mục D, E).
 - Viết phần diffusion vs flow matching.
 
-### Chủ Nhật 01/11: Improve
-- Triển khai bản RL thu nhỏ trên 1–2 task yếu nhất (xem mục 6).
-- Nếu RL không kịp có kết quả thì vẫn nộp như evaluation plan đầy đủ, kèm log chạy thử.
+### 5.3 Việc còn treo trong phần Reproduce/Analyse
+- Các trường recipe chỉ có trong `train_config.json` (chưa có bản lưu trên máy) đang đánh dấu [CHƯA KIỂM CHỨNG]
+  trong `differences.md`.
+- Một số nhóm lỗi trong `failure_analysis.md` chỉ dựa trên khung cuối; có thể kiểm chứng thêm bằng dòng thời gian.
+- Viết 3 strengths và 3 limitations, mỗi ý gắn với số liệu hoặc video.
 
-### Thứ Hai 02/11: đóng gói
-- Sáng: hoàn thiện report và literature matrix.
-- Chiều: làm slide, dọn code, viết README.
-- Tối: đóng zip, chạy thử theo README, gửi email.
-
-## 5. Phần Study
-
-**Literature matrix** (ít nhất 5 nguồn, nên làm 7–8). Các nguồn mình đề xuất, bạn cần tự kiểm tra tiêu đề và liên kết trên arXiv:
-- SimpleVLA-RL, VLA-RL, RL4VLA, RIPT-VLA, ReinFlow, πRL, π*0.6 (RECAP), ConRFT.
-
-**Các cột:** learning objective, thuật toán, reward signal, môi trường, phần model được update, giả định, câu hỏi còn mở.
-
-**Diffusion vs flow matching:**
-- Kiến trúc: VLM backbone cộng action expert, attention giữa prefix (ảnh, ngôn ngữ, state) và action tokens.
-- Diffusion: dự đoán nhiễu hoặc score, nhiều bước khử nhiễu.
-- Flow matching: học vector field theo đường thẳng nối nhiễu và action, inference khoảng 10 bước Euler.
-- Hệ quả cho RL: flow là tất định nên cần chèn nhiễu để có log-likelihood, đây là ý tưởng của ReinFlow và πRL.
-
-## 6. Phần Improve
-
-| Thành phần | Đề xuất |
-|---|---|
-| Limitation mục tiêu | Chỉ học bằng imitation nên không biết phục hồi sau lỗi ở subgoal đầu |
-| Hypothesis | RL với reward theo subgoal giúp học hành vi phục hồi mà demo không có |
-| Thuật toán | GRPO hoặc RLOO (không cần critic), hoặc PPO kiểu ReinFlow |
-| Reward | Sparse (cả task) cộng reward từng subgoal từ predicate BDDL của LIBERO |
-| Môi trường | LIBERO-10, 1–2 task yếu nhất |
-| Phần update | Chỉ action expert (có thể thêm LoRA), đóng băng VLM |
-| Đánh giá | So trước và sau RL trên task đó và trên task khác (kiểm tra quên), ít nhất 3 seed, kèm khoảng tin cậy |
-
-Nút thắt thường là tốc độ rollout mô phỏng, nên giới hạn quy mô ngay từ đầu.
-
-## 7. Cấu trúc file nộp (`[FFI26] Ngoc_Lan.zip`)
-
-```
-report.pdf              # 4–6 trang
-literature_matrix.xlsx
-slides.pptx             # 8–10 slide
-code/                   # eval, probe pipeline, phân tích lỗi, RL
-setup/README.md + environment.yml
-results/                # bảng, biểu đồ, video thành công và thất bại
-```
-
-## 8. Điểm cần xác minh trước khi viết vào report
-
-- Checkpoint `smolvla_libero` được train trên suite nào, bao nhiêu step (xem `train_config.json` trong tab Files).
-- Số chiều action/state, chunk size, số bước Euler, số token ảnh: lấy từ chạy thật, không dùng số từ trí nhớ.
-- Cờ lệnh của `lerobot-eval` và `lerobot-train` (thay đổi nhanh giữa các phiên bản).
-
-## 9. Rủi ro
-
-| Rủi ro | Cách xử lý |
-|---|---|
-| Setup LIBERO hoặc EGL lỗi | Kẹt quá 3 giờ thì chuyển sang Kaggle |
-| Checkpoint fine-tuned không chạy | Fine-tune rút gọn trên LIBERO-10 (LoRA, 20–30k step), ghi rõ khác biệt |
-| Bản base chạy bất ngờ tốt | Báo cáo đúng kết quả, điều chỉnh lý do chọn bản fine-tuned |
-| RL không cải thiện | Vẫn nộp, trình bày trung thực kèm phân tích nguyên nhân |
-| Thiếu thời gian | Cắt RL còn evaluation plan, giữ nguyên baseline và phân tích lỗi |
-
-Bạn muốn bắt đầu bằng script setup cho 5070 Ti hay script eval hai checkpoint?
+### 5.4 Đóng gói (thứ Hai 02/11)
+Report 4–6 trang, `literature_matrix.xlsx`, slide 8–10 trang, `code/`, `setup/README.md` + `environment.yml`,
+`results/` (bảng, biểu đồ, video thành công và thất bại), nén thành `[FFI26] Ngoc_Lan.zip`. Gửi từ tối 02/11.

@@ -1,3 +1,0 @@
-repo: lerobot/smolvla_libero
-commit_sha: a24f1f380461b665158d52acd140152c79e8b36d
-last_modified: 2026-10-12 14:03:28+00:00

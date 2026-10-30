@@ -201,6 +201,10 @@ phải B_main, nên đã sửa. Ước lượng thời gian: D_nas10 dự kiến
 Kết quả chính: D_nas10 368/500 = 73,6% (Wilson 69,6–77,3), so với D_nas1 54,6% và D_nas50 47,8%; tốt hơn NAS=1 ở cả 10 task.
 F_spatial_nas10 82/100.
 
+Đã commit `5839ccf` (590 file, chỉ các file của việc này và cặp chuyển `WORKLOG.md` → `docs/WORKLOG.md`). Chưa push.
+Không đưa vào commit: các file kết quả cũ đang bị xoá trong thư mục làm việc (smoke_*, runs/run, demo_spatial_*), `DAY1.md`,
+`train_more.sh`, `readme.md` đã sửa, `docs/DAY1.md`, `docs/study.md`, vì đó là thay đổi không do việc này tạo ra.
+
 ---
 
 ## Quy tắc Claude tuân theo từ nay trong repo này
@@ -209,3 +213,4 @@ F_spatial_nas10 82/100.
 2. Sau khi chạy: ghi thêm một mục vào file này, gồm các lệnh, lý do, tác động (chỉ đọc / scratch / SỬA REPO) và kết quả.
 3. Không sửa kết quả trong `~/ffi26` và không chạy các script của repo (`run_queue.sh`, `train_more.sh`, `collect_results.py`, ...) khi chưa được bạn cho phép rõ ràng.
 4. Chat với bạn bằng tiếng Anh; mọi file báo cáo (md trong repo) viết bằng tiếng Việt.
+
