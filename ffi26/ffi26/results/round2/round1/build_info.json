@@ -1,0 +1,26 @@
+{
+ "round": 1,
+ "train_episodes": 579,
+ "train_frames": 194892,
+ "demo_frames": 97521,
+ "rollout_frames": 97371,
+ "demo_frame_share": 0.5003848285204113,
+ "rollout_pos_share_weighted_before": 0.42147339244697096,
+ "rebalance": "none",
+ "awr_beta": 0.31258066232625015,
+ "demo_pos_episodes": [
+  57,
+  67,
+  86,
+  132,
+  137,
+  149,
+  179,
+  181,
+  270,
+  283,
+  350,
+  376
+ ],
+ "seed": 1000
+}

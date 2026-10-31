@@ -2,3 +2,15 @@
 ffi26/ffi26/lerobot/
 # Cache HuggingFace
 ffi26/ffi26/ckpt_files/.cache/
+
+# Dữ liệu Improve (dataset tải về + rollout, ~4.3 GB) — tạo lại được bằng scripts
+ffi26/ffi26/improve/data/
+# File dữ liệu lớn / checkpoint
+*.parquet
+*.safetensors
+*.npz
+# Python cache
+__pycache__/
+*.pyc
+# Output thô của Improve (log từng episode, video, checkpoint) — bảng tổng hợp đã nằm trong results/round2/
+ffi26/ffi26/improve/outputs/

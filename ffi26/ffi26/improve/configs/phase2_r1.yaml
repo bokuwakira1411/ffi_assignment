@@ -1,0 +1,31 @@
+# Phase 2 (A.1) round 1 rollout collection. Budget: 2 tasks x 4 groups x G=8 = 64 rollouts.
+policy: lerobot/smolvla_libero
+n_action_steps: 10
+seed: 20000                 # env seed of rollout j in group g = seed + 1000*g + j
+group_size: 8               # = batch size (one batch per group)
+noise_scale: 1.0            # SmolVLA flow-matching noise scale (1.0 = unchanged policy)
+reward: {lam: 0.5, c: 0.001, grasp_bonus: 0.1, wrong_obj_cost: 0.0, stall_cost: 0.0, stall_k: 50}
+adv_threshold: 0.0          # A_i > threshold -> "Advantage: positive"
+min_return_spread: 1.0e-6   # dynamic rejection: drop a group whose returns are all equal
+phase1_logged_dir: ~/ffi26/improve/outputs/baseline/logged
+failure_offset: 0           # reset-to-failure: start at the first step a new goal predicate is True
+tasks:
+  # init ids: init states with mixed success over the 3 baseline seeds
+  # (outputs/baseline/mixed_groups_from_baseline.csv)
+  - task_id: 0
+    init_ids: [1, 4, 6, 7]  # first 4 mixed; failures happen before subtask 1 -> start from init state
+    reset_to_failure: false
+  - task_id: 8
+    init_ids: [6, 7, 9, 14] # mixed AND first pot placed in Phase 1 episode at step < 200 (13 skipped: step 399)
+    reset_to_failure: true
+output_dir: ~/ffi26/improve/outputs/phase2_r1
+dataset_dir: ~/ffi26/improve/data/rollouts_r1
+dataset_repo_id: local/ffi26_rollouts_r1
+build:
+  demo_root: ~/ffi26/improve/data/lerobot_libero
+  demos_out: ~/ffi26/improve/data/demos_targets
+  merged_out: ~/ffi26/improve/data/a1_r1_train
+  merged_repo_id: local/ffi26_a1_r1_train
+  target_task_texts:
+    - put both the alphabet soup and the tomato sauce in the basket
+    - put both moka pots on the stove

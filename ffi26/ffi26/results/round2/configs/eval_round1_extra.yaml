@@ -1,0 +1,11 @@
+# Round-1 A1 checkpoint, no suffix, on the other 8 tasks (20 ep): separates forgetting from the effect of the suffix.
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+output_dir: ~/ffi26/improve/outputs/r2/eval
+models:
+  - name: a1_r1_none
+    path: ~/ffi26/improve/outputs/r2/train_a1_round1/checkpoints/002000/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}

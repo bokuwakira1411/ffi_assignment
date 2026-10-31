@@ -1,0 +1,22 @@
+# Round-1 A1 checkpoint: 3 prompts on trained tasks (50 ep, all init states), positive prompt on the other 8 tasks (20 ep).
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+output_dir: ~/ffi26/improve/outputs/r2/eval
+models:
+  - name: a1_r1_pos
+    path: ~/ffi26/improve/outputs/r2/train_a1_round1/checkpoints/002000/pretrained_model
+    task_suffix: " Advantage: positive"
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}
+  - name: a1_r1_none
+    path: ~/ffi26/improve/outputs/r2/train_a1_round1/checkpoints/002000/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+  - name: a1_r1_neg
+    path: ~/ffi26/improve/outputs/r2/train_a1_round1/checkpoints/002000/pretrained_model
+    task_suffix: " Advantage: negative"
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}

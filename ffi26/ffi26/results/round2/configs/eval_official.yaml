@@ -1,0 +1,13 @@
+# Official checkpoint on the 8 non-trained libero_10 tasks (forgetting reference, cheaper eval: 20 ep/task).
+# Trained tasks 0, 8 (50 ep) are already in ~/ffi26/improve/outputs/eval_baseline (same script/seeds).
+# Episode k: init state k, env seed 1000+k; torch RNG reset with set_seed(1000) per (model, task).
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+output_dir: ~/ffi26/improve/outputs/r2/eval
+models:
+  - name: official
+    path: lerobot/smolvla_libero
+    task_suffix: ""
+    jobs:
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}

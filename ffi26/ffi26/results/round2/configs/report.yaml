@@ -1,0 +1,33 @@
+# scripts/r2_report.py — add a model entry per evaluated checkpoint / prompt.
+trained_tasks: [0, 8]
+other_tasks: [1, 2, 3, 4, 5, 6, 7, 9]
+heldout_from: ~/ffi26/results/round2/configs/round1.yaml   # held-out = init states not in its init_ids
+reference: official
+out_dir: ~/ffi26/results/round2
+gap_pairs: [[a1_r1_pos, a1_r1_neg], [a1emb_r1_pos, a1emb_r1_neg]]
+models:
+  - name: official
+    label: checkpoint chính thức (lerobot/smolvla_libero)
+    dirs: {0: ~/ffi26/improve/outputs/eval_baseline/task0, 8: ~/ffi26/improve/outputs/eval_baseline/task8}
+    root: ~/ffi26/improve/outputs/r2/eval/official
+  - name: a1_r1_pos
+    label: A1 round 1, prompt positive
+    root: ~/ffi26/improve/outputs/r2/eval/a1_r1_pos
+  - name: a1_r1_none
+    label: A1 round 1, không hậu tố
+    root: ~/ffi26/improve/outputs/r2/eval/a1_r1_none
+  - name: a1_r1_neg
+    label: A1 round 1, prompt negative
+    root: ~/ffi26/improve/outputs/r2/eval/a1_r1_neg
+  - name: a1emb_r1_pos
+    label: A1-emb round 1, nhãn positive
+    root: ~/ffi26/improve/outputs/r2/eval/a1emb_r1_pos
+  - name: a1emb_r1_none
+    label: A1-emb round 1, nhãn none
+    root: ~/ffi26/improve/outputs/r2/eval/a1emb_r1_none
+  - name: a1emb_r1_neg
+    label: A1-emb round 1, nhãn negative
+    root: ~/ffi26/improve/outputs/r2/eval/a1emb_r1_neg
+  - name: awr_r1
+    label: A2 AWR round 1 (không nhãn)
+    root: ~/ffi26/improve/outputs/r2/eval/awr_r1

@@ -1,0 +1,9 @@
+# Phase 1 logged baseline run (small-scale budget: 20 episodes x 2 target tasks)
+policy: lerobot/smolvla_libero
+n_action_steps: 10          # main config (NAS=10), see docs/failure_overview.md
+tasks: [0, 8]               # proposed targets; baseline NAS=10 seed 1000: 16/50, 26/50
+n_episodes: 20              # episode k -> init state k, env seed = seed + k
+seed: 1000
+batch_size: 8
+save_video: true
+output_dir: ~/ffi26/improve/outputs/baseline/logged

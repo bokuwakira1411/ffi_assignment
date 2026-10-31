@@ -1,0 +1,17 @@
+{
+ "reward_config": {
+  "lam": 0.5,
+  "gamma": 0.998,
+  "success_bonus": 1.0,
+  "costs": {
+   "drop": 0.2,
+   "slip": 0.1,
+   "collision": 0.1,
+   "timeout": 0.2
+  }
+ },
+ "dirs": [
+  "outputs/baseline/logged",
+  "outputs/eval_baseline"
+ ]
+}

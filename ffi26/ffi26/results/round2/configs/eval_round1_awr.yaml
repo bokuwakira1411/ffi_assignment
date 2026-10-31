@@ -1,0 +1,12 @@
+# Round-1 data, AWR ablation (advantage-weighted BC, no label): trained tasks 50 ep, other 8 tasks 20 ep.
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+output_dir: ~/ffi26/improve/outputs/r2/eval
+models:
+  - name: awr_r1
+    path: ~/ffi26/improve/outputs/r2/train_awr_round1/checkpoints/002000/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}

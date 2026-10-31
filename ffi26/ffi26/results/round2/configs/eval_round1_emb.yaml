@@ -1,0 +1,23 @@
+# Round-1 data, label-EMBEDDING variant (a1emb): 3 labels on trained tasks (50 ep), positive on the other 8 tasks (20 ep).
+# The prompt text is unchanged (no suffix); the label goes to src/adv_embed.py.
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+output_dir: ~/ffi26/improve/outputs/r2/eval
+models:
+  - name: a1emb_r1_pos
+    path: /home/student/ffi26/improve/outputs/r2/train_a1emb_round1/checkpoints/002000/pretrained_model
+    adv_label: positive
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}
+  - name: a1emb_r1_none
+    path: /home/student/ffi26/improve/outputs/r2/train_a1emb_round1/checkpoints/002000/pretrained_model
+    adv_label: none
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+  - name: a1emb_r1_neg
+    path: /home/student/ffi26/improve/outputs/r2/train_a1emb_round1/checkpoints/002000/pretrained_model
+    adv_label: negative
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
