@@ -59,7 +59,7 @@ Mỗi segment được so với các rollout khác trong nhóm tại cùng mốc
 | Round 2, 3 | chờ | — |
 | Ablation AWR (dữ liệu round 1) | ✅ không đổi | bảng dưới |
 | AWR đầy đủ 6000 bước (≈1 epoch, dữ liệu round 1) | ✅ không đổi | bảng dưới |
-| FPO 4 vòng (on-policy, PPO-clip, `fpo_plan.md`) | ✅ vòng 2–3 tốt hơn; vòng 4 sụt | bảng dưới |
+| FPO 4 vòng (on-policy, PPO-clip, `fpo_plan.md`) | ✅ vòng 2–3 tốt hơn ở seed eval 1000 nhưng **không lặp lại ở seed 2000**; vòng 4 sụt | bảng dưới |
 
 Round 1 (nguồn `summary.md`):
 
@@ -82,7 +82,8 @@ Round 1 (nguồn `summary.md`):
 | **FPO** (thu rollout mới mỗi vòng) | | | |
 | sau vòng 1 | 49/100 | 31/68 | — |
 | sau vòng 2 | **56/100** (McNemar p 0.01) | 37/68 | — |
-| sau vòng 3 | **57/100** (McNemar p 0.01) | **39/68** | — |
+| sau vòng 3 | **57/100** (McNemar p 0.01) | **39/68** | 122/160 |
+| sau vòng 3, **seed eval 2000** (chính thức cùng seed: 45/100, 29/68) | 46/100 (cặp 18/17, p 1.00) | 31/68 | — |
 | sau vòng 4 | 40/100 | 29/68 | 114/160 |
 
 → Cả hai cách: positive − negative = −6 điểm % (McNemar p 0.29) — không phát hiện được khác biệt; không nhãn ≈ chính thức (không quên). AWR ≈ chính thức (43 vs 44; 13 / 14 cặp, McNemar p 1.00). AWR 6000 bước: không checkpoint nào khác chính thức (McNemar p 0.68 / 0.70 / 0.68); loss train phẳng từ bước ~3000 (trung bình 1000 bước: 0.187 → 0.134 → 0.122 → 0.119 → 0.119 → 0.117, `round1/loss_awr6k.csv`).
@@ -110,3 +111,8 @@ Eval (task 0 + 8, cùng init/seed với chính thức): vòng 2 và 3 tốt hơn
 held-out vòng 3: 39/68 so với 30/68. Vòng 4 sụt mạnh so với vòng 3 (cặp 1/18, p < 0.001) và 8 task khác 114/160 so với 126/160.
 Lưu ý: chọn vòng tốt nhất trên cùng tập eval → lạc quan; 4 so sánh với chính thức (Bonferroni: 0.01 × 4 = 0.04).
 Mỗi vòng chỉ cập nhật 100 / 69 / 50 / 43 bước rồi dừng sớm (clip_frac > 0.2).
+
+**Xác nhận θ3 (21:22, `seed2000/summary.md`):** với seed eval mới 2000 (không dùng để chọn), θ3 46/100 so với chính thức 45/100
+(cặp 18/17, p 1.00); held-out 31/68 so với 29/68. Gộp 2 seed: 103/200 so với 89/200 (cặp 37/23, p 0.09).
+8 task khác (seed 1000): θ3 122/160 so với 126/160 (cặp 13/17). → **Không xác nhận được cải thiện**; kết quả seed 1000
+có thể do chọn checkpoint trên cùng tập eval + nhiễu (cùng θ3, task 0 đạt 29/50 ở seed 1000 nhưng 19/50 ở seed 2000).

@@ -1,0 +1,14 @@
+# Report for the seed-2000 confirmation eval (eval_seed2000.yaml).
+trained_tasks: [0, 8]
+other_tasks: []
+heldout_from: ~/ffi26/results/round2/configs/round1.yaml
+reference: official
+out_dir: ~/ffi26/results/round2/seed2000
+gap_pairs: []
+models:
+  - name: official
+    label: checkpoint chính thức, seed eval 2000
+    root: ~/ffi26/improve/outputs/r2/eval_s2000/official
+  - name: fpo_it3
+    label: FPO sau vòng 3, seed eval 2000
+    root: ~/ffi26/improve/outputs/r2/eval_s2000/fpo_it3
