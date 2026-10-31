@@ -59,6 +59,7 @@ Mỗi segment được so với các rollout khác trong nhóm tại cùng mốc
 | Round 2, 3 | chờ | — |
 | Ablation AWR (dữ liệu round 1) | ✅ không đổi | bảng dưới |
 | AWR đầy đủ 6000 bước (≈1 epoch, dữ liệu round 1) | ✅ không đổi | bảng dưới |
+| FPO 4 vòng (on-policy, PPO-clip, `fpo_plan.md`) | ✅ vòng 2–3 tốt hơn; vòng 4 sụt | bảng dưới |
 
 Round 1 (nguồn `summary.md`):
 
@@ -78,6 +79,11 @@ Round 1 (nguồn `summary.md`):
 | checkpoint 2000 | 47/100 | 32/68 | 121/160 |
 | checkpoint 4000 | 41/100 | 27/68 | 123/160 |
 | checkpoint 6000 | 41/100 | 29/68 | 126/160 |
+| **FPO** (thu rollout mới mỗi vòng) | | | |
+| sau vòng 1 | 49/100 | 31/68 | — |
+| sau vòng 2 | **56/100** (McNemar p 0.01) | 37/68 | — |
+| sau vòng 3 | **57/100** (McNemar p 0.01) | **39/68** | — |
+| sau vòng 4 | 40/100 | 29/68 | 114/160 |
 
 → Cả hai cách: positive − negative = −6 điểm % (McNemar p 0.29) — không phát hiện được khác biệt; không nhãn ≈ chính thức (không quên). AWR ≈ chính thức (43 vs 44; 13 / 14 cặp, McNemar p 1.00). AWR 6000 bước: không checkpoint nào khác chính thức (McNemar p 0.68 / 0.70 / 0.68); loss train phẳng từ bước ~3000 (trung bình 1000 bước: 0.187 → 0.134 → 0.122 → 0.119 → 0.119 → 0.117, `round1/loss_awr6k.csv`).
 Nhãn không bị đảo: frame positive chủ yếu từ rollout thành công (23 207 so với 9 638), negative gần như toàn từ rollout thất bại (43 369 so với 1 715) — `round1/segments.csv`.
@@ -94,3 +100,13 @@ Nhãn không bị đảo: frame positive chủ yếu từ rollout thành công (
 | `~/ffi26/improve/src/adv_embed.py` | embedding nhãn |
 | `~/ffi26/improve/scripts/r2_*.py`, `train_r2.py` | thu · build · train · report |
 | `~/ffi26/improve/improve_2026-10-31.md` | nhật ký chi tiết |
+
+## FPO (chi tiết: `fpo_plan.md`, nhật ký `~/ffi26/improve/improve_2026-10-31.md`)
+
+Tỉ lệ thành công khi thu rollout on-policy (256 rollout / vòng, 32 init train, seed khác nhau mỗi vòng; `improve/outputs/fpo/iter*/collect_info.json`):
+96 → 124 → 131 → 133 / 256 (θ0 = chính thức … θ3).
+
+Eval (task 0 + 8, cùng init/seed với chính thức): vòng 2 và 3 tốt hơn chính thức (56 và 57 / 100 so với 44; cặp 16/4 và 19/6, p 0.01);
+held-out vòng 3: 39/68 so với 30/68. Vòng 4 sụt mạnh so với vòng 3 (cặp 1/18, p < 0.001) và 8 task khác 114/160 so với 126/160.
+Lưu ý: chọn vòng tốt nhất trên cùng tập eval → lạc quan; 4 so sánh với chính thức (Bonferroni: 0.01 × 4 = 0.04).
+Mỗi vòng chỉ cập nhật 100 / 69 / 50 / 43 bước rồi dừng sớm (clip_frac > 0.2).

@@ -1,0 +1,13 @@
+# Forgetting check for FPO iteration 3 (theta_3 = outputs/fpo/iter2/train): other 8 tasks x 20 ep, seed 1000
+# (pairs with the official checkpoint's other-task episodes). Tasks 0, 8 already exist -> skipped.
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+output_dir: ~/ffi26/improve/outputs/r2/eval
+models:
+  - name: fpo_it3
+    path: /home/student/ffi26/improve/outputs/fpo/iter2/train/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}

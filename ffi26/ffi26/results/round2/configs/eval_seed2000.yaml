@@ -1,0 +1,17 @@
+# Confirmation with a fresh eval seed (2000): official vs FPO iteration 3 on tasks 0, 8 x 50 ep.
+# fpo_it3 was selected on the seed-1000 eval; this run is not used for selection.
+seed: 2000
+n_action_steps: 10
+batch_size: 8
+output_dir: ~/ffi26/improve/outputs/r2/eval_s2000
+models:
+  - name: official
+    path: lerobot/smolvla_libero
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+  - name: fpo_it3
+    path: /home/student/ffi26/improve/outputs/fpo/iter2/train/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
