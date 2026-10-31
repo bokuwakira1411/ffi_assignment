@@ -1,0 +1,26 @@
+{
+ "policy": "lerobot/smolvla_libero",
+ "data": "outputs/fpo/smoke",
+ "decisions": 637,
+ "adv_std": 0.2631368935108185,
+ "steps": 38,
+ "steps_per_epoch": 19,
+ "ratio_scale_used": 22.688423940935397,
+ "mean_l_old": 0.044075340032577515,
+ "seconds_total": 56.83949899673462,
+ "seconds_old_loss": 26.496156215667725,
+ "trainable_params": 99880992,
+ "torch_max_mem_allocated_gb": 8.928549888,
+ "fpo": {
+  "n_pairs": 4,
+  "batch_size": 32,
+  "epochs": 2,
+  "lr": 1e-05,
+  "warmup": 20,
+  "clip": 0.2,
+  "ratio_scale": "auto",
+  "grad_clip": 10.0,
+  "early_stop_clip_frac": 0.3,
+  "seed": 3000
+ }
+}

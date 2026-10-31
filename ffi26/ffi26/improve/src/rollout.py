@@ -38,14 +38,19 @@ SUITE = "libero_10"
 MAX_STEPS = 520  # TASK_SUITE_MAX_STEPS["libero_10"]
 
 
-def load_policy(path: str, n_action_steps: int = 10, device: str = "cuda", adv_label: str | None = None):
+def load_policy(path: str, n_action_steps: int = 10, device: str = "cuda", adv_label: str | None = None,
+                cfg_overrides: dict | None = None):
     """Same construction as lerobot_eval.eval_main (policy + processors + env processors).
     adv_label (none/positive/negative): attach the learned advantage-label embedding
-    (src/adv_embed.py, loaded from the checkpoint) and condition every forward pass on it."""
+    (src/adv_embed.py, loaded from the checkpoint) and condition every forward pass on it.
+    cfg_overrides: policy-config fields set before construction (FPO training uses
+    freeze_vision_encoder / train_expert_only / train_state_proj = True, as lerobot-train flags)."""
     pcfg = PreTrainedConfig.from_pretrained(path)
     pcfg.pretrained_path = Path(path) if Path(path).exists() else path
     pcfg.n_action_steps = n_action_steps
     pcfg.device = device
+    for k, v in (cfg_overrides or {}).items():
+        setattr(pcfg, k, v)
     ecfg = LiberoEnvConfig(task=SUITE, control_mode="relative")
     policy = make_policy(cfg=pcfg, env_cfg=ecfg, rename_map=RENAME_MAP)
     if adv_label is not None:

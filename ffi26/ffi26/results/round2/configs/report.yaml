@@ -40,3 +40,15 @@ models:
   - name: awr6k_r1_s6000
     label: A2 AWR 6000 bước, checkpoint 6000
     root: ~/ffi26/improve/outputs/r2/eval/awr6k_r1_s6000
+  - name: fpo_it1
+    label: FPO sau vòng 1
+    root: ~/ffi26/improve/outputs/r2/eval/fpo_it1
+  - name: fpo_it2
+    label: FPO sau vòng 2
+    root: ~/ffi26/improve/outputs/r2/eval/fpo_it2
+  - name: fpo_it3
+    label: FPO sau vòng 3
+    root: ~/ffi26/improve/outputs/r2/eval/fpo_it3
+  - name: fpo_it4
+    label: FPO sau vòng 4
+    root: ~/ffi26/improve/outputs/r2/eval/fpo_it4

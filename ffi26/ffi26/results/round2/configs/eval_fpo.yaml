@@ -1,0 +1,28 @@
+# FPO: checkpoints after iterations 1-4 (theta_k = outputs/fpo/iter{k-1}/train). Tasks 0, 8 x 50 ep;
+# other 8 tasks x 20 ep for the LAST iteration only (fixed in advance, no selection on the eval set).
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+output_dir: ~/ffi26/improve/outputs/r2/eval
+models:
+  - name: fpo_it1
+    path: /home/student/ffi26/improve/outputs/fpo/iter0/train/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+  - name: fpo_it2
+    path: /home/student/ffi26/improve/outputs/fpo/iter1/train/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+  - name: fpo_it3
+    path: /home/student/ffi26/improve/outputs/fpo/iter2/train/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+  - name: fpo_it4
+    path: /home/student/ffi26/improve/outputs/fpo/iter3/train/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}
