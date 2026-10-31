@@ -1,0 +1,252 @@
+% Biên dịch bằng XeLaTeX (hoặc LuaLaTeX):  latexmk -xelatex smolvla_rl_A3_A5.tex
+% Hai hình: đặt image.png và overview_pi0.png vào thư mục figures/ (cùng cấp với file .tex).
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs,tabularx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\graphicspath{{figures/}}
+\setlist{itemsep=2pt,topsep=4pt}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Lfm}{\mathcal{L}}
+\newcommand{\Lhat}{\hat{\mathcal{L}}}
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\Sset}{\mathcal{S}}
+\newcommand{\thold}{\theta_{\text{old}}}
+
+% Chèn hình nếu có file, nếu không thì in khung chỗ trống để vẫn biên dịch được.
+\newcommand{\figorplaceholder}[2]{%
+  \IfFileExists{figures/#1}{\includegraphics[width=#2]{#1}}{%
+    \fbox{\parbox[c][3cm][c]{#2}{\centering\small Thiếu hình: \texttt{figures/\detokenize{#1}}}}}}
+
+\title{Lập luận RL cho SmolVLA-LIBERO:\\ A3 (FPO) và A5 (Flow-SDE)}
+\author{Nguyễn Ngọc Lan}
+\date{31/10/2026}
+
+\begin{document}
+\maketitle
+
+% =====================================================================
+\section{Hypothesis}
+\emph{(Về mặt cảm nhận kiến trúc mô hình và toán học)}
+
+\paragraph{Vì sao RL có thể cải thiện smolvla\_libero?}
+BC chỉ tốt bằng dữ liệu demo, và trên horizon dài nó gặp covariate shift: lệch nhỏ ở đầu tích lũy thành thất bại ở cuối.
+RL học trên chính phân phối trạng thái mà policy gặp phải, và tối ưu thẳng tỉ lệ thành công.
+Bài báo SmolVLA cũng nhận xét việc cải thiện trên LIBERO hiện nằm chủ yếu ở các tác vụ horizon dài.
+
+\paragraph{Tại sao nên thử FPO và Flow-SDE theo hướng RL để cải thiện smolvla\_libero?}
+\begin{itemize}
+  \item SmolVLA có cùng kiến trúc với $\pi_0$. Đều có VLM làm prefix, action expert flow matching, action chunk, giải ODE bằng Euler.
+  \item $\pi_0$ và $\pi_{0.5}$ đã được fine-tune bằng RL theo đúng các phương pháp A3 và A5 này trên LIBERO. Cả hai phương pháp đều chỉ can thiệp vào phần action expert, nên khi chúng chuyển được sang SmolVLA khả năng cao sẽ thích hợp.
+\end{itemize}
+
+\begin{figure}[ht]
+  \centering
+  \figorplaceholder{image.png}{0.6\linewidth}
+  \caption{} % TODO: thêm chú thích
+  \label{fig:image}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \figorplaceholder{overview_pi0.png}{0.95\linewidth}
+  \caption{} % TODO: thêm chú thích
+  \label{fig:overview-pi0}
+\end{figure}
+
+Theo nguồn \code{modeling\_smolvla.py}. Gọi $a$ là chunk hành động, $\varepsilon \sim \Normal(0, I)$ là noise, $\tau \in [0, 1]$ là thời điểm. Thời điểm $\tau = 1$ là noise thuần.
+\begin{equation}
+  x_\tau = \tau\,\varepsilon + (1-\tau)\,a, \qquad u = \varepsilon - a, \qquad
+  \Lfm_\theta(a; o) = \mathbb{E}_{\tau,\varepsilon}\big\| v_\theta(x_\tau, \tau, o) - u \big\|^2
+\end{equation}
+Khi sinh hành động, mô hình đi từ $\tau = 1$ về $\tau = 0$ qua $N = 10$ bước Euler với $\Delta = 1/N$:
+\begin{equation}
+  x_{\tau-\Delta} = x_\tau - \Delta\, v_\theta(x_\tau, \tau, o)
+\end{equation}
+Policy ngẫu nhiên chỉ nhờ noise ban đầu $\varepsilon$, còn quá trình khử noise là tất định. Vì vậy $\log \pi_\theta(a\mid o)$ không tính được trực tiếp.
+
+$\Rightarrow$ Theo hướng A3 và A5 để xử lý vấn đề đó theo hai cách khác nhau: A3 xấp xỉ tỉ lệ log-prob, A5 làm cho log-prob tính được chính xác.
+Ở mức MDP của môi trường, mỗi quyết định là một chunk; robot thực thi \code{n\_action\_steps} hành động đầu của chunk rồi mới dự đoán lại.
+
+% =====================================================================
+\section{RL Algorithm}
+
+\subsection{A3 --- FPO: dùng chênh lệch loss flow matching làm tỉ lệ PPO}
+
+\paragraph{Ý tưởng.}
+PPO cần tỉ lệ $\pi_\theta(a\mid o) / \pi_{\text{old}}(a\mid o)$. FPO thay tỉ lệ này bằng exp của chênh lệch loss flow matching, tính trên chính chunk hành động đã thực thi. Phần sinh hành động giữ nguyên, chỉ thay loss.
+
+\paragraph{Dẫn chứng.}
+\begin{itemize}
+  \item \href{https://arxiv.org/abs/2507.21053}{McAllister và cộng sự, 2025} (ICLR 2026) đề xuất FPO và chứng minh nó train được policy kiểu diffusion từ đầu trên nhiều bài toán điều khiển liên tục.
+  \item \href{https://arxiv.org/abs/2510.09976}{Lyu và cộng sự, 2025 ($\pi_0$-FPO)} áp dụng FPO để fine-tune online $\pi_0$, trực tiếp trên LIBERO và ALOHA Transfer Cube. Họ bổ sung clipped surrogate, khám phá trong không gian latent qua nhiều bước Euler, và Q-ensemble.
+\end{itemize}
+
+\paragraph{Toán.}
+Với $M$ cặp $(\tau_m, \varepsilon_m)$ cố định, và $x_m = \tau_m\varepsilon_m + (1 - \tau_m)a$, ta ước lượng loss trên từng mẫu rồi định nghĩa tỉ lệ xem như tỉ lệ log-prob:
+\begin{equation}
+  \Lhat_\theta(a;o) = \frac{1}{M}\sum_{m=1}^{M}\big\| v_\theta(x_m, \tau_m, o) - (\varepsilon_m - a) \big\|^2, \qquad
+  \hat r(\theta) = \exp\!\big(\Lhat_{\thold}(a;o) - \Lhat_\theta(a;o)\big)
+\end{equation}
+\begin{equation}
+  J(\theta) = \mathbb{E}\Big[\min\big(\hat r(\theta)\,\hat A,\; \operatorname{clip}(\hat r(\theta), 1-\epsilon, 1+\epsilon)\,\hat A\big)\Big]
+\end{equation}
+Cơ sở: theo bài FPO, với cách đánh trọng số phù hợp, $-\Lfm_\theta$ cộng một hằng số là một ELBO của $\log \pi_\theta(a\mid o)$. Do đó chênh lệch loss giữa hai policy xấp xỉ chênh lệch log-likelihood. Liên hệ với A2 nằm ở đạo hàm tại $\theta = \thold$, nơi $\hat r = 1$:
+\begin{equation}
+  \nabla_\theta\big(\hat r(\theta)\,\hat A\big)\Big|_{\theta=\thold} = -\hat A\,\nabla_\theta \Lhat_\theta(a;o)
+\end{equation}
+
+\subsection{A5 --- Flow-SDE: biến mỗi bước Euler thành một phân phối Gauss}
+
+\paragraph{Ý tưởng.}
+Chuyển ODE khử noise thành một SDE có cùng phân phối biên, với lịch noise $\sigma_\tau$ cố định, theo cách của Flow-GRPO.
+
+Mỗi bước Euler khi đó là một phân phối Gauss có mean và phương sai biết trước. Log-prob của cả chuỗi khử noise vì vậy tính được chính xác, và ta chạy PPO thông thường (thay cách tính tỉ lệ, từ xấp xỉ của A3 sang chính xác).
+
+\paragraph{Dẫn chứng.}
+\begin{itemize}
+  \item \href{https://arxiv.org/abs/2510.25889}{$\pi_{\text{RL}}$ (Chen và cộng sự, 2025)} áp dụng Flow-SDE cho $\pi_0$ và $\pi_{0.5}$, là các flow VLA cùng kiến trúc với SmolVLA. Trên LIBERO, tỉ lệ thành công trung bình tăng từ 57,6\% lên 97,6\% với $\pi_0$, và từ 77,1\% lên 98,3\% với $\pi_{0.5}$. Riêng LIBERO-Long, mô hình $\pi_{0.5}$ SFT trên một trajectory tăng từ 43,9\% lên 94,0\%, vượt mức 92,4\% của mô hình SFT trên toàn bộ trajectory.
+  \item \href{https://arxiv.org/abs/2505.22094}{ReinFlow (Zhang và cộng sự, NeurIPS 2025)} cho thấy cách chèn noise vào chuỗi khử noise để có log-prob chính xác hoạt động được trên tác vụ horizon dài có đầu vào hình ảnh và reward thưa. Với Shortcut Model, tỉ lệ thành công tăng ròng trung bình 40,34\%.
+\end{itemize}
+
+\paragraph{Toán.}
+Theo ký hiệu của SmolVLA ($x_\tau = \tau\varepsilon + (1 - \tau)a$), vận tốc $v = \mathbb{E}[\varepsilon - a \mid x]$ cho ta cả hai ước lượng $\hat a = x - \tau v$ và $\hat\varepsilon = x + (1 - \tau)v$.
+\begin{equation}
+  \nabla_x \log p_\tau(x) = -\frac{\mathbb{E}[\varepsilon \mid x]}{\tau} = -\frac{x + (1-\tau)\,v_\theta(x,\tau,o)}{\tau}
+\end{equation}
+Bước Euler--Maruyama ngược thời gian, giữ nguyên phân phối biên của ODE:
+\begin{equation}
+  x_{\tau-\Delta} = \underbrace{x_\tau - \Delta\Big[v_\theta + \frac{\sigma_\tau^2}{2\tau}\big(x_\tau + (1-\tau)\,v_\theta\big)\Big]}_{\mu_\theta(x_\tau,\,\tau,\,o)} + \sigma_\tau\sqrt{\Delta}\,\xi, \qquad \xi \sim \Normal(0, I)
+\end{equation}
+Flow-GRPO dùng $\sigma_\tau = \eta\sqrt{\tau/(1 - \tau)}$; cần kiểm tra lại với bài gốc. Giá trị này phân kỳ khi $\tau \to 1$, nên phải chặn $\sigma$ ở bước đầu tiên. Khi $\eta = 0$, công thức quay về đúng bước Euler của SmolVLA. Mỗi bước là $\Normal(\mu_\theta, \sigma^2\Delta I)$, nên log-prob của chuỗi là một tổng chính xác:
+\begin{equation}
+  \log \pi_\theta(x_{0:N} \mid o) = \sum_{k \in \Sset} \log \Normal\big(x_{k+1};\ \mu_\theta(x_k, \tau_k, o),\ \sigma_k^2 \Delta\, I\big)
+\end{equation}
+Tỉ lệ PPO là $\exp(\log \pi_\theta - \log \pi_{\text{old}})$ trên chuỗi đã lưu, rồi đưa vào cùng hàm mục tiêu PPO-clip như A3. $\Sset$ là tập các bước được làm ngẫu nhiên. $\pi_{\text{RL}}$ đề xuất cách lấy mẫu lai ODE--SDE, trong đó chỉ một số bước là ngẫu nhiên. Với 5070 Ti 16\,GB, chọn $\Sset$ chỉ gồm một bước (bốc ngẫu nhiên mỗi lần sinh chunk) là quan trọng: chỉ cần backprop qua một lần gọi action expert thay vì cả 10 lần.
+
+% =====================================================================
+\section{Tại sao 2 RL algorithm trên sẽ cải thiện policy và cải thiện như thế nào?}
+
+\begin{itemize}
+  \item FlowVLA-RL chạy GRPO online cho action expert của SmolVLA trên LIBERO, dùng SDE giữ nguyên phân phối biên như A5. Theo mô tả trên \href{https://github.com/topics/smolvla}{trang GitHub}, kết quả là +6,3 điểm phần trăm trên LIBERO-Object, có lặp seed, vừa 24\,GB VRAM. Mình chưa mở được repo nên chưa kiểm tra chi tiết.
+  \item \href{https://github.com/ChengruiHan/FlowSift}{FlowSift} xây tiếp trên FlowVLA-RL, cũng trên LIBERO-Object. Cấu hình: 10 bước SDE, $\eta = 0{,}4$, nhóm $G = 4$, khoảng 1.200 episode train, một RTX 4090 24\,GB. Kết quả: từ 60,0\% sau SFT lên 63,5\% khi tính lại đủ 10 bước, và 66,5--69,0\% khi chỉ tính lại 5 bước. Tác giả ghi rõ mới chạy một seed và chưa có khoảng tin cậy.
+\end{itemize}
+
+\noindent Lưu ý:
+\begin{itemize}
+  \item Mức tăng lớn nhất của $\pi_{\text{RL}}$ xuất phát từ mô hình SFT few-shot. smolvla\_libero đã được SFT trên toàn bộ dữ liệu, nên mức tăng kỳ vọng sẽ nhỏ hơn. $\pi_{\text{RL}}$ cũng dùng rất nhiều môi trường chạy song song (320 môi trường trên ManiSkill).
+  \item Hai điều rút ra cho dự án này. Thứ nhất, nên kỳ vọng mức tăng vài điểm phần trăm, không phải +40 đến +50 điểm như $\pi_{\text{RL}}$; với ngân sách nhỏ hơn FlowSift nhiều lần, mức chênh nhiều khả năng nằm trong khoảng sai số. Thứ hai, chỉ tính lại một phần các bước khử noise không làm kết quả kém đi, nên cách lấy mẫu lai để vừa 16\,GB là hợp lý. Chưa ai chạy Flow-SDE cho SmolVLA trên LIBERO-10.
+\end{itemize}
+
+% =====================================================================
+\section{Implement: Thí nghiệm small-scale: A2 $\rightarrow$ A3 $\rightarrow$ A5}
+
+A2 là bước bậc một của FPO (xem phần toán ở mục A3). Vì vậy nếu A2 cải thiện được smolvla\_libero, đó là tín hiệu trực tiếp rằng hướng gradient của FPO đúng trên mô hình này.
+
+\paragraph{A3: Cài vào LeRobot.}
+\code{forward(batch, noise, time, reduction="none")} đã nhận sẵn \code{noise} và \code{time}. Khi thu rollout thì lưu lại $(\varepsilon_m, \tau_m)$, rồi dùng đúng các giá trị đó cho cả $\Lfm_{\text{old}}$ và $\Lfm_\theta$. Nếu không, nhiễu lấy mẫu sẽ lấn át tỉ lệ.
+
+\paragraph{Thí nghiệm nhỏ.}
+\begin{enumerate}
+  \item Kiểm tra cơ bản: $\hat r = 1$ đúng tuyệt đối tại $\thold$. Sau một bước cập nhật, đo độ lệch chuẩn của $\log \hat r$ với $M \in \{1, 4, 16\}$ để chọn $M$.
+  \item Một batch cố định: sau vài bước, loss phải giảm trên các chunk có $\hat A > 0$ và tăng trên các chunk có $\hat A < 0$. Tỉ lệ bị clip nên nằm trong khoảng 0,1--0,3.
+  \item Chạy học thật: chọn 2 task của LIBERO-10 có tỉ lệ thành công ban đầu 30--70\%. Chạy 3 vòng, mỗi vòng 8 init state $\times$ $K = 4$ rollout. So với A2 ở cùng số episode.
+\end{enumerate}
+
+\paragraph{Rủi ro.}
+Tỉ lệ ước lượng nhiễu khi $M$ nhỏ. Advantage âm có thể đẩy loss lên quá mức và làm hỏng policy, nên cần clip, lr nhỏ, và có thể thêm hạng BC trên demo làm neo.
+
+\paragraph{A5: Cài vào LeRobot.}
+Bộ giải Euler nằm trong \code{policies/common/flow\_matching.py}, hàm \code{euler\_integrate}, được gọi từ \code{VLAFlowMatching.sample\_actions} với \code{denoise\_step} làm hàm vận tốc. Cần viết một phiên bản có noise trả thêm $x_k$, $x_{k+1}$ và chỉ số bước ngẫu nhiên. Lưu ý KV-cache của prefix: khi tính lại log-prob lúc train, phải chạy lại prefix với gradient tắt, rồi chỉ gọi \code{denoise\_step} có gradient tại bước thuộc $\Sset$.
+
+\paragraph{Thí nghiệm nhỏ.}
+\begin{enumerate}
+  \item Kiểm tra SDE giữ phân phối biên: trên cùng một task, so tỉ lệ thành công khi lấy mẫu bằng ODE và bằng SDE với $\eta$ nhỏ, 20 episode mỗi bên. Sau đó tăng $\eta$ để tìm mức noise lớn nhất mà tỉ lệ thành công chưa sụp. Đó chính là ngân sách khám phá.
+  \item Kiểm tra log-prob: giá trị hữu hạn, tỉ lệ đúng bằng 1 tại $\thold$, và một bước backward vừa bộ nhớ 16\,GB.
+  \item Chạy PPO với advantage kiểu GRPO trên cùng 2 task, cùng init state và cùng ngân sách episode như A3 (3 vòng $\times$ 8 init state $\times$ $K = 4$).
+\end{enumerate}
+
+\paragraph{Rủi ro.}
+$\eta$ quá lớn làm hành động rung và thất bại ngay từ đầu, còn $\eta$ quá nhỏ thì tỉ lệ có phương sai lớn. Nếu thí nghiệm 1 cho thấy chưa có $\eta$ nào vừa giữ được tỉ lệ thành công vừa tạo đủ đa dạng, thì A5 chỉ dừng ở mức ghi nhận kết quả âm, không chạy thí nghiệm 3.
+
+\medskip
+Ba phương pháp tạo thành một bậc thang về cách xử lý log-prob. Mỗi bậc chỉ đổi một thứ so với bậc trước, nên mọi chênh lệch kết quả đều quy được về đúng thay đổi đó. Mục tiêu là cho thấy cơ chế chạy đúng và có xu hướng cải thiện, chưa phải ra con số cuối cùng.
+
+\begin{table}[ht]
+  \centering
+  \small
+  \begin{tabularx}{\linewidth}{@{}c l X X l@{}}
+    \toprule
+    Bậc & Phương pháp & Xử lý log-prob & Thay đổi so với bậc trước & Dữ liệu \\
+    \midrule
+    0 & smolvla\_libero gốc & --- & --- & --- \\
+    1 & A2 AWR (baseline) & Không cần: đánh trọng số loss & Thêm advantage vào loss flow matching & Offline, một lần thu \\
+    2 & A3 FPO & Xấp xỉ bằng chênh lệch loss & Thêm tỉ lệ, clip, advantage âm, lặp on-policy & On-policy, 3 vòng \\
+    3 & A5 Flow-SDE & Chính xác qua bước Euler có noise & Thay tỉ lệ xấp xỉ bằng tỉ lệ chính xác; lấy mẫu bằng SDE & On-policy, 3 vòng \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Bậc thang A2 $\rightarrow$ A3 $\rightarrow$ A5.}
+  \label{tab:ladder}
+\end{table}
+
+\paragraph{Các bước, theo thứ tự:}
+\begin{enumerate}
+  \item \textbf{Chẩn đoán best-of-K.} Với mỗi init state, chạy $K = 4$--$8$ lần với noise khác nhau. Ghi lại hai số: tỉ lệ init state có kết quả lẫn lộn (có lần thành công, có lần thất bại), và tỉ lệ init state thành công ít nhất một lần. Số thứ nhất cho biết advantage kiểu GRPO có tín hiệu hay không; nếu bằng 0 thì cả A3 và A5 đều không có gì để học. Nếu rollout A1/A2 có lặp init state thì tính được ngay, không tốn thêm episode. Bước này cũng giúp chọn 2 task có tỉ lệ thành công 30--70\%.
+  \item \textbf{A3 FPO:} chạy các thí nghiệm 1--3 trong mục A3.
+  \item \textbf{A5 Flow-SDE:} thí nghiệm 1 (dò $\eta$) có thể chạy song song với A3, vì chỉ cần inference. Sau đó đến thí nghiệm 2, rồi thí nghiệm 3 nếu thí nghiệm 1 đạt.
+  \item \textbf{Đánh giá cuối:} bốn mô hình (bậc 0--3) trên cùng init state giữ riêng, 20 episode mỗi task. Có thể chia sang các tài khoản Kaggle.
+\end{enumerate}
+
+\paragraph{Ngân sách.}
+Mỗi phương pháp on-policy tốn 3 vòng $\times$ 8 init state $\times$ $K = 4$ = 96 episode mỗi task, tức 192 episode cho 2 task. Chạy tuần tự ở 209\,s mỗi episode thì mất khoảng 11 giờ. Vì vậy cần chạy nhiều môi trường song song; nếu không đạt được thì giảm xuống 1 task hoặc 2 vòng.
+
+\paragraph{Giữ so sánh công bằng.}
+Dùng cùng task, cùng ngân sách episode và cùng số bước gradient cho A3 và A5. Init state dùng để đánh giá phải tách riêng khỏi init state dùng để train. Báo cáo khoảng tin cậy Wilson 95\%: với 20 episode quanh mức 50\%, sai số khoảng $\pm 21$ điểm phần trăm; với 40 episode thì khoảng $\pm 15$. Vì vậy các chênh lệch nhỏ phải được trình bày là xu hướng, không phải kết luận.
+
+\paragraph{Rủi ro chung.}
+Reward thưa trên horizon dài. Mức tăng sẽ nhỏ hơn trong các bài gốc, vì smolvla\_libero xuất phát từ SFT trên toàn bộ dữ liệu. Tốc độ môi trường là nút thắt cổ chai.
+
+% =====================================================================
+\section{Hướng mở rộng: A4 Flow-Noise và A6 DSRL}
+
+Hai phương pháp này chỉ nằm trong phần đề xuất, không chạy trong đợt này.
+\begin{itemize}
+  \item \textbf{A4 Flow-Noise} giống A5, nhưng độ lớn noise $\sigma_\phi(x, \tau, o)$ do một mạng nhỏ học ra thay vì lấy từ lịch cố định (\href{https://arxiv.org/abs/2505.22094}{ReinFlow}; biến thể Flow-Noise trong \href{https://arxiv.org/abs/2510.25889}{$\pi_{\text{RL}}$}). Lý do chưa làm: phải train thêm mạng $\sigma_\phi$, trong khi A5 đã trả lời được câu hỏi chính là log-prob chính xác có giúp ích hơn xấp xỉ hay không. Nếu A5 cho thấy $\eta$ cố định quá khó chỉnh, A4 là bước tiếp theo tự nhiên.
+  \item \textbf{A6 DSRL} giữ nguyên trọng số SmolVLA và dùng SAC để học một policy nhỏ chọn noise ban đầu $w$ (\href{https://arxiv.org/abs/2506.15799}{Wagenmaker và cộng sự, CoRL 2025}; code \href{https://github.com/nakamotoo/dsrl_pi0}{dsrl\_pi0} chạy với $\pi_0$ trên Libero). Lý do chưa làm: cần dựng một pipeline off-policy hoàn toàn mới, và không gian noise $50 \times 32$ là lớn so với vài trăm episode. Đây vẫn là hướng đáng theo nhất về lâu dài, vì nó rẻ về GPU và không làm hỏng khả năng tổng quát của mô hình gốc. Trần của DSRL đo được ngay bằng phép chẩn đoán best-of-K ở phần trên.
+\end{itemize}
+
+\paragraph{Dẫn chứng trên đúng checkpoint smolvla\_libero.}
+Bài \href{https://arxiv.org/abs/2603.15757}{Golden Ticket (Patil và cộng sự, 2026)} giữ nguyên trọng số \code{HuggingFaceVLA/smolvla\_libero} và tìm một vector noise cố định bằng tìm kiếm hộp đen, không dùng RL. Kết quả cải thiện so với mô hình gốc +13,4\% trên Spatial, +12,8\% trên Goal và +8\% trên Object. Điều này cho thấy không gian noise của chính checkpoint này có chỗ để điều khiển. Cũng bài đó báo cáo DSRL trên toàn bộ 1.600 chiều noise không cải thiện được $\pi_0$ trên ba task LIBERO-90, ủng hộ quyết định gác DSRL trong đợt này. Golden Ticket không thử LIBERO-10.
+
+% =====================================================================
+\section*{Tài liệu tham khảo}
+\begingroup\raggedright
+\begin{itemize}
+  \item \href{https://arxiv.org/abs/2510.25889}{$\pi_{\text{RL}}$: Online RL Fine-tuning for Flow-based VLA Models (Chen và cộng sự, 2025)}. Có code trong \href{https://github.com/RLinf/RLinf}{RLinf}.
+  \item \href{https://arxiv.org/abs/2507.21053}{Flow Matching Policy Gradients, FPO (McAllister và cộng sự, 2025; ICLR 2026)}
+  \item \href{https://arxiv.org/abs/2510.09976}{Reinforcement Fine-Tuning of Flow-Matching Policies for VLA Models, $\pi_0$-FPO (Lyu và cộng sự, 2025)}
+  \item \href{https://arxiv.org/abs/2505.22094}{ReinFlow: Fine-tuning Flow Matching Policy with Online RL (Zhang và cộng sự, NeurIPS 2025)}
+  \item \href{https://arxiv.org/abs/2506.15799}{Steering Your Diffusion Policy with Latent Space RL, DSRL (Wagenmaker và cộng sự, CoRL 2025)}, code \href{https://github.com/nakamotoo/dsrl_pi0}{dsrl\_pi0}, \href{https://rlinf.readthedocs.io/en/latest/rst_source/examples/embodied/dsrl.html}{bản cài DSRL trong RLinf}
+  \item Flow-GRPO (Liu và cộng sự, 2025), arXiv 2505.05470: nguồn gốc của cách chuyển ODE thành SDE. Mình chưa mở lại bài này, cần kiểm tra lại lịch $\sigma_\tau$ trước khi trích.
+  \item \href{https://arxiv.org/abs/2506.01844}{SmolVLA (Shukor và cộng sự, 2025)}; mức LIBERO-Long 77,0\% lấy từ \href{https://arxiv.org/pdf/2506.20966}{bảng V của survey arXiv 2506.20966}
+  \item Mã nguồn LeRobot 0.6.1, \code{policies/smolvla/modeling\_smolvla.py} và \code{scripts/lerobot\_train.py}: ký hiệu flow matching, \code{forward(..., reduction="none")}, \code{SampleWeighter}
+  \item \href{https://github.com/ChengruiHan/FlowSift}{FlowSift (ChengruiHan), xây trên FlowVLA-RL}; mô tả FlowVLA-RL lấy từ \href{https://github.com/topics/smolvla}{GitHub topic smolvla}
+  \item \href{https://arxiv.org/abs/2603.15757}{Golden Ticket: Improving Generative Robot Policies With A Single Noise Vector (Patil và cộng sự, 2026)}
+\end{itemize}
+\endgroup
+
+\end{document}

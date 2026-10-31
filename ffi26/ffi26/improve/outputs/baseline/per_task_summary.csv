@@ -1,0 +1,3 @@
+task_id,n,n_success,success_rate,ci95_lo,ci95_hi,subtask_completion_mean,subtask_completion_fail_mean,n_fail,primary_A,primary_B,primary_C,primary_D,primary_E,primary_O,any_A,any_B,any_C,any_D,any_E
+0,20,7,0.35,0.18118954786794464,0.5671494897805354,0.375,0.038461538461538464,13,11,0,1,0,0,1,11,1,8,0,9
+8,20,8,0.4,0.21880396741419272,0.613422057684794,0.65,0.4166666666666667,12,2,1,0,3,6,0,2,10,0,3,10

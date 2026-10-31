@@ -1,0 +1,122 @@
+{
+ "config": {
+  "round": 1,
+  "policy": "lerobot/smolvla_libero",
+  "n_action_steps": 10,
+  "collect_task_suffix": "",
+  "seed": 100000,
+  "group_size": 8,
+  "noise_scale": 1.0,
+  "reward": {
+   "lam": 0.5,
+   "gamma": 0.998,
+   "success_bonus": 1.0,
+   "costs": {
+    "drop": 0.2,
+    "slip": 0.1,
+    "collision": 0.1,
+    "timeout": 0.2
+   }
+  },
+  "min_return_spread": 0.1,
+  "adv_deadzone": 0.02,
+  "tasks": [
+   {
+    "task_id": 0,
+    "init_ids": [
+     1,
+     4,
+     6,
+     7,
+     9,
+     16,
+     19,
+     21,
+     22,
+     28,
+     31,
+     34,
+     37,
+     38,
+     41,
+     48
+    ]
+   },
+   {
+    "task_id": 8,
+    "init_ids": [
+     26,
+     27,
+     33,
+     39,
+     43,
+     10,
+     13,
+     14,
+     16,
+     22,
+     30,
+     38,
+     40,
+     41,
+     44,
+     46
+    ]
+   }
+  ],
+  "rtf_groups": [],
+  "output_dir": "~/ffi26/improve/outputs/r2/round1",
+  "dataset_dir": "~/ffi26/improve/data/r2/rollouts_round1",
+  "dataset_repo_id": "local/ffi26_r2_rollouts_round1",
+  "build": {
+   "demo_root": "~/ffi26/improve/data/lerobot_libero",
+   "target_task_texts": [
+    "put both the alphabet soup and the tomato sauce in the basket",
+    "put both moka pots on the stove"
+   ],
+   "demos_task_texts": [
+    "put both the alphabet soup and the tomato sauce in the basket",
+    "put both the cream cheese box and the butter in the basket",
+    "turn on the stove and put the moka pot on it",
+    "put the black bowl in the bottom drawer of the cabinet and close it",
+    "put the white mug on the left plate and put the yellow and white mug on the right plate",
+    "pick up the book and place it in the back compartment of the caddy",
+    "put the white mug on the plate and put the chocolate pudding to the right of the plate",
+    "put both the alphabet soup and the cream cheese box in the basket",
+    "put both moka pots on the stove",
+    "put the yellow and white mug in the microwave and close it"
+   ],
+   "demos_suffix": "",
+   "demos_out": "~/ffi26/improve/data/r2/demos_libero10",
+   "demos_repo_id": "local/ffi26_r2_demos_libero10",
+   "seed": 1000,
+   "train_out": "~/ffi26/improve/data/r2/train_round1",
+   "train_repo_id": "local/ffi26_r2_train_round1",
+   "stats_dir": "~/ffi26/results/round2/round1",
+   "rollout_rounds": [
+    {
+     "round": 1,
+     "dataset_dir": "~/ffi26/improve/data/r2/rollouts_round1",
+     "repo_id": "local/ffi26_r2_rollouts_round1",
+     "output_dir": "~/ffi26/improve/outputs/r2/round1"
+    }
+   ]
+  },
+  "cfg_drop": 0.3,
+  "train": {
+   "init_policy": "lerobot/smolvla_libero",
+   "steps": 2000,
+   "batch_size": 32,
+   "lr": 1e-05,
+   "warmup": 100,
+   "decay_lr": 2.5e-06,
+   "out": "~/ffi26/improve/outputs/r2/train_a1_round1"
+  }
+ },
+ "seconds_total": 2459.0864140987396,
+ "seconds_rollout": 1109.6833970546722,
+ "seconds_write": 1338.4974172115326,
+ "torch_max_mem_allocated_gb": 1.163407872,
+ "dataset_episodes": 216,
+ "dataset_frames": 97371
+}

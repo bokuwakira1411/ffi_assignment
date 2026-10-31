@@ -1,0 +1,2 @@
+bs=4 n_ep=8 rc=0 wall_s=79.344442957 s_per_ep=9.9180 gpu_peak_MiB=880
+bs=8 n_ep=8 rc=0 wall_s=77.868575060 s_per_ep=9.7335 gpu_peak_MiB=9637

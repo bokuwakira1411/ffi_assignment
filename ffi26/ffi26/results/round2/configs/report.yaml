@@ -31,3 +31,12 @@ models:
   - name: awr_r1
     label: A2 AWR round 1 (không nhãn)
     root: ~/ffi26/improve/outputs/r2/eval/awr_r1
+  - name: awr6k_r1_s2000
+    label: A2 AWR 6000 bước, checkpoint 2000
+    root: ~/ffi26/improve/outputs/r2/eval/awr6k_r1_s2000
+  - name: awr6k_r1_s4000
+    label: A2 AWR 6000 bước, checkpoint 4000
+    root: ~/ffi26/improve/outputs/r2/eval/awr6k_r1_s4000
+  - name: awr6k_r1_s6000
+    label: A2 AWR 6000 bước, checkpoint 6000
+    root: ~/ffi26/improve/outputs/r2/eval/awr6k_r1_s6000

@@ -1,0 +1,41 @@
+task_id,episode,init_id,seed,success,length,G_base,G_full,primary,lab_A,lab_C,lab_D,lab_E,lab_B,A_objs,C_objs,D_preds,E_longest_stall,n_close_events,n_pred,n_pred_new,n_pred_new_ever_true,n_pred_new_final_true,subtask_completion,phi_0,phi_T,phi_max,lifted_goal_objs
+0,0,0,1000,False,520,-0.5200000000000002,-0.6700000000000002,A,True,True,False,True,False,alphabet_soup_1,orange_juice_1,,58,9,2,2,0,0,0.0,0.0,0.0,0.0,
+0,1,1,1001,True,267,1.2329999999999999,1.433,S,False,False,False,False,False,,,,0,3,2,2,2,2,1.0,0.0,1.0,1.0,alphabet_soup_1;tomato_sauce_1
+0,2,2,1002,False,520,-0.5200000000000002,-0.5700000000000002,A,True,False,False,True,False,alphabet_soup_1,,,155,13,2,2,0,0,0.0,0.0,0.0,0.0,
+0,3,3,1003,True,268,1.232,1.432,S,False,False,False,False,False,,,,0,2,2,2,2,2,1.0,0.0,1.0,1.0,alphabet_soup_1;tomato_sauce_1
+0,4,4,1004,False,520,-0.27000000000000024,-0.1700000000000002,A,True,False,False,False,True,tomato_sauce_1,,,0,12,2,2,1,1,0.5,0.0,0.5,0.5,alphabet_soup_1
+0,5,5,1005,False,520,-0.5200000000000002,-0.5700000000000002,A,True,False,False,True,False,alphabet_soup_1,,,100,10,2,2,0,0,0.0,0.0,0.0,0.0,
+0,6,6,1006,False,520,-0.5200000000000002,-0.7700000000000002,A,True,True,False,True,False,alphabet_soup_1,orange_juice_1,,133,6,2,2,0,0,0.0,0.0,0.0,0.0,
+0,7,7,1007,False,520,-0.5200000000000002,-0.5700000000000002,A,True,False,False,True,False,alphabet_soup_1,,,59,19,2,2,0,0,0.0,0.0,0.0,0.0,
+0,8,8,1008,False,520,-0.5200000000000002,-0.7200000000000002,A,True,True,False,True,False,alphabet_soup_1,orange_juice_1,,160,6,2,2,0,0,0.0,0.0,0.0,0.0,
+0,9,9,1009,False,520,-0.5200000000000002,-0.4200000000000002,O,False,False,False,False,False,,,,0,15,2,2,0,0,0.0,0.0,0.0,0.0,alphabet_soup_1
+0,10,10,1010,True,260,1.24,1.44,S,False,False,False,False,False,,,,0,2,2,2,2,2,1.0,0.0,1.0,1.0,alphabet_soup_1;tomato_sauce_1
+0,11,11,1011,False,520,-0.5200000000000002,-0.6700000000000002,A,True,True,False,True,False,alphabet_soup_1,orange_juice_1,,324,5,2,2,0,0,0.0,0.0,0.0,0.0,
+0,12,12,1012,True,254,1.246,1.446,S,False,False,False,False,False,,,,0,2,2,2,2,2,1.0,0.0,1.0,1.0,alphabet_soup_1;tomato_sauce_1
+0,13,13,1013,False,520,-0.5200000000000002,-0.6700000000000002,A,True,True,False,True,False,alphabet_soup_1,orange_juice_1,,81,18,2,2,0,0,0.0,0.0,0.0,0.0,
+0,14,14,1014,False,520,-0.5200000000000002,-0.6200000000000001,A,True,True,False,False,False,alphabet_soup_1,orange_juice_1,,0,13,2,2,0,0,0.0,0.0,0.0,0.0,
+0,15,15,1015,False,520,-0.5200000000000002,-0.6200000000000001,A,True,True,False,False,False,alphabet_soup_1,orange_juice_1,,0,11,2,2,0,0,0.0,0.0,0.0,0.0,
+0,16,16,1016,True,319,1.181,1.381,S,False,False,False,False,False,,,,0,3,2,2,2,2,1.0,0.0,1.0,1.0,alphabet_soup_1;tomato_sauce_1
+0,17,17,1017,True,268,1.232,1.432,S,False,False,False,False,False,,,,0,2,2,2,2,2,1.0,0.0,1.0,1.0,alphabet_soup_1;tomato_sauce_1
+0,18,18,1018,False,520,-0.5200000000000002,-0.7700000000000002,C,False,True,False,True,False,,orange_juice_1;milk_1,,366,8,2,2,0,0,0.0,0.0,0.0,0.0,
+0,19,19,1019,True,376,1.1239999999999999,1.324,S,False,False,False,False,False,,,,0,7,2,2,2,2,1.0,0.0,1.0,1.0,alphabet_soup_1;tomato_sauce_1
+8,0,0,1000,True,397,0.9363333333333332,1.1363333333333334,S,False,False,False,False,False,,,,0,2,3,2,2,2,1.0,0.3333333333333333,1.0,1.0,moka_pot_1;moka_pot_2
+8,1,1,1001,True,481,0.8523333333333333,1.0523333333333333,S,False,False,False,False,False,,,,0,4,3,2,2,2,1.0,0.3333333333333333,1.0,1.0,moka_pot_1;moka_pot_2
+8,2,2,1002,False,520,-0.35333333333333355,-0.3033333333333335,D,False,False,True,True,True,,,on moka_pot_2 flat_stove_1_cook_region,80,1,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2
+8,3,3,1003,False,520,-0.35333333333333355,-0.30333333333333357,E,False,False,False,True,True,,,,169,1,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2
+8,4,4,1004,False,520,-0.35333333333333355,-0.30333333333333357,E,False,False,False,True,True,,,,95,1,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2
+8,5,5,1005,True,419,0.9143333333333332,1.1143333333333334,S,False,False,False,False,False,,,,0,2,3,2,2,2,1.0,0.3333333333333333,1.0,1.0,moka_pot_1;moka_pot_2
+8,6,6,1006,True,394,0.9393333333333335,1.1393333333333333,S,False,False,False,False,False,,,,0,2,3,2,2,2,1.0,0.3333333333333333,1.0,1.0,moka_pot_1;moka_pot_2
+8,7,7,1007,False,520,-0.35333333333333355,-0.20333333333333356,E,False,False,False,True,True,,,,56,5,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_1;moka_pot_2
+8,8,8,1008,False,520,-0.35333333333333355,-0.3533333333333335,E,False,False,False,True,True,,,,66,1,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2
+8,9,9,1009,False,520,-0.35333333333333355,-0.2533333333333335,D,False,False,True,False,True,,,on moka_pot_2 flat_stove_1_cook_region,0,1,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2
+8,10,10,1010,False,520,-0.5200000000000002,-0.5700000000000002,A,True,False,False,True,False,moka_pot_2,,,416,5,3,2,0,0,0.0,0.3333333333333333,0.3333333333333333,0.3333333333333333,
+8,11,11,1011,True,354,0.9793333333333334,1.1793333333333333,S,False,False,True,False,False,,,on moka_pot_2 flat_stove_1_cook_region,0,2,3,2,2,2,1.0,0.3333333333333333,1.0,1.0,moka_pot_1;moka_pot_2
+8,12,12,1012,False,520,-0.5200000000000002,-0.5700000000000002,E,False,False,False,True,False,,,,416,0,3,2,0,0,0.0,0.3333333333333333,0.3333333333333333,0.3333333333333333,
+8,13,13,1013,False,520,-0.35333333333333355,-0.30333333333333357,D,False,False,True,True,True,,,on moka_pot_2 flat_stove_1_cook_region,153,4,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2
+8,14,14,1014,True,468,0.8653333333333333,0.9653333333333333,S,False,False,False,True,False,,,,83,10,3,2,2,2,1.0,0.3333333333333333,1.0,1.0,moka_pot_1;moka_pot_2
+8,15,15,1015,True,514,0.8193333333333332,1.0193333333333334,S,False,False,False,False,False,,,,0,2,3,2,2,2,1.0,0.3333333333333333,1.0,1.0,moka_pot_1;moka_pot_2
+8,16,16,1016,False,520,-0.35333333333333355,-0.30333333333333357,A,True,False,False,True,True,moka_pot_1,,,210,4,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2
+8,17,17,1017,False,520,-0.35333333333333355,-0.2533333333333335,B,False,False,False,False,True,,,,0,3,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2
+8,18,18,1018,True,415,0.9183333333333332,1.1183333333333334,S,False,False,False,False,False,,,,0,2,3,2,2,2,1.0,0.3333333333333333,1.0,1.0,moka_pot_1;moka_pot_2
+8,19,19,1019,False,520,-0.35333333333333355,-0.30333333333333357,E,False,False,False,True,True,,,,247,1,3,2,1,1,0.5,0.3333333333333333,0.6666666666666666,0.6666666666666666,moka_pot_2

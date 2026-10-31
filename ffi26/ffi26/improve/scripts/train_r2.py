@@ -83,6 +83,8 @@ def main():
     if args.config:
         wrap, rest_cfg = args_from_config(args.config, args.mode, args.out)
         for k, v in wrap.items():
+            if k == "loss_csv" and args.loss_csv:  # an explicit --loss_csv wins over the config default
+                continue
             setattr(args, k, v)
         rest = rest_cfg + rest
 

@@ -13,4 +13,4 @@ ffi26/ffi26/improve/data/
 __pycache__/
 *.pyc
 # Output thô của Improve (log từng episode, video, checkpoint) — bảng tổng hợp đã nằm trong results/round2/
-ffi26/ffi26/improve/outputs/
+#ffi26/ffi26/improve/outputs/

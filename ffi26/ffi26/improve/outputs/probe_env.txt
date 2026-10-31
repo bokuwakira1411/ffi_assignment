@@ -1,0 +1,52 @@
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+=== task 0: put both the alphabet soup and the tomato sauce in the basket
+domain class: Libero_Living_Room_Tabletop_Manipulation | wrapper: OffScreenRenderEnv
+goal_state: [['in', 'alphabet_soup_1', 'basket_1_contain_region'], ['in', 'tomato_sauce_1', 'basket_1_contain_region']]
+obj_of_interest: ['alphabet_soup_1', 'tomato_sauce_1', 'basket_1']
+objects_dict: ['alphabet_soup_1', 'cream_cheese_1', 'tomato_sauce_1', 'ketchup_1', 'orange_juice_1', 'milk_1', 'butter_1', 'basket_1']
+fixtures: []
+preds now: [False, False]
+sim state len: (123,) | init_states: (50, 123)
+gripper qpos: [ 0.03872318 -0.0387224 ] eef: [-0.04614927 -0.00356789  0.7020463 ]
+gripper type: PandaGripper | has _check_grasp: True
+  alphabet_soup_1: pos=[-0.094 -0.15   0.475] grasp=False contact=False
+  cream_cheese_1: pos=[ 0.079 -0.194  0.446] grasp=False contact=False
+  tomato_sauce_1: pos=[-0.117  0.056  0.475] grasp=False contact=False
+  ketchup_1: pos=[-0.268 -0.149  1.054] grasp=False contact=False
+  orange_juice_1: pos=[ 0.01  -0.259  0.892] grasp=False contact=False
+  milk_1: pos=[ 0.049 -0.121  0.892] grasp=False contact=False
+  butter_1: pos=[0.07  0.053 0.445] grasp=False contact=False
+  basket_1: pos=[-0.002  0.269  0.432] grasp=False contact=False
+=== task 6: put the white mug on the plate and put the chocolate pudding to the right of the plate
+domain class: Libero_Living_Room_Tabletop_Manipulation | wrapper: OffScreenRenderEnv
+goal_state: [['on', 'porcelain_mug_1', 'plate_1'], ['on', 'chocolate_pudding_1', 'living_room_table_plate_right_region']]
+obj_of_interest: ['plate_1', 'chocolate_pudding_1', 'porcelain_mug_1']
+objects_dict: ['porcelain_mug_1', 'red_coffee_mug_1', 'plate_1', 'chocolate_pudding_1']
+fixtures: []
+preds now: [False, False]
+sim state len: (71,) | init_states: (50, 71)
+gripper qpos: [ 0.03872384 -0.03872174] eef: [-0.05389684 -0.00775144  0.69598459]
+gripper type: PandaGripper | has _check_grasp: True
+  porcelain_mug_1: pos=[-0.094 -0.136  0.434] grasp=False contact=False
+  red_coffee_mug_1: pos=[-0.221  0.021  0.439] grasp=False contact=False
+  plate_1: pos=[0.149 0.006 0.439] grasp=False contact=False
+  chocolate_pudding_1: pos=[-0.04   0.117  0.45 ] grasp=False contact=False
+=== task 8: put both moka pots on the stove
+domain class: Libero_Kitchen_Tabletop_Manipulation | wrapper: OffScreenRenderEnv
+goal_state: [['on', 'moka_pot_1', 'flat_stove_1_cook_region'], ['on', 'moka_pot_2', 'flat_stove_1_cook_region'], ['turnon', 'flat_stove_1']]
+obj_of_interest: ['moka_pot_1', 'moka_pot_2', 'flat_stove_1']
+objects_dict: ['moka_pot_1', 'moka_pot_2']
+fixtures: ['flat_stove_1']
+preds now: [False, False, True]
+sim state len: (47,) | init_states: (50, 47)
+gripper qpos: [ 0.0387229  -0.03872265] eef: [-0.20307055  0.01169152  1.18140311]
+gripper type: PandaGripper | has _check_grasp: True
+  moka_pot_1: pos=[-0.054  0.258  0.966] grasp=False contact=False
+  moka_pot_2: pos=[0.041 0.043 0.966] grasp=False contact=False

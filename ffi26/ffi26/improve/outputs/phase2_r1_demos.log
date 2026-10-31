@@ -1,0 +1,492 @@
+keeping 62 demo episodes, 21379 frames
+Map:   0%|          | 0/259 [00:00<?, ? examples/s]Map: 100%|██████████| 259/259 [00:00<00:00, 6105.21 examples/s]
+[demo] src episode 8 -> 0 (259 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/383 [00:00<?, ? examples/s]Map: 100%|██████████| 383/383 [00:00<00:00, 6297.26 examples/s]
+[demo] src episode 10 -> 1 (383 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/285 [00:00<?, ? examples/s]Map: 100%|██████████| 285/285 [00:00<00:00, 6254.06 examples/s]
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+LIB Build date: Jul  3 2025 03:14:07
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+Preset M12 is mapped to M10.
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+[demo] src episode 13 -> 2 (285 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/359 [00:00<?, ? examples/s]Map: 100%|██████████| 359/359 [00:00<00:00, 6302.29 examples/s]
+[demo] src episode 20 -> 3 (359 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/455 [00:00<?, ? examples/s]Map:  88%|████████▊ | 402/455 [00:00<00:00, 3995.30 examples/s]Map: 100%|██████████| 455/455 [00:00<00:00, 3869.06 examples/s]
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+LIB Build date: Jul  3 2025 03:14:07
+-------------------------------------------
+-------------------------------------------
+[demo] src episode 23 -> 4 (455 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/296 [00:00<?, ? examples/s]Map: 100%|██████████| 296/296 [00:00<00:00, 4718.76 examples/s]
+[demo] src episode 26 -> 5 (296 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/288 [00:00<?, ? examples/s]Map: 100%|██████████| 288/288 [00:00<00:00, 6072.56 examples/s]
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level on system : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+-------------------------------------------
+[demo] src episode 39 -> 6 (288 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/409 [00:00<?, ? examples/s]Map:  91%|█████████ | 372/409 [00:00<00:00, 3694.10 examples/s]Map: 100%|██████████| 409/409 [00:00<00:00, 3735.64 examples/s]
+LIB Build date: Jul  3 2025 03:14:07
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 46 -> 7 (409 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/404 [00:00<?, ? examples/s]Map:  85%|████████▌ | 345/404 [00:00<00:00, 3408.61 examples/s]Map: 100%|██████████| 404/404 [00:00<00:00, 3434.54 examples/s]
+[demo] src episode 51 -> 8 (404 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/401 [00:00<?, ? examples/s]Map: 100%|██████████| 401/401 [00:00<00:00, 5270.48 examples/s]
+[demo] src episode 54 -> 9 (401 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/368 [00:00<?, ? examples/s]Map:  98%|█████████▊| 362/368 [00:00<00:00, 3578.75 examples/s]Map: 100%|██████████| 368/368 [00:00<00:00, 3510.41 examples/s]
+[demo] src episode 57 -> 10 (368 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/388 [00:00<?, ? examples/s]Map: 100%|██████████| 388/388 [00:00<00:00, 5328.65 examples/s]
+-------------------------------------------
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+LIB Build date: Jul  3 2025 03:14:07
+-------------------------------------------
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 67 -> 11 (388 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/292 [00:00<?, ? examples/s]Map: 100%|██████████| 292/292 [00:00<00:00, 6087.43 examples/s]
+-------------------------------------------
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+-------------------------------------------
+Preset M12 is mapped to M10.
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 69 -> 12 (292 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/416 [00:00<?, ? examples/s]Map: 100%|██████████| 416/416 [00:00<00:00, 4264.40 examples/s]
+-------------------------------------------
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 70 -> 13 (416 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/312 [00:00<?, ? examples/s]Map: 100%|██████████| 312/312 [00:00<00:00, 5898.68 examples/s]
+LIB Build date: Jul  3 2025 03:14:07
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+Level of Parallelism: 6
+[asm level selected : up to avx2]
+[demo] src episode 71 -> 14 (312 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/450 [00:00<?, ? examples/s]Map:  97%|█████████▋| 437/450 [00:00<00:00, 4331.63 examples/s]Map: 100%|██████████| 450/450 [00:00<00:00, 4244.77 examples/s]
+[demo] src episode 73 -> 15 (450 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/300 [00:00<?, ? examples/s]Map: 100%|██████████| 300/300 [00:00<00:00, 6105.39 examples/s]
+-------------------------------------------
+Preset M12 is mapped to M10.
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+-------------------------------------------
+[demo] src episode 77 -> 16 (300 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/274 [00:00<?, ? examples/s]Map: 100%|██████████| 274/274 [00:00<00:00, 3316.75 examples/s]
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 79 -> 17 (274 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/421 [00:00<?, ? examples/s]Map: 100%|██████████| 421/421 [00:00<00:00, 6128.41 examples/s]
+LIB Build date: Jul  3 2025 03:14:07
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+-------------------------------------------
+[demo] src episode 86 -> 18 (421 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/280 [00:00<?, ? examples/s]Map: 100%|██████████| 280/280 [00:00<00:00, 6163.34 examples/s]
+-------------------------------------------
+-------------------------------------------
+[demo] src episode 92 -> 19 (280 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/392 [00:00<?, ? examples/s]Map: 100%|██████████| 392/392 [00:00<00:00, 5554.37 examples/s]
+[demo] src episode 100 -> 20 (392 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/278 [00:00<?, ? examples/s]Map: 100%|██████████| 278/278 [00:00<00:00, 3229.47 examples/s]
+[demo] src episode 101 -> 21 (278 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/317 [00:00<?, ? examples/s]Map: 100%|██████████| 317/317 [00:00<00:00, 6179.76 examples/s]
+LIB Build date: Jul  3 2025 03:14:07
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+-------------------------------------------
+[demo] src episode 102 -> 22 (317 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/436 [00:00<?, ? examples/s]Map: 100%|██████████| 436/436 [00:00<00:00, 6286.69 examples/s]
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+LIB Build date: Jul  3 2025 03:14:07
+-------------------------------------------
+Preset M12 is mapped to M10.
+Number of PPCS 161
+[asm level on system : up to avx2]
+-------------------------------------------
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 106 -> 23 (436 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/373 [00:00<?, ? examples/s]Map: 100%|██████████| 373/373 [00:00<00:00, 6169.87 examples/s]
+[demo] src episode 115 -> 24 (373 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/268 [00:00<?, ? examples/s]Map: 100%|██████████| 268/268 [00:00<00:00, 6095.88 examples/s]
+[demo] src episode 118 -> 25 (268 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/312 [00:00<?, ? examples/s]Map: 100%|██████████| 312/312 [00:00<00:00, 6185.91 examples/s]
+-------------------------------------------
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+-------------------------------------------
+[demo] src episode 132 -> 26 (312 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/317 [00:00<?, ? examples/s]Map: 100%|██████████| 317/317 [00:00<00:00, 3736.42 examples/s]
+[demo] src episode 137 -> 27 (317 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/419 [00:00<?, ? examples/s]Map: 100%|██████████| 419/419 [00:00<00:00, 6166.86 examples/s]
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+-------------------------------------------
+[demo] src episode 143 -> 28 (419 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/373 [00:00<?, ? examples/s]Map: 100%|██████████| 373/373 [00:00<00:00, 3878.29 examples/s]
+[demo] src episode 149 -> 29 (373 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/255 [00:00<?, ? examples/s]Map: 100%|██████████| 255/255 [00:00<00:00, 4269.80 examples/s]
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+[demo] src episode 156 -> 30 (255 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/410 [00:00<?, ? examples/s]Map:  81%|████████  | 332/410 [00:00<00:00, 3293.96 examples/s]Map: 100%|██████████| 410/410 [00:00<00:00, 3097.44 examples/s]
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+LIB Build date: Jul  3 2025 03:14:07
+Preset M12 is mapped to M10.
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 179 -> 31 (410 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/261 [00:00<?, ? examples/s]Map: 100%|██████████| 261/261 [00:00<00:00, 3746.82 examples/s]
+[demo] src episode 181 -> 32 (261 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/362 [00:00<?, ? examples/s]Map: 100%|██████████| 362/362 [00:00<00:00, 4110.87 examples/s]
+[demo] src episode 187 -> 33 (362 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/466 [00:00<?, ? examples/s]Map: 100%|██████████| 466/466 [00:00<00:00, 6265.59 examples/s]
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+-------------------------------------------
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 194 -> 34 (466 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/250 [00:00<?, ? examples/s]Map: 100%|██████████| 250/250 [00:00<00:00, 6164.90 examples/s]
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level on system : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 199 -> 35 (250 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/343 [00:00<?, ? examples/s]Map: 100%|██████████| 343/343 [00:00<00:00, 4915.32 examples/s]
+[demo] src episode 200 -> 36 (343 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/398 [00:00<?, ? examples/s]Map:  67%|██████▋   | 265/398 [00:00<00:00, 2632.22 examples/s]Map: 100%|██████████| 398/398 [00:00<00:00, 3071.90 examples/s]
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+LIB Build date: Jul  3 2025 03:14:07
+LIB Build date: Jul  3 2025 03:14:07
+Preset M12 is mapped to M10.
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+[demo] src episode 204 -> 37 (398 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/388 [00:00<?, ? examples/s]Map: 100%|██████████| 388/388 [00:00<00:00, 4424.92 examples/s]
+[demo] src episode 214 -> 38 (388 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/267 [00:00<?, ? examples/s]Map: 100%|██████████| 267/267 [00:00<00:00, 6024.78 examples/s]
+[demo] src episode 219 -> 39 (267 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/255 [00:00<?, ? examples/s]Map: 100%|██████████| 255/255 [00:00<00:00, 4298.24 examples/s]
+[demo] src episode 234 -> 40 (255 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/340 [00:00<?, ? examples/s]Map: 100%|██████████| 340/340 [00:00<00:00, 6054.60 examples/s]
+[demo] src episode 238 -> 41 (340 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/274 [00:00<?, ? examples/s]Map: 100%|██████████| 274/274 [00:00<00:00, 5070.30 examples/s]
+-------------------------------------------
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+LIB Build date: Jul  3 2025 03:14:07
+-------------------------------------------
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+-------------------------------------------
+[demo] src episode 241 -> 42 (274 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/367 [00:00<?, ? examples/s]Map: 100%|██████████| 367/367 [00:00<00:00, 5200.12 examples/s]
+[demo] src episode 260 -> 43 (367 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/457 [00:00<?, ? examples/s]Map: 100%|██████████| 457/457 [00:00<00:00, 6329.76 examples/s]
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+[demo] src episode 270 -> 44 (457 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/408 [00:00<?, ? examples/s]Map:  86%|████████▌ | 351/408 [00:00<00:00, 3485.17 examples/s]Map: 100%|██████████| 408/408 [00:00<00:00, 2762.13 examples/s]
+[demo] src episode 283 -> 45 (408 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/341 [00:00<?, ? examples/s]Map: 100%|██████████| 341/341 [00:00<00:00, 4449.24 examples/s]
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+LIB Build date: Jul  3 2025 03:14:07
+-------------------------------------------
+Preset M12 is mapped to M10.
+Number of PPCS 161
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+-------------------------------------------
+[demo] src episode 288 -> 46 (341 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/245 [00:00<?, ? examples/s]Map: 100%|██████████| 245/245 [00:00<00:00, 5640.35 examples/s]
+[demo] src episode 291 -> 47 (245 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/505 [00:00<?, ? examples/s]Map: 100%|██████████| 505/505 [00:00<00:00, 6107.45 examples/s]
+-------------------------------------------
+Level of Parallelism: 6
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+-------------------------------------------
+[demo] src episode 306 -> 48 (505 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/336 [00:00<?, ? examples/s]Map: 100%|██████████| 336/336 [00:00<00:00, 3469.03 examples/s]
+[demo] src episode 308 -> 49 (336 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/383 [00:00<?, ? examples/s]Map: 100%|██████████| 383/383 [00:00<00:00, 5013.62 examples/s]
+[demo] src episode 314 -> 50 (383 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/396 [00:00<?, ? examples/s]Map: 100%|██████████| 396/396 [00:00<00:00, 6268.00 examples/s]
+[demo] src episode 316 -> 51 (396 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/300 [00:00<?, ? examples/s]Map: 100%|██████████| 300/300 [00:00<00:00, 6135.58 examples/s]
+-------------------------------------------
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+LIB Build date: Jul  3 2025 03:14:07
+-------------------------------------------
+Preset M12 is mapped to M10.
+[asm level on system : up to avx2]
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+-------------------------------------------
+[demo] src episode 317 -> 52 (300 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/265 [00:00<?, ? examples/s]Map: 100%|██████████| 265/265 [00:00<00:00, 6232.81 examples/s]
+[demo] src episode 334 -> 53 (265 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/276 [00:00<?, ? examples/s]Map: 100%|██████████| 276/276 [00:00<00:00, 6153.90 examples/s]
+-------------------------------------------
+[demo] src episode 336 -> 54 (276 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/282 [00:00<?, ? examples/s]Map: 100%|██████████| 282/282 [00:00<00:00, 4079.64 examples/s]
+-------------------------------------------
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+-------------------------------------------
+Preset M12 is mapped to M10.
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+[demo] src episode 340 -> 55 (282 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/389 [00:00<?, ? examples/s]Map:  92%|█████████▏| 356/389 [00:00<00:00, 3543.32 examples/s]Map: 100%|██████████| 389/389 [00:00<00:00, 3084.58 examples/s]
+-------------------------------------------
+SVT [build]  :	GCC 14.2.1 20250110 (Red Hat 14.2.1-7)	 64 bit
+LIB Build date: Jul  3 2025 03:14:07
+-------------------------------------------
+Preset M12 is mapped to M10.
+[asm level on system : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+[demo] src episode 341 -> 56 (389 frames) 'put both moka pots on the stove Advantage: positive'
+Map:   0%|          | 0/278 [00:00<?, ? examples/s]Map: 100%|██████████| 278/278 [00:00<00:00, 6082.47 examples/s]
+LIB Build date: Jul  3 2025 03:14:07
+SVT [version]:	SVT-AV1 Encoder Lib v3.0.0
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+[asm level on system : up to avx2]
+[asm level selected : up to avx2]
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: width / height / fps numerator / fps denominator 		: 256 / 256 / 10 / 1
+SVT [config]: bit-depth / color format 					: 8 / YUV420
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: BRC mode / rate factor 					: CRF / 30 
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+-------------------------------------------
+[demo] src episode 350 -> 57 (278 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/282 [00:00<?, ? examples/s]Map: 100%|██████████| 282/282 [00:00<00:00, 4492.14 examples/s]
+-------------------------------------------
+Preset M12 is mapped to M10.
+Level of Parallelism: 6
+[demo] src episode 352 -> 58 (282 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/342 [00:00<?, ? examples/s]Map:  67%|██████▋   | 229/342 [00:00<00:00, 2245.65 examples/s]Map: 100%|██████████| 342/342 [00:00<00:00, 2677.02 examples/s]
+[demo] src episode 359 -> 59 (342 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/275 [00:00<?, ? examples/s]Map: 100%|██████████| 275/275 [00:00<00:00, 6109.22 examples/s]
+-------------------------------------------
+[demo] src episode 363 -> 60 (275 frames) 'put both the alphabet soup and the tomato sauce in the basket Advantage: positive'
+Map:   0%|          | 0/458 [00:00<?, ? examples/s]Map: 100%|██████████| 458/458 [00:00<00:00, 5142.93 examples/s]
+-------------------------------------------
+-------------------------------------------
+Preset M12 is mapped to M10.
+-------------------------------------------
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: main profile	tier (auto)	level (auto)
+SVT [config]: preset / tune / pred struct 					: 10 / PSNR / random access
+SVT [config]: gop size / mini-gop size / key-frame type 			: 2 / 16 / key frame
+SVT [config]: AQ mode / variance boost 					: 2 / 0
+SVT [config]: sharpness / luminance-based QP bias 			: 0 / 0
+-------------------------------------------
+[demo] src episode 376 -> 61 (458 frames) 'put both moka pots on the stove Advantage: positive'
+[done] 62 episodes, 21379 frames

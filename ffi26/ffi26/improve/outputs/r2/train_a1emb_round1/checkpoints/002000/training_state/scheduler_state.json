@@ -1,0 +1,18 @@
+{
+    "base_lrs": [
+        1e-05,
+        0.001
+    ],
+    "last_epoch": 2000,
+    "_step_count": 2001,
+    "_is_initial": false,
+    "_get_lr_called_within_step": false,
+    "_last_lr": [
+        2.5e-06,
+        0.00025
+    ],
+    "lr_lambdas": [
+        null,
+        null
+    ]
+}

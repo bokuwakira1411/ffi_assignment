@@ -57,7 +57,8 @@ Mỗi segment được so với các rollout khác trong nhóm tại cùng mốc
 | Round 1 — hậu tố văn bản | ✅ thất bại | bảng dưới |
 | Round 1 — embedding nhãn (cùng dữ liệu) | ✅ chưa có tác dụng | bảng dưới |
 | Round 2, 3 | chờ | — |
-| Ablation AWR | chờ | — |
+| Ablation AWR (dữ liệu round 1) | ✅ không đổi | bảng dưới |
+| AWR đầy đủ 6000 bước (≈1 epoch, dữ liệu round 1) | ✅ không đổi | bảng dưới |
 
 Round 1 (nguồn `summary.md`):
 
@@ -72,8 +73,13 @@ Round 1 (nguồn `summary.md`):
 | positive | 38/100 | 23/68 | 118/160 |
 | none | 44/100 | 31/68 | — |
 | negative | 44/100 | 28/68 | — |
+| **A2 — AWR** (trọng số theo advantage, không nhãn) | 43/100 | 32/68 | 128/160 |
+| **A2 — AWR 6000 bước** (≈1 epoch) | | | |
+| checkpoint 2000 | 47/100 | 32/68 | 121/160 |
+| checkpoint 4000 | 41/100 | 27/68 | 123/160 |
+| checkpoint 6000 | 41/100 | 29/68 | 126/160 |
 
-→ Cả hai cách: positive − negative = −6 điểm % (McNemar p 0.29) — không phát hiện được khác biệt; không nhãn ≈ chính thức (không quên).
+→ Cả hai cách: positive − negative = −6 điểm % (McNemar p 0.29) — không phát hiện được khác biệt; không nhãn ≈ chính thức (không quên). AWR ≈ chính thức (43 vs 44; 13 / 14 cặp, McNemar p 1.00). AWR 6000 bước: không checkpoint nào khác chính thức (McNemar p 0.68 / 0.70 / 0.68); loss train phẳng từ bước ~3000 (trung bình 1000 bước: 0.187 → 0.134 → 0.122 → 0.119 → 0.119 → 0.117, `round1/loss_awr6k.csv`).
 Nhãn không bị đảo: frame positive chủ yếu từ rollout thành công (23 207 so với 9 638), negative gần như toàn từ rollout thất bại (43 369 so với 1 715) — `round1/segments.csv`.
 
 ## File
