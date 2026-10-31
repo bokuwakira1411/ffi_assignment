@@ -234,6 +234,19 @@ Không commit.
 
 ---
 
+### Việc 15: viết `docs/study.md` (RL cho VLA, diffusion vs flow matching)
+
+Đọc (chỉ đọc): bản HTML arXiv của 2509.09674, 2505.22094, 2510.25889, 2511.14759v2, 2505.17016, 2505.18719, 2506.01844,
+2410.24164; trang abs 2210.02747; PDF 2303.04137 (chuyển sang text bằng `pdftotext` trong scratch). Đọc thêm
+`ffi26/ffi26/results/probe_report.json`.
+
+Sửa repo (**SỬA REPO**): viết lại toàn bộ `docs/study.md` từ template thành bản hoàn chỉnh, gọn: 6 nguồn RL, bảng so sánh,
+câu hỏi mở, diffusion vs flow. Bỏ mục "Nối với kết quả của mình" và checklist. Không đụng `literature_matrix.xlsx`. Không commit.
+
+Sửa tiếp (**SỬA REPO**): bỏ ReinFlow (không phải VLA) khỏi danh sách và mọi trích dẫn; còn 5 bài VLA + RL, đánh số lại 1–5.
+
+---
+
 ## Quy tắc Claude tuân theo từ nay trong repo này
 
 1. Trước khi chạy bất cứ thứ gì: nêu mục tiêu và kế hoạch (các bước, file sẽ đọc, file sẽ ghi). Nếu không chỉ là đọc nhanh thì chờ bạn duyệt.
