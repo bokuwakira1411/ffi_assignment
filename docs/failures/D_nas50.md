@@ -1,8 +1,10 @@
 # D_nas50: libero_10, n_action_steps = 50, relative, seed 1000, 50 episode/task
 
+> `failure_analysis.md` đã xoá khỏi repo ngày 31/10/2026; bản cuối: `git show e852bb7:failure_analysis.md`.
+
 Cấu hình (`cmd.txt`): giống D_nas1, chỉ khác `--policy.n_action_steps=50` (giá trị trong config của checkpoint).
 Chỉ có video cho episode 0–9 của mỗi task, nên bảng nguyên nhân chỉ gồm 48 trên tổng 261 thất bại.
-Phân tích chi tiết, gồm 22 cặp cùng cảnh mà NAS=1 thành công: `failure_analysis.md` mục 6.5. Nhóm N1–N7 ở đó
+Phân tích chi tiết, gồm 22 cặp cùng cảnh mà NAS=1 thành công: `e852bb7:failure_analysis.md` mục 6.5. Nhóm N1–N7 ở đó
 được gán sang bộ nguyên nhân chung F0–F6 (cột "Ghi chú" giữ tên nhóm cũ).
 
 ## Nhận xét

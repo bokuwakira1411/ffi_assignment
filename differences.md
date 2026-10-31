@@ -10,6 +10,11 @@ Quy ước nhãn nguồn:
 
 Các đường dẫn `results/...` là tương đối với `~/ffi26/`.
 
+> Ngày 31/10/2026 đã xoá theo yêu cầu: `results/smoke_20261030_110519`, `results/smoke_20261030_110908`,
+> `results/demo_spatial`, `ckpt_files/`, `results/runs/run/` và các `summary_per_*.csv` cũ của B_main, F_spatial.
+> Trừ `runs/run/` (chưa từng commit), các file này còn trong git: `git show e852bb7:ffi26/ffi26/<đường dẫn>`.
+> `smoke_20261029_103016`, `smoke_20261030_103053`, `…104519`, `…104640`, `…105033`, `…105113`, `…110353` đã không còn trên máy từ trước.
+
 ## 1. Mô hình và checkpoint
 
 | Mục | Giá trị | Nguồn |

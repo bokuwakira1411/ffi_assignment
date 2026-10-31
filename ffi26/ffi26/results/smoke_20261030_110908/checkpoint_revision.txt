@@ -1,3 +1,0 @@
-repo: lerobot/smolvla_base
-commit_sha: 5e8d12a6e2975b0e5e5fce7c8caf47c371d257b6
-last_modified: 2026-10-06 13:57:08+00:00

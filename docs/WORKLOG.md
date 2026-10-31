@@ -254,3 +254,12 @@ Sửa tiếp (**SỬA REPO**): bỏ ReinFlow (không phải VLA) khỏi danh sá
 3. Không sửa kết quả trong `~/ffi26` và không chạy các script của repo (`run_queue.sh`, `train_more.sh`, `collect_results.py`, ...) khi chưa được bạn cho phép rõ ràng.
 4. Chat với bạn bằng tiếng Anh; mọi file báo cáo (md trong repo) viết bằng tiếng Việt.
 
+
+## Phiên 31/10/2026 tối: docs/reproduce.md, docs/analyse.md, dọn repo (theo yêu cầu)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Viết `docs/reproduce.md`, `docs/analyse.md` (số lấy từ `probe_report.json`, `differences.md`, `docs/failure_overview.md`, `results/round2/episodes.csv`) | **SỬA REPO** (file mới) |
+| 2 | Viết lại `readme.md` | **SỬA REPO** |
+| 3 | Xoá (bạn duyệt): `failure_analysis.md`, `docs/DAY1.md`, `ffi26/lerobot/` (clone thứ hai, gitlink), `ffi26/logs/`, `ffi26/results/`, `ffi26/ffi26/results/{smoke_20261030_110519,smoke_20261030_110908,demo_spatial,runs/run}`, `ffi26/ffi26/ckpt_files/`, `runs/{B_main,F_spatial}/summary_per_*.csv`. Giữ `demo_tasks`. Bản cũ (trừ `runs/run`) còn ở commit `e852bb7` | **SỬA REPO** |
+| 4 | Sửa tham chiếu tới file đã xoá → `e852bb7:failure_analysis.md` / `e852bb7:docs/DAY1.md` trong `docs/failure_overview.md`, `docs/analyse.md`, `docs/study.md`, `docs/failures/{B_main,D_nas50,spatial_results}.md`, `docs/failures/notes/{B_main,D_nas50}.md`; thêm ghi chú file đã xoá vào `differences.md` | **SỬA REPO** |

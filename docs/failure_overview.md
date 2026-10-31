@@ -1,5 +1,7 @@
 # FFI26: so sánh các cấu hình và nguyên nhân thất bại chung (libero_10)
 
+> `failure_analysis.md` đã xoá khỏi repo ngày 31/10/2026; bản cuối: `git show e852bb7:failure_analysis.md`.
+
 Viết ngày 31/10/2026. Bài toán chính là **libero_10** (LIBERO-Long). LIBERO-Spatial chỉ dùng để kiểm tra checkpoint,
 nên chỉ có kết quả cuối ở `docs/failures/spatial_results.md`.
 
@@ -56,7 +58,7 @@ Nhận xét:
 ## 2. Bộ nguyên nhân thất bại chung
 
 Mỗi episode thất bại có video được gán **đúng một nguyên nhân chính**, kèm giai đoạn và mức bằng chứng.
-Mọi thất bại đều kéo dài đúng 520 bước (hết giờ; `failure_analysis.md` mục 2.1), nên nguyên nhân chỉ đọc được từ video.
+Mọi thất bại đều kéo dài đúng 520 bước (hết giờ; `e852bb7:failure_analysis.md` mục 2.1), nên nguyên nhân chỉ đọc được từ video.
 
 | Mã | Tên | Định nghĩa (nhận ra trong video như thế nào) | Ví dụ |
 |---|---|---|---|

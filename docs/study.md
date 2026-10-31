@@ -2,7 +2,7 @@
 
 Nguồn đọc ngày 31/10/2026 trên bản HTML arXiv (Diffusion Policy: bản PDF v5). Mỗi số có ghi vị trí trong bài.
 Số liệu SmolVLA lấy từ `ffi26/ffi26/results/probe_report.json` (viết tắt **probe**). Venue của bài 1 lấy theo
-`DAY1.md` mục D; trang arXiv không ghi venue.
+`DAY1.md` mục D (đã xoá; bản cuối: `git show e852bb7:docs/DAY1.md`); trang arXiv không ghi venue.
 
 ## 1. Năm bài đề xuất phương pháp RL cho VLA
 

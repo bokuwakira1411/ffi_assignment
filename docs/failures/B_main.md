@@ -1,10 +1,12 @@
 # B_main: libero_10, n_action_steps = 1, relative, 3 seed
 
+> `failure_analysis.md` đã xoá khỏi repo ngày 31/10/2026; bản cuối: `git show e852bb7:failure_analysis.md`.
+
 Cấu hình (`cmd.txt`): `lerobot/smolvla_libero`, `--policy.n_action_steps=1`, `--env.control_mode=relative`,
 10 episode mỗi job, seed 1000/1001/1002. Episode i dùng init state i, nên 3 seed dùng cùng 10 cảnh ban đầu
-(`differences.md` mục 3). Phân tích chi tiết từng nhóm: `failure_analysis.md` mục 2–4.
+(`differences.md` mục 3). Phân tích chi tiết từng nhóm: `e852bb7:failure_analysis.md` mục 2–4.
 
-Bản này gán lại 142 thất bại vào bộ nguyên nhân chung F0–F6. Các nhãn lấy từ mục 3 của `failure_analysis.md`.
+Bản này gán lại 142 thất bại vào bộ nguyên nhân chung F0–F6. Các nhãn lấy từ mục 3 của `e852bb7:failure_analysis.md`.
 31 episode trước đây là "không xác định" đã được xem lại bằng khung điển hình ngày 31/10/2026; hiện chỉ còn 2 episode F0.
 
 ## Nhận xét
@@ -17,7 +19,7 @@ Bản này gán lại 142 thất bại vào bộ nguyên nhân chung F0–F6. C�
 3. **F6 (27/142)**: cánh tay đi ra khỏi vùng làm việc và ở đó đến hết giờ. Task 1 (11/14: cầm hộp cream cheese đi
    về góc trên trái) và task 4 (8/23: mang cốc trắng sang phải, cánh tay vươn ra khỏi khung).
 4. **F1 kiểu "tay không"** cũng xuất hiện với NAS=1: ở task 0 `e0 s1001` và `e0 s1002`, tay tới giỏ nhưng lon xanh vẫn
-   nằm sau hộp sữa **[khung điển hình]**. Như vậy kiểu thất bại N1 của D_nas50 (`failure_analysis.md` mục 6.5) không
+   nằm sau hộp sữa **[khung điển hình]**. Như vậy kiểu thất bại N1 của D_nas50 (`e852bb7:failure_analysis.md` mục 6.5) không
    chỉ có ở NAS=50, nhưng với NAS=1 mới thấy 2/142 so với 10/48 ở NAS=50.
 5. Giai đoạn: 59 episode hỏng trước khi xong bước con thứ nhất, 51 hỏng ở bước sau, 32 không xác định (chủ yếu task 1
    và 4, vì camera ngoài không thấy vật thứ nhất đã tới đích hay chưa).
