@@ -15,10 +15,10 @@ Dung lượng tính bằng `du -b`, đơn vị GiB (1024³ byte). **Chưa xoá f
 | A1e | Nhãn advantage qua embedding | `improve/outputs/r2/train_a1emb_round1` | xong | `checkpoints/002000` | `r2/eval/a1emb_r1_*` | — | `eval_round1_emb.yaml` |
 | A2 | AWR 2000 bước | `improve/outputs/r2/train_awr_round1` | xong | `checkpoints/002000` | `r2/eval/awr_r1` | — | `eval_round1_awr.yaml` |
 | A2' | AWR 6000 bước | `improve/outputs/r2/train_awr6k_round1` | xong | `002000`, `004000`, `006000` (cả 3 đã eval) | `r2/eval/awr6k_r1_s*` | — | `eval_round1_awr6k.yaml` |
-| F1 | FPO v1 (bf16, batch 32) | `improve/outputs/fpo` | xong | θ3 = `iter2/train/pretrained_model` | sàng lọc: `r2/eval/fpo_it{1..4}`, `r2/eval_s2000/fpo_it3`; giao thức cuối: `fpo_v2/eval_s*/fpo_v1_it3` | `results/videos/v1t3_*.mp4` | `fpo.yaml`, `loop.log` |
-| F2 | FPO v2 (fp32, batch 128, neo BC) | `improve/outputs/fpo_v2` | xong | θ4 = `iter3/train/pretrained_model` | `fpo_v2/eval_s{1000,3000,4000,5000}` | `results/videos/v2_*.mp4`, `v2_forget/` | `fpo_v2.yaml`, `iter_summary.csv` |
-| F3 | FPO v3 (+ demo replay, chuẩn hoá theo task) | `improve/outputs/fpo_v3` | xong | θ4 = `iter3/train/pretrained_model` | `fpo_v3/eval_s*` | `results/videos/v4_paired/v3_*` | `fpo_v3.yaml` |
-| F4 | FPO v4 (trọng số theo segment) | `improve/outputs/fpo_v4` | xong | θ4 = `iter3/train/pretrained_model` | `fpo_v4/eval_s*`, `results/round2/fpo_v4/pooled.md` | `results/videos/v4_paired/` | `fpo_v4.yaml` |
+| F1 | FPO v1 (bf16, batch 32) | `improve/outputs/fpo` | xong | θ3 = `iter2/train/pretrained_model` | sàng lọc: `r2/eval/fpo_it{1..4}`, `r2/eval_s2000/fpo_it3`; giao thức cuối: `fpo_v2/eval_s*/fpo_v1_it3` | `results/videos/1_v1_v2/v1t3/` | `fpo.yaml`, `loop.log` |
+| F2 | FPO v2 (fp32, batch 128, neo BC) | `improve/outputs/fpo_v2` | xong | θ4 = `iter3/train/pretrained_model` | `fpo_v2/eval_s{1000,3000,4000,5000}` | `results/videos/1_v1_v2/v2/`, `2_v2_forget/` | `fpo_v2.yaml`, `iter_summary.csv` |
+| F3 | FPO v3 (+ demo replay, chuẩn hoá theo task) | `improve/outputs/fpo_v3` | xong | θ4 = `iter3/train/pretrained_model` | `fpo_v3/eval_s*` | `results/videos/3_v4_paired/v3/` | `fpo_v3.yaml` |
+| F4 | FPO v4 (trọng số theo segment) | `improve/outputs/fpo_v4` | xong | θ4 = `iter3/train/pretrained_model` | `fpo_v4/eval_s*`, `results/round2/fpo_v4/pooled.md` | `results/videos/3_v4_paired/` | `fpo_v4.yaml` |
 | T | Chẩn đoán task 0: nhãn + cosine gradient (phiên khác) | `improve/outputs/task0_diag` | xong (GPU n=32, n=256) | — | `tables.md`, `grad_cos_*.csv` | — | `run_after_v4.log` |
 | L | Failure labeler v2 (official, v1, v2, v3, v4) | `improve/outputs/failure_labels{,_v3,_v4}` | xong (tự động) | — | `summary.md` | `render/` (20 cấu hình, chưa render) | — |
 | S | Smoke / dry-run / thử chi phí | `improve/outputs/fpo/smoke`, `fpo_v2_aborted`, `fpo_v2_costtest` | dừng / chỉ thử | — | số đã ghi trong WORKLOG | — | `loop.log` |
@@ -115,6 +115,6 @@ Phần mất đi (cho tới khi khôi phục):
 
 ## 7. Câu hỏi còn mở
 
-1. **18 file mp4 của `results/videos/v2_forget/`** đã nằm trong commit `9bf49db` của bạn. Có cần `git rm --cached` không?
+1. **18 file mp4 của `results/videos/v2_forget/` (nay là `2_v2_forget/`)** đã nằm trong commit `9bf49db` của bạn. Có cần `git rm --cached` không?
 2. **Cho phép ghi A3 (~55 GB) lên `/mnt/hdd4tb/ffi26_archives/` không?** Nếu có, chọn: một file zip hay mỗi phiên bản một file? Có làm `decisions_meta.npz` (§3) trước khi xoá không?
 3. **Replay video:** 167/168 episode replay trùng bản gốc. Episode lệch là v3, seed 3000, task 8, init 1: vẫn thành công nhưng 429 bước so với 431. Episode này không thuộc tập được chọn làm video, nhưng cho thấy replay không tất định tuyệt đối.

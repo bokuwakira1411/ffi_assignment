@@ -15,3 +15,31 @@ __pycache__/
 # Output thô của Improve (log từng episode, video, checkpoint) — bảng tổng hợp đã nằm trong results/round2/
 #ffi26/ffi26/improve/outputs/
 docs/huong_dan_doc_ket_qua.md
+
+# --- Ẩn khỏi repo (01/11/2026): file vẫn giữ trên máy, không cần cho người clone ---
+# Rác build LaTeX (giữ main.pdf)
+report/main.aux
+report/main.fdb_latexmk
+report/main.fls
+report/main.log
+report/main.out
+report/main.xdv
+# Thử nghiệm hỏng / chạy thử, output demo, checkpoint cũ, log cài đặt, ghi chú tay
+ffi26/ffi26/improve/outputs/fpo_v2_aborted/
+ffi26/ffi26/improve/outputs/fpo/smoke/
+ffi26/ffi26/improve/outputs/fpo_v2_costtest/
+ffi26/ffi26/improve/outputs/speedtest/
+ffi26/ffi26/demo/out/
+ffi26/ffi26/results/demo_tasks/
+ffi26/ffi26/logs/
+run_steps
+# Video eval của Reproduce (199 MB); eval_info.json, log, csv vẫn giữ
+ffi26/ffi26/results/runs/**/*.mp4
+# Log từng rollout khi thu dữ liệu FPO (bảng kết quả không dùng)
+ffi26/ffi26/improve/outputs/*/iter*/logs
+# Nhật ký làm việc
+docs/WORKLOG.md
+report/MAIN_TEX_NOTES.md
+
+# Báo cáo (ẩn theo yêu cầu 01/11/2026)
+report/

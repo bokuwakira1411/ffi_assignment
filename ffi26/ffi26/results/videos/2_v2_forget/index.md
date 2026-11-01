@@ -1,10 +1,10 @@
 # Video: v2 θ4 thất bại ở task 1 và 7 (eval quên, seed 1000)
 
-Config: `results/videos/v2_forget/configs/videos_v2_forget.yaml`; script `improve/scripts/phase3_eval_video.py` (replay chính xác, expert fp32, batch 8, 20 episode/task). Kiểm tra tất định: `replay_check_v2.csv`, 0/40 episode replay khác bản gốc `outputs/fpo_v2/eval_s1000/fpo_v2_sel`.
+Config: `_meta/configs/videos_v2_forget.yaml`; script `improve/scripts/phase3_eval_video.py` (replay chính xác, expert fp32, batch 8, 20 episode/task). Kiểm tra tất định: `_meta/replay_check_v2.csv`, 0/40 episode replay khác bản gốc `outputs/fpo_v2/eval_s1000/fpo_v2_sel`.
 
 Vật của task 0 = vật mục tiêu của task 0 (`alphabet_soup_1`, `tomato_sauce_1`; bỏ `basket_1` vì dùng chung) mà KHÔNG phải vật mục tiêu của task đang chạy: task 1 (cream cheese + butter → basket): cả hai; task 7 (alphabet soup + cream cheese → basket): chỉ `tomato_sauce_1`.
 
-Bộ phát hiện tự động (`src/reward.py`, tính từ log gốc, CHƯA xem video để xác nhận từng episode): chạm = grasp hoặc tiếp xúc gripper ở bất kỳ bước nào; nhấc = đang giữ và cao hơn vị trí reset ≥ 3 cm; dịch chuyển = đã chạm rồi bị dời > ngưỡng `MOVE_THRESHOLD`. Script: `improve/scripts/v2_forget_wrong_object.py`; bảng đầy đủ: `wrong_object.csv`.
+Bộ phát hiện tự động (`src/reward.py`, tính từ log gốc, CHƯA xem video để xác nhận từng episode): chạm = grasp hoặc tiếp xúc gripper ở bất kỳ bước nào; nhấc = đang giữ và cao hơn vị trí reset ≥ 3 cm; dịch chuyển = đã chạm rồi bị dời > ngưỡng `MOVE_THRESHOLD`. Script: `improve/scripts/v2_forget_wrong_object.py`; bảng đầy đủ: `_meta/wrong_object.csv`.
 
 ## Tổng hợp (mọi episode, không chỉ thất bại)
 

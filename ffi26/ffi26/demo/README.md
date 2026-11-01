@@ -9,9 +9,9 @@ Viết ngày 01/11/2026. `~/ffi26` là symlink tới `~/Lan_K68AI/temp/ffi26/ffi
 | Báo cáo | `~/Lan_K68AI/temp/report/main.pdf` (nguồn: `main.tex`, hình: `report/figures/`) |
 | Bảng số cuối (v4 so với official, v3) | `results/round2/fpo_v4/pooled.md` |
 | Số liệu từng episode | `results/round2/fpo_v4/episodes_all.csv`; `improve/outputs/*/eval_s*/*/task*/ep*.meta.json` |
-| Video so sánh official / v3 / v4 trên cùng episode | `results/videos/v4_paired/sidebyside/*.mp4` (3 video cạnh nhau), từng arm: `results/videos/v4_paired/*.mp4` |
-| Khung hình tóm tắt | `results/videos/v4_paired/keyframes/*.png`, `report/figures/fig_keyframes.pdf` |
-| Video official / v1 / v2, quên của v2 | `results/videos/*.mp4`, `results/videos/v2_forget/` |
+| Video so sánh official / v3 / v4 trên cùng episode | `results/videos/3_v4_paired/sidebyside/*.mp4` (3 video cạnh nhau), từng arm: `results/videos/3_v4_paired/{official,v3,v4}/` |
+| Khung hình tóm tắt | `results/videos/3_v4_paired/keyframes/*.png`, `report/figures/fig_keyframes.pdf` |
+| Video official / v1 / v2, quên của v2 | `results/videos/1_v1_v2/`, `results/videos/2_v2_forget/` (mục lục: `results/videos/README.md`) |
 | Thất bại của checkpoint gốc (Analyse) | `~/Lan_K68AI/temp/docs/failures/frames/`, `docs/failures/*.md` |
 
 ## 2. Chạy demo (GPU, khoảng 1–3 phút mỗi phương pháp)
