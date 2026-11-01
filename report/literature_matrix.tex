@@ -1,0 +1,172 @@
+% FFI26 — Study: bảng tổng hợp tài liệu (literature matrix), tách khỏi main.tex.
+% Biên dịch: cd report && latexmk -xelatex literature_matrix.tex
+% Nguồn: docs/study.md (đọc bài ngày 31/10/2026; vị trí §/Eq./Table ghi trong từng ô).
+% Số SmolVLA lấy từ ffi26/ffi26/results/probe_report.json (viết tắt "probe").
+\documentclass[9pt,a4paper]{extarticle}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+
+\usepackage[landscape,margin=1.4cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+
+\setlist{itemsep=0pt,topsep=1pt,leftmargin=1em}
+\captionsetup{font=small,labelfont=bf,skip=4pt}
+\setlength{\parskip}{2pt}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\review}[1]{\fcolorbox{orange}{orange!8}{\parbox{0.97\linewidth}{\scriptsize\textcolor{orange!70!black}{\textbf{[Cần bạn điền / kiểm tra]} #1}\\[1.6em]}}}
+
+\title{\textbf{Study: bảng tổng hợp tài liệu}\\[2pt]\large RL cho VLA tổng quát; diffusion và flow matching trong sinh hành động}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2.5em}
+
+\noindent Mỗi ô ghi vị trí trong bài gốc (§, Eq., Table, App.). Số liệu là số tác giả báo cáo, chưa tái lập trong repo này,
+trừ các số SmolVLA ghi nguồn \emph{probe}. Bảng~\ref{tab:rl} so sánh năm bài RL cho VLA; Bảng~\ref{tab:gen} so sánh
+diffusion và flow matching.
+
+% ===================================================================== 1 RL cho VLA
+\section*{1. Năm phương pháp RL cho VLA}
+{\scriptsize
+\begin{longtable}{@{}L{2.0cm} L{2.6cm} L{3.6cm} L{2.7cm} L{3.0cm} L{3.0cm} L{3.3cm} L{3.4cm}@{}}
+\caption{Ma trận so sánh năm bài RL cho VLA.}\label{tab:rl}\\
+\toprule
+Bài & Model nền, dạng action & Mục tiêu học & Reward & Cách huấn luyện, phần được update & Giả định & Kết quả chính & Câu hỏi còn mở \\
+\midrule\endfirsthead
+\toprule
+Bài & Model nền, dạng action & Mục tiêu học & Reward & Cách huấn luyện, phần được update & Giả định & Kết quả chính & Câu hỏi còn mở \\
+\midrule\endhead
+\bottomrule\endfoot
+\textbf{SimpleVLA-RL} \newline arXiv:2509.09674 \newline (ICLR 2026)
+& OpenVLA-OFT 7B, head sửa thành token (256 token, chunk 8 trên LIBERO) (§4.1); \textbf{token}
+& GRPO, không critic, bỏ KL; clip $[0{,}8;\,1{,}28]$; bỏ nhóm toàn thắng/toàn thua; nhiệt độ rollout 1,6 (§3.3–3.4, Eq.~10–11)
+& nhị phân 0/1 theo kết quả, gán cho mọi token của trajectory (§3.2, Eq.~9)
+& online, sim (LIBERO, RoboTwin); SFT trước rồi RL; 8$\times$A800; update toàn bộ (§4.1)
+& SFT phải có success $>0$ (SFT 0 traj.\ $\Rightarrow$ RL vẫn 0\%, §6.2); reset được môi trường
+& LIBERO TB 91,0$\to$99,1, SFT đầy đủ (Table~2); SFT 1 traj./task: 48,9$\to$96,9, Long 17,3$\to$91,7 (Table~5)
+& học khi success $\approx0$ (§6.2); policy học đường tắt khác demo, đẩy vật thay vì gắp, ``pushcut'' (§6.1) \\
+\midrule
+\textbf{$\pi_{\text{RL}}$} \newline arXiv:2510.25889
+& $\pi_0$, $\pi_{0.5}$, 3,3B (App.~B.2); \textbf{flow}
+& PPO + GAE ở mức chunk; log-likelihood qua Flow-Noise (§4.1) hoặc Flow-SDE (§4.2)
+& nhị phân trên LIBERO (App.~C.1); ManiSkill thêm 0,1 khi gripper chạm vật (App.~C.2)
+& online, sim, khung RLinf; SFT few-shot trước; 8$\times$H100; chỉ update action expert $\sim$300M, VLM đóng băng (App.~B.2)
+& có SFT trước; sim đủ nhanh để rollout online
+& LIBERO few-shot $\pi_0$: 57,6$\to$97,6 (Flow-Noise) / 96,1 (Flow-SDE); $\pi_{0.5}$: 77,1$\to$98,3 / 97,9 (Table~3)
+& cần nhiều rollout và reset (§6); Flow-Noise hay Flow-SDE tốt hơn tuỳ model (Table~1); MetaWorld OOD không cải thiện (§5.2.2) \\
+\midrule
+\textbf{$\pi^*_{0.6}$ / RECAP} \newline arXiv:2511.14759
+& $\pi_{0.6}$: Gemma 3 4B + action expert 860M (§V-A); \textbf{flow} (+ token FAST phụ)
+& advantage conditioning: $-\log\pi(a\mid o,\ell)-\alpha\log\pi(a\mid I,o,\ell)$, $I=\mathbb{1}(A>\epsilon_\ell)$ (§IV-B, Eq.~3); value phân phối 201 bin, VLM 670M (Eq.~1, §V-C); không cần log-prob chính xác
+& $-1$ mỗi bước, 0 nếu thành công, $-C_{\text{fail}}$ nếu thất bại (Eq.~5)
+& lặp offline trên robot thật: thu rollout + can thiệp của người, huấn luyện lại từ checkpoint pretrain (Alg.~1, §V-D); update toàn bộ VLA + value function
+& quan sát Markov; can thiệp của người luôn tốt ($I=$ True) (§IV-B); có người gán reward, can thiệp, reset (§VII)
+& robot thật: throughput tăng hơn 2 lần, tỉ lệ thất bại giảm khoảng một nửa ở task khó (abstract, Fig.~7); success $>90\%$ trừ task giặt đồ đa dạng (Fig.~8)
+& phụ thuộc người reset, gán reward, can thiệp (§VII) \\
+\midrule
+\textbf{RIPT-VLA} \newline arXiv:2505.17016
+& QueST $\sim$20M (token); OpenVLA-OFT 7B (hồi quy liên tục) (§5.1); \textbf{token / liên tục}
+& PPO clip + advantage leave-one-out (RLOO), $K=16$ (QueST) / 8 (OFT); bỏ context toàn thắng/toàn thua (Eq.~5–6, §4.2)
+& nhị phân 0/1, không critic (§3.1)
+& online, sim (LIBERO, MetaWorld ML45); OFT cần thêm head dự đoán scale Laplace để có log-prob (§4.3); OFT: LoRA $r=32$ + action head (§5.1)
+& SFT có success $>0$; reset được đúng context ban đầu cho cả nhóm rollout (§4.1–4.2)
+& LIBERO, QueST: 82,7$\to$93,6, Long 68,8$\to$87,5; OFT: 96,7$\to$97,5 (Table~1); 1 demo: 3,5\%$\to$97,2\% (§5.4)
+& học khi success $\approx0$ (§4.1); trần hiệu năng: SFT đã mạnh thì RL tăng ít (OFT +0,8, Table~1) \\
+\midrule
+\textbf{VLA-RL} \newline arXiv:2505.18719
+& OpenVLA-7B (§3); \textbf{token}
+& PPO + GAE, có critic, critic warmup (§3.3, §3.5); log-prob = tổng log-prob của 7 token action (Eq.~1)
+& sparse của môi trường + reward model quá trình (RPRM) học từ nhãn giả: tách bước con theo độ mở gripper và vận tốc $\approx0$ (§3.4)
+& online, sim (LIBERO 4 suite, mỗi suite train riêng); $\sim$48 GPU-giờ; LoRA
+& nhãn giả từ gripper/vận tốc khớp ranh giới bước con
+& LIBERO TB 76,5$\to$81,0, Long 53,7$\to$59,8 (Table~1)
+& RPRM dựa trên heuristic, tác giả thừa nhận khó áp dụng cho thao tác khéo léo (§5) \\
+\end{longtable}}
+
+\paragraph{Câu hỏi còn mở chung} (tổng hợp của em từ cột cuối):
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{Reward thưa.} Reward nhị phân không cho gradient khi không rollout nào thành công (SimpleVLA-RL, RIPT-VLA); reward quá trình (VLA-RL) lại dựa trên heuristic.
+\item \textbf{Hiệu quả mẫu và reset.} RL online cần nhiều rollout và reset về cùng cảnh ban đầu; trên robot thật phải cần người ($\pi^*_{0.6}$).
+\item \textbf{Log-likelihood cho policy flow.} Chưa có cách tốt nhất cho mọi model ($\pi_{\text{RL}}$: Flow-Noise hay Flow-SDE tuỳ model); RECAP tránh hẳn log-prob.
+\item \textbf{Tổng quát hoá và trần hiệu năng.} Kết quả OOD không ổn định; policy có thể học đường tắt; SFT càng mạnh thì RL tăng càng ít.
+\end{enumerate}
+
+% ===================================================================== 2 Diffusion vs flow
+\section*{2. Diffusion và flow matching trong sinh hành động}
+{\scriptsize
+\begin{longtable}{@{}L{3.0cm} L{10.8cm} L{10.8cm}@{}}
+\caption{Ma trận so sánh diffusion (Diffusion Policy, DDPM) và flow matching ($\pi_0$, SmolVLA).}\label{tab:gen}\\
+\toprule
+Tiêu chí & Diffusion (DDPM) — Diffusion Policy, arXiv:2303.04137 & Flow matching — $\pi_0$ arXiv:2410.24164; SmolVLA arXiv:2506.01844 \\
+\midrule\endfirsthead
+\toprule
+Tiêu chí & Diffusion (DDPM) & Flow matching \\
+\midrule\endhead
+\bottomrule\endfoot
+\textbf{Điểm chung}
+& \multicolumn{2}{L{21.8cm}}{Một mạng nhận \emph{chunk action đang bị nhiễu} cùng bước thời gian/mức nhiễu, có điều kiện là quan sát, và trả ra một đại lượng (nhiễu hoặc vận tốc) để khử nhiễu dần từ Gauss về action.} \\
+\midrule
+\textbf{Kiến trúc}
+& Điều kiện là quan sát $O_t$. Hai backbone (§3.1): CNN 1D với FiLM theo $O_t$ và bước $k$; hoặc transformer, token action nhiễu đi qua cross-attention với embedding quan sát.
+& VLM xử lý ảnh, câu lệnh và state (prefix). \emph{Action expert} là transformer nhỏ xử lý token action và attend vào đặc trưng VLM; KV của prefix được cache nên mỗi bước tích phân chỉ tính lại phần action ($\pi_0$ §IV, App.~A-D). \newline
+SmolVLA (probe): VLM SmolVLM2-500M (16 lớp ngôn ngữ, vision 12 lớp); tổng 450,0M tham số, action expert 98,2M (16 lớp, rộng 0,75 lần VLM); prefix 177 token (2 camera $\times$ 64 + 48 ngôn ngữ + state); output chunk 50$\times$7; expert cross-attention vào VLM, xen self-attention mỗi 2 lớp. \\
+\midrule
+\textbf{Mục tiêu huấn luyện}
+& Lấy action sạch $x^0$, chọn bước $k$, cộng nhiễu $\varepsilon^k$; mạng \emph{dự đoán nhiễu}:
+$\mathcal{L}=\mathrm{MSE}\big(\varepsilon^k,\ \varepsilon_\theta(O_t,\,x^0+\varepsilon^k,\,k)\big)$ (§2.2 Eq.~3, điều kiện $O_t$ theo §2.3).
+& Nội suy thẳng giữa action và nhiễu; theo quy ước code SmolVLA $x_t=t\varepsilon+(1-t)A$, $t=1$ là nhiễu thuần (probe; bài $\pi_0$/SmolVLA viết $\tau$ ngược chiều: $A^\tau=\tau A+(1-\tau)\varepsilon$). Mạng \emph{dự đoán vận tốc}: $\big\|v_\theta(x_t,o)-(\varepsilon-A)\big\|^2$ (SmolVLA §3.1; Lipman và cộng sự, arXiv:2210.02747). $t$ lấy theo phân phối Beta, ưu tiên mức nhiễu cao ($\pi_0$ App.~A-B: $\mathrm{Beta}((s-\tau)/s;\,1{,}5,\,1)$, $s=0{,}999$). \\
+\midrule
+\textbf{Inference}
+& Từ nhiễu Gauss $x^K$, lặp $K$ bước $x^{k-1}=\alpha\big(x^k-\gamma\,\varepsilon_\theta(x^k,k)+\mathcal{N}(0,\sigma^2I)\big)$ (Eq.~1); $\alpha,\gamma,\sigma$ theo noise schedule. Train 100 bước; inference DDIM 10 bước, 0,1\,s trên RTX 3080 (§3.4).
+& Lấy nhiễu một lần, tích phân ODE bằng Euler từ $t=1$ về 0: $x\leftarrow x-\Delta t\,v_\theta$. $\pi_0$ và SmolVLA dùng 10 bước ($\pi_0$ §IV, $\delta=0{,}1$; probe \code{num_steps = 10}). SmolVLA: 96,5\,ms/chunk (batch 1, RTX 5070 Ti; probe). \\
+\midrule
+\textbf{Đường từ nhiễu đến action}
+& theo noise schedule $\alpha,\gamma,\sigma$
+& đường thẳng (nội suy tuyến tính) \\
+\midrule
+\textbf{Tính ngẫu nhiên khi sinh}
+& ở mọi bước (DDPM cộng nhiễu mỗi bước)
+& chỉ ở nhiễu ban đầu; phần còn lại tất định (ODE) \\
+\midrule
+\textbf{Log-likelihood của action}
+& mỗi bước DDPM là một chuyển Gauss, nên log-prob của cả chuỗi khử nhiễu tính được
+& ODE tất định: log-likelihood chính xác phải tích phân divergence của $v_\theta$ dọc đường đi (như continuous normalizing flow), rất tốn; loss flow chỉ là cận dưới ($\pi^*_{0.6}$ Eq.~4) \\
+\midrule
+\textbf{Hệ quả cho RL}
+& policy gradient (PPO, GRPO) dùng trực tiếp log-prob theo từng bước khử nhiễu
+& cần một trong các hướng: (1) chèn nhiễu học được vào mỗi bước Euler, mỗi bước thành Gauss ($\pi_{\text{RL}}$ Flow-Noise §4.1); (2) đổi ODE thành SDE giữ nguyên phân phối biên, thành MDP hai tầng ($\pi_{\text{RL}}$ Flow-SDE §4.2, Eq.~6–9); (3) bỏ log-prob, điều kiện policy theo advantage (RECAP Eq.~3); (4) xấp xỉ tỉ lệ likelihood bằng chênh lệch loss flow matching (FPO, arXiv:2507.21053; hướng dùng trong \code{main.tex}). SmolVLA cùng cấu trúc với $\pi_0$ nên (1), (2) áp dụng được bằng cách thêm nhiễu vào vòng Euler và thêm critic. \\
+\end{longtable}}
+
+\review{Kiểm tra lại các số và vị trí trích từ bài báo trong Bảng~\ref{tab:rl} và~\ref{tab:gen}; tên tác giả, năm, venue (ba bài SimpleVLA-RL, RIPT-VLA, VLA-RL chưa ghi tác giả).}
+
+\section*{Tài liệu tham khảo}
+{\scriptsize\raggedright
+\begin{itemize}
+\item SimpleVLA-RL (2025). arXiv:2509.09674. (ICLR 2026, theo \code{git show e852bb7:docs/DAY1.md} mục D.)
+\item Chen và cộng sự (2025). $\pi_{\text{RL}}$: Online RL fine-tuning for flow-based VLA. arXiv:2510.25889.
+\item Physical Intelligence (2025). $\pi^*_{0.6}$ / RECAP. arXiv:2511.14759.
+\item RIPT-VLA (2025). arXiv:2505.17016.
+\item VLA-RL (2025). arXiv:2505.18719.
+\item Chi và cộng sự (2023). Diffusion Policy. arXiv:2303.04137.
+\item Black và cộng sự (2024). $\pi_0$. arXiv:2410.24164.
+\item Shukor và cộng sự (2025). SmolVLA. arXiv:2506.01844.
+\item Lipman và cộng sự (2022). Flow Matching for Generative Modeling. arXiv:2210.02747.
+\item McAllister và cộng sự (2025). Flow Matching Policy Gradients (FPO). arXiv:2507.21053.
+\end{itemize}}
+
+\end{document}
