@@ -1,0 +1,10 @@
+2026-11-01 00:42:25 waiting for fpo_v2 loop pid 2719389
+2026-11-01 03:28:25 loop pid 2719389 exited
+2026-11-01 03:28:25 stopped tmux fpo_v2_gpu (gpu.csv rows after this time are not v2)
+2026-11-01 03:28:25 start (a) official + v1t3
+2026-11-01 03:42:49 (a) exit 0
+2026-11-01 03:42:49 v2 checkpoint: /home/student/ffi26/improve/outputs/fpo_v2/iter3/train/pretrained_model; config /home/student/ffi26/results/videos/configs/videos_v2.yaml
+2026-11-01 03:42:49 start (b) v2
+2026-11-01 03:50:33 (b) exit 0
+2026-11-01 03:50:33 index exit 0
+2026-11-01 03:50:33 done

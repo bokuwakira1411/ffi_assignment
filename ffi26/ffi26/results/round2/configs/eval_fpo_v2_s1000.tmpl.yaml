@@ -1,0 +1,25 @@
+# Seed 1000, expert fp32 for all arms: (1) forgetting: official, v1 theta3, v2 selected on the other 8 tasks x 20 ep
+# (same episodes as the earlier bf16 runs in outputs/r2/eval); (2) precision sanity row: official tasks 0, 8 x 50
+# (same episodes as the bf16 official in outputs/eval_baseline). Reported, not used for selection.
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+expert_fp32: true
+output_dir: ~/ffi26/improve/outputs/fpo_v2/eval_s1000
+models:
+  - name: official
+    path: lerobot/smolvla_libero
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}
+  - name: fpo_v1_it3
+    path: /home/student/ffi26/improve/outputs/fpo/iter2/train/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}
+  - name: fpo_v2_sel
+    path: V2_SEL_PATH
+    task_suffix: ""
+    jobs:
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}

@@ -1,0 +1,58 @@
+{
+ "policy": "lerobot/smolvla_libero",
+ "data": "outputs/fpo_v2/iter0",
+ "decisions": 11245,
+ "success_decisions": 3393,
+ "adv_std": 0.31003618240356445,
+ "batch_size": 128,
+ "micro_batch": 32,
+ "steps": 23,
+ "steps_per_epoch": 87,
+ "epochs_used": 0.26436781609195403,
+ "stop_reason": "early_stop",
+ "warmup_steps": 5,
+ "ratio_scale_used": 24.605649477221927,
+ "mean_l_old": 0.040641073137521744,
+ "c0_probe": 23.080393594265537,
+ "kl_start": {
+  "kl_proxy": 0.0,
+  "absmean_dl_theta0": 0.0
+ },
+ "kl_end": {
+  "kl_proxy": 0.0324841998062932,
+  "absmean_dl_theta0": 0.006612371031224029
+ },
+ "clip_frac_mean": 0.12873641304347827,
+ "clip_frac_last10": 0.2109375,
+ "step1_ratio": {
+  "ratio_mean": 1.0,
+  "ratio_min": 0.9999997615814208,
+  "ratio_max": 1.0000019073486328,
+  "std_logr": 1.7563597509706597e-07,
+  "clip_frac": 0.0
+ },
+ "collect_success": "97/256",
+ "fp32_trainable_restored": 26,
+ "seconds_total": 810.6821415424347,
+ "seconds_old_loss": 619.4189002513885,
+ "trainable_params": 99880992,
+ "torch_max_mem_allocated_gb": 11.444989952,
+ "fpo": {
+  "n_pairs": 2,
+  "batch_size": 128,
+  "micro_batch": 32,
+  "epochs": 3,
+  "lr": 1e-06,
+  "warmup_samples": 640,
+  "clip": 0.2,
+  "ratio_scale": "auto",
+  "grad_clip": 10.0,
+  "early_stop_clip_frac": 0.2,
+  "early_stop_window": 10,
+  "seed": 3000,
+  "lambda_bc": 5.0,
+  "bc_batch": 32,
+  "kl_probe_per_task": 128,
+  "kl_every": 10
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "policy": "/home/student/ffi26/improve/outputs/fpo_v2/iter0/train/pretrained_model",
+ "data": "outputs/fpo_v2/iter1",
+ "decisions": 10880,
+ "success_decisions": 3946,
+ "adv_std": 0.284745454788208,
+ "batch_size": 128,
+ "micro_batch": 32,
+ "steps": 27,
+ "steps_per_epoch": 84,
+ "epochs_used": 0.32142857142857145,
+ "stop_reason": "early_stop",
+ "warmup_steps": 5,
+ "ratio_scale_used": 23.19775008088758,
+ "mean_l_old": 0.04310762882232666,
+ "c0_probe": 21.517951569200175,
+ "kl_start": {
+  "kl_proxy": 0.02699492766413903,
+  "absmean_dl_theta0": 0.005893578875657113
+ },
+ "kl_end": {
+  "kl_proxy": 0.04563245715267825,
+  "absmean_dl_theta0": 0.009164314016743447
+ },
+ "clip_frac_mean": 0.12008101851851852,
+ "clip_frac_last10": 0.2125,
+ "step1_ratio": {
+  "ratio_mean": 1.0,
+  "ratio_min": 0.9999992847442628,
+  "ratio_max": 1.0000003576278689,
+  "std_logr": 6.968374322013915e-08,
+  "clip_frac": 0.0
+ },
+ "collect_success": "106/256",
+ "fp32_trainable_restored": 155,
+ "seconds_total": 809.2630970478058,
+ "seconds_old_loss": 597.8699016571045,
+ "trainable_params": 99880992,
+ "torch_max_mem_allocated_gb": 11.446786048,
+ "fpo": {
+  "n_pairs": 2,
+  "batch_size": 128,
+  "micro_batch": 32,
+  "epochs": 3,
+  "lr": 1e-06,
+  "warmup_samples": 640,
+  "clip": 0.2,
+  "ratio_scale": "auto",
+  "grad_clip": 10.0,
+  "early_stop_clip_frac": 0.2,
+  "early_stop_window": 10,
+  "seed": 3000,
+  "lambda_bc": 5.0,
+  "bc_batch": 32,
+  "kl_probe_per_task": 128,
+  "kl_every": 10
+ }
+}

@@ -1,0 +1,41 @@
+# Video replay (scripts/phase3_eval_video.py): 9 held-out (seed, task, init) pairs, official vs v1 theta3
+# (fpo_it3 = outputs/fpo/iter2/train), chosen from results/round2/episodes.csv (seed 1000) and
+# results/round2/seed2000/episodes.csv. All inits are held out (not in fpo.yaml / fpo_v2.yaml init_ids).
+# Replay settings = original evals: n_action_steps 10, batch_size 8, 50 episodes per (model, task),
+# bf16 expert (original runs had no expert_fp32). v2 arm (expert_fp32, as in the v2 evals) is added
+# after the fpo_v2 loop has chosen its checkpoint (outputs/fpo_v2/selection.json); it has no original.
+seed_note: episode k uses init state k and env seed seed+k
+n_action_steps: 10
+batch_size: 8
+n_episodes: 50
+output_dir: ~/ffi26/results/videos
+arms:
+  - name: official
+    label: official
+    path: lerobot/smolvla_libero
+    expert_fp32: false
+  - name: v1t3
+    label: v1 theta3 (FPO)
+    path: /home/student/ffi26/improve/outputs/fpo/iter2/train/pretrained_model
+    expert_fp32: false
+  # - name: v2
+  #   label: v2 (FPO, selected)
+  #   path: V2_SEL_PATH
+  #   expert_fp32: true
+originals:  # where the original episodes are; {task} is filled in
+  official:
+    1000: ~/ffi26/improve/outputs/eval_baseline/task{task}
+    2000: ~/ffi26/improve/outputs/r2/eval_s2000/official/task{task}
+  v1t3:
+    1000: ~/ffi26/improve/outputs/r2/eval/fpo_it3/task{task}
+    2000: ~/ffi26/improve/outputs/r2/eval_s2000/fpo_it3/task{task}
+episodes:  # category: official fail / theta3 success (oF_tS), oS_tF, both fail (FF), both succeed (SS)
+  - {seed: 1000, task: 0, init: 0,  cat: oF_tS}
+  - {seed: 2000, task: 0, init: 14, cat: oF_tS}
+  - {seed: 2000, task: 8, init: 1,  cat: oF_tS}
+  - {seed: 1000, task: 0, init: 43, cat: oS_tF}
+  - {seed: 1000, task: 8, init: 29, cat: oS_tF}
+  - {seed: 2000, task: 0, init: 20, cat: oS_tF}
+  - {seed: 1000, task: 0, init: 18, cat: FF}
+  - {seed: 2000, task: 8, init: 3,  cat: FF}
+  - {seed: 2000, task: 8, init: 0,  cat: SS}

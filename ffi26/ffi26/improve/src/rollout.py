@@ -38,13 +38,28 @@ SUITE = "libero_10"
 MAX_STEPS = 520  # TASK_SUITE_MAX_STEPS["libero_10"]
 
 
+EXPERT_PREFIX = "model.vlm_with_expert.lm_expert."
+
+
+def checkpoint_file(path: str) -> Path:
+    """model.safetensors of a local checkpoint dir or a (cached) HF repo id."""
+    if Path(path).exists():
+        return Path(path) / "model.safetensors"
+    from huggingface_hub import snapshot_download
+
+    return Path(snapshot_download(path, local_files_only=True)) / "model.safetensors"
+
+
 def load_policy(path: str, n_action_steps: int = 10, device: str = "cuda", adv_label: str | None = None,
-                cfg_overrides: dict | None = None):
+                cfg_overrides: dict | None = None, expert_fp32: bool = False):
     """Same construction as lerobot_eval.eval_main (policy + processors + env processors).
     adv_label (none/positive/negative): attach the learned advantage-label embedding
     (src/adv_embed.py, loaded from the checkpoint) and condition every forward pass on it.
     cfg_overrides: policy-config fields set before construction (FPO training uses
-    freeze_vision_encoder / train_expert_only / train_state_proj = True, as lerobot-train flags)."""
+    freeze_vision_encoder / train_expert_only / train_state_proj = True, as lerobot-train flags).
+    expert_fp32: the action expert (lm_expert, 129 of its 145 tensors are bf16 modules by default) is cast to fp32
+    and its values re-read from the checkpoint file, so fp32-trained weights are used exactly (FPO v2). The VLM
+    stays bf16; the projections are fp32 either way. Default False = v1 behaviour (fp32 values rounded to bf16)."""
     pcfg = PreTrainedConfig.from_pretrained(path)
     pcfg.pretrained_path = Path(path) if Path(path).exists() else path
     pcfg.n_action_steps = n_action_steps
@@ -53,6 +68,15 @@ def load_policy(path: str, n_action_steps: int = 10, device: str = "cuda", adv_l
         setattr(pcfg, k, v)
     ecfg = LiberoEnvConfig(task=SUITE, control_mode="relative")
     policy = make_policy(cfg=pcfg, env_cfg=ecfg, rename_map=RENAME_MAP)
+    if expert_fp32:
+        from safetensors.torch import load_file
+
+        policy.model.vlm_with_expert.lm_expert.float()
+        sd = load_file(str(checkpoint_file(path)))
+        with torch.no_grad():
+            for n, p in policy.named_parameters():
+                if n.startswith(EXPERT_PREFIX):
+                    p.copy_(sd[n].float().to(p.device))
     if adv_label is not None:
         from adv_embed import CODES, attach
 

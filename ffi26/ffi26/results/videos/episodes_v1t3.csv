@@ -1,0 +1,10 @@
+arm,seed,task,init,file,success,length,primary,subtask_completion,events
+v1t3,1000,0,0,v1t3_t0_init0_s1000_success.mp4,True,268,S,1.0,
+v1t3,1000,0,18,v1t3_t0_init18_s1000_fail.mp4,False,520,C,0.0,collision@65 orange_juice_1; collision@104 milk_1; timeout@519
+v1t3,1000,0,43,v1t3_t0_init43_s1000_fail.mp4,False,520,C,0.0,slip@284 alphabet_soup_1; slip@487 alphabet_soup_1; timeout@519
+v1t3,1000,8,29,v1t3_t8_init29_s1000_fail.mp4,False,520,E,0.0,timeout@519
+v1t3,2000,0,14,v1t3_t0_init14_s2000_success.mp4,True,324,S,1.0,
+v1t3,2000,0,20,v1t3_t0_init20_s2000_fail.mp4,False,520,A,0.0,slip@199 alphabet_soup_1; slip@251 alphabet_soup_1; slip@295 alphabet_soup_1; slip@340 alphabet_soup_1; slip@379 alphabet_soup_1; slip@422 alphabet_soup_1; timeout@519
+v1t3,2000,8,0,v1t3_t8_init0_s2000_success.mp4,True,344,S,1.0,
+v1t3,2000,8,1,v1t3_t8_init1_s2000_success.mp4,True,368,S,1.0,
+v1t3,2000,8,3,v1t3_t8_init3_s2000_fail.mp4,False,520,E,0.5,timeout@519

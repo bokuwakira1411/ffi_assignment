@@ -1,0 +1,4 @@
+model,label,trained_k,trained_n,heldout_k,heldout_n,other_k,other_n,task0_k,task0_n,task8_k,task8_n,only_model,only_ref,mcnemar_p,other_ref_k_same_eps
+official,"checkpoint chính thức, expert fp32, seed 4000",41,100,27,68,0,0,19,50,22,50,0,0,,0
+fpo_v1_it3,"FPO v1 θ3, expert fp32, seed 4000",37,100,23,68,0,0,23,50,14,50,14,18,0.5966148958541453,0
+fpo_v2_sel,"FPO v2 (checkpoint theo quy tắc collapse), expert fp32, seed 4000",45,100,31,68,0,0,16,50,29,50,19,15,0.6075913612730801,0

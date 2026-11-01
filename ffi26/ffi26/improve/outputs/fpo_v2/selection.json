@@ -1,0 +1,19 @@
+{
+ "collect_success_pct": [
+  37.890625,
+  41.40625,
+  39.453125,
+  42.578125,
+  36.71875
+ ],
+ "collect_success": [
+  "97/256",
+  "106/256",
+  "101/256",
+  "109/256",
+  "94/256"
+ ],
+ "chosen_theta": 4,
+ "path": "/home/student/ffi26/improve/outputs/fpo_v2/iter3/train/pretrained_model",
+ "reason": "no drop > 15 points"
+}

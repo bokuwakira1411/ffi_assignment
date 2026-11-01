@@ -1,0 +1,24 @@
+# FPO v2 final comparison (pre-registered), expert in fp32 for ALL arms: official vs v1 theta3 vs v2 selected checkpoint
+# (collapse rule, outputs/fpo_v2/selection.json), tasks 0, 8 x 50 init states, seed 4000. Template: fpo_v2_loop.sh
+# replaces V2_SEL_PATH and writes outputs/fpo_v2/configs/eval_fpo_v2_s4000.yaml.
+seed: 4000
+n_action_steps: 10
+batch_size: 8
+expert_fp32: true
+output_dir: ~/ffi26/improve/outputs/fpo_v2/eval_s4000
+models:
+  - name: official
+    path: lerobot/smolvla_libero
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+  - name: fpo_v1_it3
+    path: /home/student/ffi26/improve/outputs/fpo/iter2/train/pretrained_model
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}
+  - name: fpo_v2_sel
+    path: V2_SEL_PATH
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}

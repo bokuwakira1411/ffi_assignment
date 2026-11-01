@@ -1,0 +1,10 @@
+arm,seed,task,init,file,success,length,primary,subtask_completion,events
+official,1000,0,0,official_t0_init0_s1000_fail.mp4,False,520,A,0.0,slip@71 alphabet_soup_1; collision@307 orange_juice_1; timeout@519
+official,1000,0,18,official_t0_init18_s1000_fail.mp4,False,520,C,0.5,collision@65 orange_juice_1; collision@107 milk_1; timeout@519
+official,1000,0,43,official_t0_init43_s1000_success.mp4,True,432,S,1.0,slip@352 tomato_sauce_1
+official,1000,8,29,official_t8_init29_s1000_success.mp4,True,379,S,1.0,
+official,2000,0,14,official_t0_init14_s2000_fail.mp4,False,520,C,0.0,collision@102 orange_juice_1; collision@120 milk_1; timeout@519
+official,2000,0,20,official_t0_init20_s2000_success.mp4,True,256,S,1.0,
+official,2000,8,0,official_t8_init0_s2000_success.mp4,True,350,S,1.0,
+official,2000,8,1,official_t8_init1_s2000_fail.mp4,False,520,E,0.5,timeout@519
+official,2000,8,3,official_t8_init3_s2000_fail.mp4,False,520,E,0.5,timeout@519

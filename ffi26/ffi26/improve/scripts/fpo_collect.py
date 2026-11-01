@@ -63,7 +63,7 @@ def main():
     G = c["group_size"]
     seed0 = c["seed"] + c["seed_iter_stride"] * args.iter  # env seed of rollout j in group g = seed0 + 1000 g + j
     torch.manual_seed(seed0)
-    policy = load_policy(expand(args.policy), cfg["n_action_steps"])
+    policy = load_policy(expand(args.policy), cfg["n_action_steps"], expert_fp32=cfg.get("expert_fp32", False))
     specs = [(t["task_id"], int(k)) for t in c["tasks"] for k in t["init_ids"]][: args.max_groups]
 
     group_rows, roll_rows, seg_rows = [], [], []

@@ -1,0 +1,7 @@
+model,task,A,B,C,D,E,n_drop,n_slip,n_collision
+fpo_v1_it3,0,20,3,2,1,6,18,38,14
+fpo_v1_it3,8,18,4,0,2,18,1,27,0
+fpo_v2_sel,0,21,0,12,0,2,3,33,14
+fpo_v2_sel,8,6,1,0,4,18,1,23,0
+official,0,18,1,6,0,3,4,32,14
+official,8,10,6,0,3,11,2,11,0

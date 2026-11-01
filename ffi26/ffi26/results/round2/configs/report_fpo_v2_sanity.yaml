@@ -1,0 +1,15 @@
+# Precision sanity row (reported, not used for selection): official checkpoint, seed 1000, tasks 0, 8 x 50, same episodes:
+# expert bf16 (outputs/eval_baseline, earlier run) vs expert fp32 (this run).
+trained_tasks: [0, 8]
+other_tasks: []
+heldout_from: ~/ffi26/results/round2/configs/round1.yaml
+reference: official_bf16
+out_dir: ~/ffi26/results/round2/fpo_v2/seed1000_precision
+gap_pairs: []
+models:
+  - name: official_bf16
+    label: checkpoint chính thức, expert bf16 (outputs/eval_baseline), seed 1000
+    dirs: {0: ~/ffi26/improve/outputs/eval_baseline/task0, 8: ~/ffi26/improve/outputs/eval_baseline/task8}
+  - name: official_fp32
+    label: checkpoint chính thức, expert fp32, seed 1000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s1000/official

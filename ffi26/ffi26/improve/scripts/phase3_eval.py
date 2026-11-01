@@ -40,7 +40,8 @@ def main():
         if only and m["name"] not in only:
             continue
         policy = load_policy(str(Path(m["path"]).expanduser()) if m["path"].startswith(("~", "/")) else m["path"],
-                             cfg["n_action_steps"], adv_label=m.get("adv_label"))
+                             cfg["n_action_steps"], adv_label=m.get("adv_label"),
+                             expert_fp32=m.get("expert_fp32", cfg.get("expert_fp32", False)))
         for job in m["jobs"]:
             for task_id in job["tasks"]:
                 tdir = out / m["name"] / f"task{task_id}"

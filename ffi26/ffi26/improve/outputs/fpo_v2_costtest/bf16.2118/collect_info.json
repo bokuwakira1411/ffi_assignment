@@ -1,0 +1,12 @@
+{
+ "iter": 0,
+ "policy": "lerobot/smolvla_libero",
+ "seed0": 1200000,
+ "seconds_total": 68.3801920413971,
+ "seconds_rollout": 62.772698402404785,
+ "seconds_save": 0.18709349632263184,
+ "torch_max_mem_allocated_gb": 1.163407872,
+ "n_rollouts": 16,
+ "n_success": 10,
+ "n_decisions": 640
+}

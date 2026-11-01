@@ -1,0 +1,5 @@
+model,task,A,B,C,D,E,O,n_drop,n_slip,n_collision
+official_bf16,0,25,0,3,0,0,1,0,43,12
+official_bf16,8,10,6,0,1,10,0,2,13,0
+official_fp32,0,23,0,5,0,3,0,1,40,12
+official_fp32,8,8,6,0,1,10,1,1,8,0

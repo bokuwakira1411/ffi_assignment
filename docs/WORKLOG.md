@@ -10,6 +10,43 @@ Chú thích cột "Tác động":
   `/tmp/claude-1003/-home-student-Lan-K68AI-temp/92c565a4-1d53-4fbd-9f85-01bf079683ec/scratchpad/` (nằm ngoài repo).
 - **SỬA REPO**: thay đổi một file trong repo này hoặc trong `~/ffi26`.
 
+## ☀ TÓM TẮT SÁNG 01/11/2026 (FPO v2 + video)
+
+**Trạng thái:** mọi thứ chạy xong, không có lỗi. Loop `fpo_v2` kết thúc sạch lúc 03:27:25 (`loop.log` có `=== [done]`, 0 dòng Traceback/Error; đủ `selection.json` và 5 `summary.md`). Watcher thấy loop dừng lúc 03:28:25 (kiểm tra mỗi 2 phút), chạy video 03:28–03:50, mọi bước exit 0. Bảng chi tiết: mục "01/11/2026 — FPO v2: kết quả vòng lặp đầy đủ" ở cuối file (một phiên Claude khác viết; tôi đã tính lại các số chính từ `results/round2/fpo_v2/*/episodes.csv` và khớp).
+
+**Kiểm định chính, v2 vs official** (task 0 + 8, seed 3000/4000/5000 gộp, 300 cặp, expert fp32 cho mọi nhánh, McNemar chính xác):
+- v2 θ4 126/300 = 42.0%, official 121/300 = 40.3%. Chỉ v2 thành công 49, chỉ official 44, **p = 0.68 → không có khác biệt**.
+- Theo task, cùng 300 cặp: task 8 tăng 76 so với 60 (38/22, p = 0.052), task 0 giảm 50 so với 61 (11/22, p = 0.080). Tổng không đổi nhưng có đánh đổi giữa hai task; cả hai đều chưa đạt p < 0.05.
+- Held-out (204 cặp): 86 so với 84, p = 0.90.
+- Tham chiếu: v1 θ3 98/300 = 32.7%, kém official (40/63, p = 0.030).
+
+**Checkpoint được chọn:** θ4 = `outputs/fpo_v2/iter3/train/pretrained_model`. Lý do (`selection.json`): không có lần giảm nào > 15 điểm khi thu (giảm lớn nhất 42.6% → 36.7%, iteration 3 → 4, 5.9 điểm). Lưu ý: θ4 có tỉ lệ thu thấp nhất trong 5 checkpoint (94/256), nhưng quy tắc đăng ký trước vẫn chọn nó.
+
+**Theo iteration** (`outputs/fpo_v2/iter_summary.csv`; mọi iteration dừng sớm vì clip_frac 10 bước cuối > 0.2):
+
+| iter | tỉ lệ thu của θ_k | số bước train | KL proxy so với θ0 (cuối) |
+|---|---|---|---|
+| 0 | 97/256 = 37.9% | 23 | 0.032 |
+| 1 | 106/256 = 41.4% | 27 | 0.046 |
+| 2 | 101/256 = 39.5% | 16 | 0.183 |
+| 3 | 109/256 = 42.6% | 18 | 0.199 |
+| 4 (θ4, chỉ thu) | 94/256 = 36.7% | — | — |
+
+Tổng cộng chỉ 84 bước train (0.19–0.32 epoch mỗi iteration). KL tăng mạnh ở iteration 2.
+
+**Quên (8 task khác × 20, seed 1000, cặp so với official):** official 127/160 = 79.4%; v2 108/160 = 67.5% (9/28, **p = 0.003**); v1 θ3 111/160 = 69.4% (11/27, p = 0.014). Giảm nhiều nhất ở task 7 (16 → 10), task 1 (17 → 12) và task 2 (16 → 11).
+
+**Video** (`results/videos/index.md`, 27 file mp4, 28 MB): 9 cặp held-out × 3 nhánh (official, v1 θ3, v2 θ4).
+- Tính tất định: chạy lại 112 episode/nhánh cho official và v1 θ3 (mọi batch đứng trước episode được chọn). **222/224 khớp bản gốc cả success lẫn length.** 2 episode chỉ khác length, success giống nhau, và không nằm trong 9 episode có video: official s1000 task 8 init 13 (392 → 437 bước), v1 θ3 s1000 task 8 init 2 (344 → 345). Cả 18 video official/θ3 có kết quả khớp `episodes.csv`.
+- v2 trên 9 cặp: 4/9 thành công (s2000 t8 init 1; s1000 t0 init 43; s2000 t0 init 20; s2000 t8 init 0). Đây là episode mới, không có bản gốc để so. v2 chạy với expert fp32, còn official/θ3 chạy bf16 như eval gốc, nên 9 episode này không so sánh trực tiếp được với hai nhánh kia.
+- Cột "ghi chú" trong `index.md` sinh tự động từ nhãn thất bại và sự kiện, **chưa có ai xem video để kiểm tra**.
+
+**Những điểm cần biết:**
+- Không có bước nào thất bại.
+- 2 episode lệch length (ở trên) cho thấy replay không hoàn toàn tất định: length có thể lệch, success thì không lệch trong 224 lần.
+- tmux `fpo_v2_gpu` bị watcher dừng lúc 03:28:25. Các dòng `outputs/fpo_v2/gpu.csv` sau thời điểm này không có (monitor đã dừng trước khi chạy video).
+- Hai bộ eval dùng độ chính xác khác nhau: các số v1 θ3 trong eval v2 (expert fp32) khác với eval v1 cũ (bf16).
+
 ---
 
 ## Phiên 30/10/2026
@@ -263,3 +300,345 @@ Sửa tiếp (**SỬA REPO**): bỏ ReinFlow (không phải VLA) khỏi danh sá
 | 2 | Viết lại `readme.md` | **SỬA REPO** |
 | 3 | Xoá (bạn duyệt): `failure_analysis.md`, `docs/DAY1.md`, `ffi26/lerobot/` (clone thứ hai, gitlink), `ffi26/logs/`, `ffi26/results/`, `ffi26/ffi26/results/{smoke_20261030_110519,smoke_20261030_110908,demo_spatial,runs/run}`, `ffi26/ffi26/ckpt_files/`, `runs/{B_main,F_spatial}/summary_per_*.csv`. Giữ `demo_tasks`. Bản cũ (trừ `runs/run`) còn ở commit `e852bb7` | **SỬA REPO** |
 | 4 | Sửa tham chiếu tới file đã xoá → `e852bb7:failure_analysis.md` / `e852bb7:docs/DAY1.md` trong `docs/failure_overview.md`, `docs/analyse.md`, `docs/study.md`, `docs/failures/{B_main,D_nas50,spatial_results}.md`, `docs/failures/notes/{B_main,D_nas50}.md`; thêm ghi chú file đã xoá vào `differences.md` | **SỬA REPO** |
+
+
+## Phiên 31/10/2026 tối: kiểm tra nhiễu của tỉ lệ FPO r (theo yêu cầu)
+
+Câu hỏi: clip_frac của FPO tăng nhanh là do policy đổi thật hay do r bị nhiễu?
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Đọc `improve/scripts/fpo_train.py`, `improve/outputs/fpo/iter{0..3}/train/{train_log.csv,train_info.json}`. Dòng step 1 của log được tính trước `opt.step()` (θ_new = θ_old): clip_frac 0, \|log r\| ~1e-8 ở cả 4 iter | chỉ đọc |
+| 2 | Viết script chẩn đoán `ratio_diag.py` trong scratch (`/tmp/claude-1003/-home-student-Lan-K68AI-temp/89ed5cfe-2f87-46c1-91f0-493cd4bd0a7c/scratchpad/ratio_diag.py`). Import `fpo_train.py` (không sửa) | scratch |
+| 3 | Chạy (bạn đã duyệt): `conda activate lerobot; cd ~/ffi26/improve; MUJOCO_GL=egl python <scratch>/ratio_diag.py --out <scratch>/ratio_diag` (181 s, 1 GPU). θ_old = `outputs/fpo/iter2/train/pretrained_model` (input của iter3), dữ liệu `outputs/fpo/iter3`, c = 20.178 (`ratio_scale_used` của iter3). Lặp lại 5 batch train đầu của iter3 (cùng chuỗi rng; loss step 1 = 0.379590, khớp log). Mỗi lr ∈ {5e-9, 5e-8, 5e-7} (cố định, không warmup, AdamW mới): đo r trên 512 decision giữ lại (256/task, task 0 và 8, 1 cặp (τ, ε)/decision) sau 1 và 5 bước, l_new tính theo (a) bf16 autocast như lúc train, (b) bản copy fp32 hoàn toàn, không autocast. Không lưu checkpoint, không ghi vào `~/ffi26` | scratch (`ratio_diag.csv`, `ratio_diag.json`) |
+
+Kết quả (`ratio_diag.csv`; std log r với log r = clamp(c·Δl, −5, 5), Δl = l_old − l_new, l_old cùng chế độ tính):
+
+| lr | bước | std log r bf16 | std log r fp32 | clip_frac bf16 / fp32 | tỉ lệ phần tử bf16 đổi giá trị |
+|---|---|---|---|---|---|
+| 0 (θ_old, tính lại với batch xáo) | 0 | 7.4e-8 | 7.2e-8 | 0 / 0 | 0 |
+| 5e-9 | 1 | 0.0189 | 0.00028 | 0 / 0 | 5.9e-5 |
+| 5e-8 | 1 | 0.0276 | 0.0028 | 0 / 0 | 4.7e-4 |
+| 5e-7 | 1 | 0.0289 | 0.0279 | 0.006 / 0.004 | 6.7e-3 |
+| 5e-9 | 5 | 0.0178 | 0.00092 | 0 / 0 | 1.4e-4 |
+| 5e-8 | 5 | 0.0264 | 0.0096 | 0 / 0 | 1.2e-3 |
+| 5e-7 | 5 | 0.0324 | 0.0901 | 0.002 / 0.041 | 1.2e-2 |
+
+Ở θ_old, l_bf16 so với l_fp32: std(c·Δl) = 0.054, \|Δl\| trung bình 1.2e-3 (mean l_old 0.0479 trên tập eval).
+
+Kết luận:
+- fp32: std log r sau bước 1 tỉ lệ với lr (×10 lr → ×10 std): đây là thay đổi thật của policy.
+- bf16: std log r sau bước 1 gần như không đổi (0.019 → 0.029) khi lr tăng 100 lần, và lớn hơn fp32 67 lần ở lr 5e-9: **độ dao động của r sau bước 1 trong log (ví dụ [0.89, 1.08] ở iter0, lr 5e-8) là do lượng tử hoá bf16**. Sàn nhiễu ≈ 0.02–0.03 trên log r, tức σ(Δl) = std log r / c ≈ 0.0189/20.18 – 0.0289/20.18 = 9.4e-4 – 1.4e-3 (2.0–3.0% của mean l_old 0.0479).
+- Sàn nhiễu này còn cách ngưỡng clip xa (ln 1.2 = 0.18 ≈ 6–9σ), nên riêng nó gần như không gây clip (clip_frac 0 ở lr ≤ 5e-8). Ở lr 5e-7 sau 5 bước, tín hiệu fp32 (0.090) đã vượt sàn và bf16 lại *thấp hơn* (0.032): phần lớn bước cập nhật nhỏ hơn độ phân giải bf16 nên không đi vào forward bf16. Việc clip_frac tăng tới 0.2 ở step 43–100 (lr ~1e-6) có vẻ do policy đổi thật, nhưng điều này **chưa đo trực tiếp** (chỉ chạy tới 5 bước).
+
+c và ngưỡng clip theo Δl:
+- c = 1 / mean(l_old), lấy trung bình trên mọi decision × cặp (τ, ε) của iteration, tính ở bf16 trước khi update (`fpo_train.py`, `ratio_scale: auto`). Lý do (docstring, kiểm chứng V4): với c = 1, r của action tốt không thể vượt exp(l_old) ≈ 1.04 nên không bao giờ bị clip.
+- c ≈ 20–25 vì CFM loss trung bình (MSE vận tốc trên các bước được thực thi) của SmolVLA trên chunk do chính nó lấy mẫu là ~0.04–0.05: iter0 1/0.03914 = 25.55, iter3 1/0.04956 = 20.18 (`train_info.json`). l_old tăng dần qua các iter nên c giảm dần.
+- Clip 0.2 với c = 20.18 (iter3): r > 1.2 ⇔ Δl > ln(1.2)/c = 0.0090; r < 0.8 ⇔ Δl < ln(0.8)/c = −0.0111. Tức loss CFM giảm khoảng 18% hoặc tăng khoảng 22% so với mean l_old.
+
+
+## Phiên 31/10/2026 tối: trạng thái đầu dùng để train có trùng tập eval không (theo yêu cầu)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Đọc `results/round2/configs/{fpo,round1,eval_fpo,eval_seed2000,report_seed2000}.yaml`, `improve/scripts/{phase3_eval,r2_report}.py`, `improve/scripts/fpo_confirm.sh` | chỉ đọc |
+| 2 | Python (env lerobot, chỉ đọc) trên `improve/outputs/fpo/iter{0..3}/{rollouts.csv,collect_info.json}`, `results/round2/episodes.csv` (seed 1000), `results/round2/seed2000/episodes.csv`: tách thành công theo init state dùng để thu rollout và init state giữ lại | chỉ đọc |
+
+Kết quả:
+- **Có trùng.** Eval 50 ep/task chạy episode k với init state k (`phase3_eval.py`: `init_ids=ks`), tức đủ 50 init state, gồm cả 16 init state/task dùng để thu rollout (`fpo.yaml` `collect.tasks.init_ids`). Vậy 32/100 ep eval trên task 0, 8 nằm trên init state đã train. Seed env không trùng: thu rollout dùng 200000–531007, eval dùng 1000+k và 2000+k.
+- Báo cáo đã tách phần này: `r2_report.py` lấy held-out = 50 − init_ids của `round1.yaml`. Danh sách đó giống hệt `fpo.yaml`, và cờ `heldout` trong cả hai `episodes.csv` khớp với phép tách tính lại.
+- Mapping: `fpo_itK` = θ_K = `iter{K-1}/train`; lần thu iter k dùng θ_k (`collect_info.json`). Vậy lần thu iter3 (133/256) và eval `fpo_it3` cùng một checkpoint.
+
+| | init đã train: thu rollout (16 init × 8, seed mới) | init đã train: eval s1000 / s2000 / gộp | held-out: eval s1000 / s2000 / gộp |
+|---|---|---|---|
+| official (θ0) | 96/256 = 37.5% | 14/32 / 16/32 / 30/64 = 46.9% | 30/68 / 29/68 / 59/136 = 43.4% |
+| fpo_it3 (θ3) | 133/256 = 52.0% | 18/32 / 15/32 / 33/64 = 51.6% | 39/68 / 31/68 / 70/136 = 51.5% |
+
+Nhận xét:
+- Trên init state đã train, eval của θ3 (51.6%) khớp với tỉ lệ khi thu (52.0%). Mức tăng 96 → 133 khi thu không lặp lại ở eval chủ yếu vì official đạt 46.9% trên chính các init state này khi eval, so với 37.5% khi thu. Nguyên nhân của chênh lệch 9.4 điểm này **chưa kiểm tra** (có thể do nhiễu: n = 64, SE ≈ 6 điểm; hoặc do khác biệt giữa pipeline thu và pipeline eval).
+- Vì vậy phần trùng không làm phồng kết quả eval. Kết quả eval trên init state đã train cũng không tăng rõ (+3/64 khi gộp; n quá nhỏ để kết luận).
+
+
+## Phiên 31/10/2026 tối: so sánh pipeline thu rollout (fpo_collect.py) và eval (phase3_eval.py), checkpoint chính thức (theo yêu cầu, chỉ đọc)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Đọc `improve/scripts/{fpo_collect,phase3_eval,r2_collect}.py`, `improve/src/{rollout,fpo_capture,logged_env,reward}.py`, `lerobot/src/lerobot/envs/{libero,configs,utils}.py`, `lerobot/src/lerobot/policies/smolvla/modeling_smolvla.py`, gymnasium 1.4.0 `vector/async_vector_env.py`, `core.py`; `git log`/`git show` cho các file trên | chỉ đọc |
+| 2 | Python (chỉ đọc) kiểm tra `init_state_id`/`seed` ghi trong `*.meta.json`: 1024 rollout FPO, `outputs/eval_baseline` (100), `r2/eval/fpo_it3/task{0,8}` (100), `r2/eval_s2000` (200) → 0 sai khác so với giá trị mong đợi | chỉ đọc |
+| 3 | So `r2/round1/rollouts.csv` (official, `r2_collect.py`, seed 100000) với `fpo/iter0/rollouts.csv`; kiểm định Fisher (scipy); thời gian từ `collect_info.json`, `fpo/confirm.log` | chỉ đọc |
+
+Giống nhau (cả hai gọi chung `load_policy`, `make_vec_env`, `run_batch` trong `src/rollout.py`):
+- Sinh action: ODE Euler tất định khi đã có nhiễu, `num_steps` = 10 (config checkpoint), không có temperature, `noise_scale` = 1.0 (`modeling_smolvla.py:777-830`). Chunk 50, thực thi 10 (`n_action_steps` = 10 ở `fpo.yaml` và các config eval), lấy chunk mới khi hàng đợi rỗng, không RTC (`modeling_smolvla.py:256-285`).
+- `max_steps` = 520 (`rollout.py:38,144`), kết thúc khi `check_success()` (`libero.py:376-377`), success = cờ của probe hoặc của env (`rollout.py:185`), `num_steps_wait` = 10 (`libero.py:127,351`).
+- Ảnh 256×256 (mặc định của class `LiberoEnv`, `libero.py:119-120`; `make_vec_env` không ghi đè, `rollout.py:73-88`), lật `[::-1, ::-1]` (`libero.py:284`). Pre/post-processor và dtype cùng `load_policy` (`rollout.py:41-71`), không autocast trong `run_batch`.
+- Init state đặt qua `next_init_state_id` (`logged_env.py:49-52`; gymnasium `set_wrapper_attr` truyền xuống env bên trong, đã kiểm bằng meta ở bước 2). `hard_reset=True` (`libero.py:131,274`). `log_sim_state=False` ở cả hai (`fpo_collect.py:77`, `phase3_eval.py:57`). `LiberoProbe.read()` chỉ đọc, không gọi step/render (`reward.py:69-108`, tìm bằng grep).
+
+Khác nhau:
+
+| # | Mục | fpo_collect.py | phase3_eval.py | Hướng tác động dự kiến |
+|---|---|---|---|---|
+| D1 | Nguồn nhiễu sampler | Generator CPU riêng mỗi lần gọi chunk, seed = `seed0*100 + 1000g + k` (`fpo_capture.py:39-54`, `fpo_collect.py:80`) | RNG torch toàn cục, `set_seed(seed)` mỗi (model, task) (`phase3_eval.py:52`; `modeling_smolvla.py:791-793`) | Không có tác động hệ thống (cùng N(0,1), float32). Bằng chứng: `r2_collect.py` dùng RNG toàn cục như eval (`r2_collect.py:69`) được 93/256, `fpo_collect` được 96/256, Fisher p = 0.85 |
+| D2 | Thành phần batch | 8 sub-env cùng 1 init state (`fpo_collect.py:82`) | 8 init state liên tiếp, batch cuối 2 (`phase3_eval.py:55-60`) | Không dự kiến (các mẫu không tương tác, cùng câu lệnh nên không có padding khác nhau). Chưa đo |
+| D3 | Vòng đời vec env | 1 vec env/task dùng lại cho 16 nhóm (`fpo_collect.py:74-77`) | vec env mới mỗi batch (`phase3_eval.py:57,61`) | Không dự kiến vì `hard_reset=True` dựng lại sim mỗi lần reset |
+| D4 | Seed env | 200000 + 100000k + 1000g + j (`fpo_collect.py:64,79`) | 1000 + k / 2000 + k (`phase3_eval.py:59`) | Không dự kiến; chưa kiểm seed ảnh hưởng gì sau khi đã đặt init state |
+| D5 | Nguồn số official s1000 | — | `outputs/eval_baseline` (`report.yaml:11`), tạo 04:20 31/10 bằng `phase3_eval.py` + `configs/phase3_r1.yaml` (đã xoá, chưa từng commit), trước commit đầu (15:10) → không xác minh được phiên bản code. Nhật ký `improve_2026-10-31.md:162,290`: seed 1000+k, NAS = 10 | Không xác minh được |
+| D6 | Chọn init state (không phải pipeline) | — | Task 0: init state "lẫn lộn" qua lerobot-eval D_nas10 seed 1000–1002; task 8: 16 trong 23 init state lẫn lộn gần 50% nhất khi gộp D_nas10 + `outputs/eval_baseline` (seed 1000) + Phase 1 (`round1.yaml` dòng 15-22, `improve_2026-10-31.md:233-234`) | Kết quả official s1000 trên init state đã train không độc lập với tiêu chí chọn (bị kéo về gần 50%) → có thể ước tính cao hơn tỉ lệ thật. Eval s2000 và mọi lần thu thì độc lập |
+
+Số liệu, official trên 32 init state đã train:
+- Thu rollout: `r2_collect` 93/256 = 36.3%, `fpo_collect` 96/256 = 37.5%, gộp 189/512 = 36.9%.
+- Eval: s1000 14/32 = 43.8% (Fisher so với 189/512: p = 0.455), s2000 16/32 = 50.0% (p = 0.187), gộp 30/64 = 46.9% (p = 0.134).
+
+Kết luận: không tìm thấy khác biệt pipeline đáng kể. Chênh lệch giữa thu rollout (36.9%) và eval (46.9%) không có ý nghĩa thống kê (p = 0.13), và tương thích với nhiễu do n = 32/seed, cộng với sai lệch do chọn init state (D6) ở s1000.
+
+Đề xuất (CHƯA CHẠY, chờ duyệt):
+- (a) Theo yêu cầu: chạy lại official qua `fpo_collect.py` trên 16 init state × 8 seed mới × task 0, 8 (256 rollout). Ước tính khoảng 16 phút (4 lần thu FPO: 949–967 s, `fpo/iter*/collect_info.json`). Lưu ý: việc này đã có hai lần độc lập (93/256, 96/256), nên chạy lần ba khó cho thêm thông tin.
+- (b) Phép thử phân biệt được: eval official và fpo_it3 bằng `phase3_eval.py` trên đúng 32 init state đã train × 8 seed mới (256 ep/model, 512 ep tổng). Cần sửa nhỏ để `phase3_eval.py` nhận danh sách init state/seed (hiện chỉ chạy init 0..n−1). Ước tính khoảng 4.7–5.5 s/ep (`fpo/confirm.log`) → khoảng 40–47 phút.
+
+
+## Phiên 31/10/2026 tối: kiểm tra n_action_steps và nguồn gốc checkpoint (theo yêu cầu, chỉ đọc)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Đọc `results/round2/configs/*.yaml`, `improve/src/rollout.py`, `run_queue.sh`, `results/runs/D_nas10/lerobot_smolvla_libero/*/{cmd.txt,eval.log,eval_info.json,checkpoint_revision.txt}`, `lerobot/src/lerobot/envs/{libero,configs}.py`, `lerobot/src/lerobot/configs/policies.py`, `smolvlm_with_expert.py`, `differences.md` | chỉ đọc |
+| 2 | Đọc `config.json` và header safetensors (đếm dtype) của `~/.cache/huggingface/hub/models--{lerobot,HuggingFaceVLA}--smolvla_libero`; `sha256sum` hai file `model.safetensors` | chỉ đọc |
+
+Bảng cấu hình hiệu lực:
+
+| Run | n_action_steps | chunk / bước flow | max_steps | Ảnh env | dtype inference | Nguồn |
+|---|---|---|---|---|---|---|
+| phase3_eval: round 1 (`eval_round1*.yaml`), round 2 s1000 (`eval_fpo.yaml`, `eval_official.yaml`, `eval_fpo_it3_other.yaml`), s2000 (`eval_seed2000.yaml`) | 10 | 50 / 10 | 520 | 256×256 | trọng số bf16 (474/500 tensor) + fp32 (26), không autocast | key `n_action_steps: 10` dòng 3–5 của mỗi config → `rollout.py:50` ghi đè `config.json` (50); chunk_size/num_steps từ `config.json`; `rollout.py:38`; `libero.py:119-120` (mặc định của class, `make_vec_env` `rollout.py:73-88` không truyền) |
+| phase3_eval: `outputs/eval_baseline` (official s1000 task 0, 8) | 10 [CHƯA KIỂM CHỨNG: `configs/phase3_r1.yaml` đã xoá, chưa commit; chỉ có nhật ký `improve_2026-10-31.md:162,290`] | 50 / 10 | 520 | 256×256 | như trên | như trên |
+| fpo_collect (iter 0–3), r2_collect (round 1) | 10 | 50 / 10 | 520 | 256×256 | như trên | `fpo.yaml:4`, `round1.yaml:5` → `fpo_collect.py:66` / `load_policy` |
+| D_nas10 (~72%): `lerobot-eval` qua `run_queue.sh` | 10 | 50 / 10 | 520 (`episode_length` None → `TASK_SUITE_MAX_STEPS`) | **360×360** | như trên, `use_amp: False` | `cmd.txt` `--policy.n_action_steps=10`; `eval.log` dòng 45, 61, 85, 91, 118; `configs.py:357-358,443-444` |
+
+D_nas10: 10 task libero_10 × 50 init state × 3 seed (1000, 1001, 1002), batch 5, relative. 368/500 (73.6%), 360/500 (72.0%), 364/500 (72.8%), gộp 1092/1500 = 72.8%.
+
+Kết luận bước 1:
+- Thu rollout và eval dùng **cùng** n_action_steps = 10 (và cùng chunk 50, 10 bước flow, 520 bước, 256×256), nên NAS không giải thích được 37.5% so với 46.9%.
+- Khác biệt mới tìm thấy: pipeline của mình (`rollout.py`) render ảnh 256×256, còn `lerobot-eval` (run 72%) render 360×360. Các tham số env khác giống nhau (control_freq 20, num_steps_wait 10, hard_reset True). Trên task 0, 8 chưa thấy ảnh hưởng: D_nas10 (360) task 0 60/150 = 40.0%, task 8 71/150 = 47.3%; pipeline của mình (256), official s1000 + s2000: task 0 42/100 = 42.0%, task 8 47/100 = 47.0%. Chưa so trên 8 task còn lại.
+
+Bước 2 (nguồn gốc checkpoint):
+- "Official" = `lerobot/smolvla_libero` @ `a24f1f380461b665158d52acd140152c79e8b36d` (`D_nas10/.../checkpoint_revision.txt`; `fpo.yaml` `init_policy`). `config.json`: n_action_steps 50, chunk_size 50, num_steps 10, VLM `SmolVLM2-500M-Video-Instruct`, 16 lớp VLM, `expert_width_multiplier` 0.75.
+- `HuggingFaceVLA/smolvla_libero` @ `6721902b…` là checkpoint khác (sha256 file trọng số khác; `config.json`: n_action_steps 1, `SmolVLM2-500M-Instruct`, `expert_width_multiplier` 0.5). Chỉ dùng ở các smoke/demo cũ (`differences.md:27`).
+- Khác giao thức sim của paper: NAS 10 (paper 1); 50 init state × 3 seed/task (paper 10 lần thử/task); ảnh 360 (lerobot-eval) hoặc 256 (pipeline mình), độ phân giải trong paper [CHƯA KIỂM CHỨNG]. Bước flow giống (10). Với checkpoint này, NAS 1 qua lerobot-eval cho 54.6% (D_nas1) và 52.7% (B_main), thấp hơn NAS 10 (`differences.md:78`, `docs/failure_overview.md`).
+
+
+## Phiên 31/10/2026 tối: FPO cải thiện kiểu thất bại nào (theo yêu cầu, chỉ đọc)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Đọc `results/round2/{summary.md,failure_types.csv}`, `results/round2/seed2000/summary.md`, `improve/improve_2026-10-31.md` (mục FPO). Không có chỗ nào diễn giải FPO sửa được kiểu thất bại nào; chỉ có bảng đếm thô | chỉ đọc |
+| 2 | Python (chỉ đọc): đếm nhãn chính (`primary`, từ `src/failure_labels.py`) và sự kiện theo vòng thu (`improve/outputs/fpo/iter{0..3}/rollouts.csv`); ghép cặp official và fpo_it3 trên cùng (task, init, seed) trong `results/round2/episodes.csv` (s1000) và `results/round2/seed2000/episodes.csv`, đếm nhãn của các episode đổi kết quả | chỉ đọc |
+
+Thu rollout (init state đã train, seed mới, 128 rollout/task; iter0 = official, iter3 = θ3):
+
+| Task | Vòng | S | A gắp hỏng | B kẹt chuyển subtask | C nhầm vật | D làm hỏng tiến độ | E đứng yên | drop / slip / collision (sự kiện) |
+|---|---|---|---|---|---|---|---|---|
+| 0 | iter0 | 55 | 53 | 5 | 2 | 0 | 12 | 7 / 92 / 7 |
+| 0 | iter3 | 75 | 41 | 3 | 2 | 1 | 5 | 12 / 101 / 3 |
+| 8 | iter0 | 41 | 27 | 11 | 0 | 4 | 45 | 11 / 34 / 0 |
+| 8 | iter3 | 58 | 17 | 2 | 0 | 8 | 42 | 6 / 46 / 0 |
+
+(O: iter0 task 0 = 1, iter3 task 0 = 1, task 8 = 0 / 1.)
+
+Eval ghép cặp official → fpo_it3 (task 0, 8; nhãn của official ở ca FPO sửa được, nhãn của FPO ở ca FPO làm hỏng):
+- s1000: sửa 19 (task 0: A 10; task 8: E 4, B 3, A 2), hỏng 6 (task 0: A 1, C 1; task 8: E 3, A 1) → +13.
+- s2000: sửa 18 (task 0: A 4, C 1, E 1; task 8: E 8, A 3, D 1), hỏng 17 (task 0: A 6, C 1, E 1; task 8: E 5, A 3, D 1) → +1.
+
+Nhận xét:
+- Khi thu rollout: số thất bại A (gắp hỏng) giảm ở cả hai task (task 0: −12, task 8: −10), B giảm ở task 8 (−9), E giảm ở task 0 (−7). E ở task 8 (kiểu thất bại lớn nhất, 45/87) gần như không đổi (42); D task 8 tăng 4 → 8; sự kiện slip tăng nhẹ.
+- Ở eval: mức giảm A trên task 0 thấy ở s1000 (net +9) nhưng đảo chiều ở s2000 (net −2). Như vậy chỉ thấy cải thiện ổn định ở phân phối thu rollout, chưa thấy ổn định ở eval.
+- Lưu ý: nhãn là nhãn tự động (`failure_labels.py`), chưa kiểm tra lại bằng mắt cho các episode này. Official s1000 có sai lệch chọn init state (xem mục so sánh pipeline ở trên).
+
+
+## Phiên 31/10/2026 tối: đề xuất cải thiện reward từ phân tích thất bại (theo yêu cầu, chỉ đọc)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Đọc `docs/failure_overview.md` §1–5, `docs/failures/D_nas10.md`, `improve/src/{reward,reward_r2,failure_labels}.py` | chỉ đọc |
+| 2 | Python (chỉ đọc) trên `improve/outputs/fpo/iter{0,3}/logs/*.npz`, `rollouts.csv`, `groups.csv`: trạng thái predicate cuối của các thất bại task 8, predicate đúng ở t = 0, vật đã từng được gắp, tương quan độ lệch return trong nhóm với độ lệch success | chỉ đọc |
+
+Số liệu mới:
+- Task 8: predicate `turnon flat_stove_1` đúng ngay từ t = 0 ở 128/128 rollout iter0 (Φ0 = 1/3); task 0: Φ0 = 0.
+- Thất bại task 8: `moka_pot_1` gần như không bao giờ lên bếp (chỉ 2/70 ở iter3, 0/87 ở iter0). Ở iter3, trong 42 thất bại nhãn E, 21 ca chưa từng gắp được ấm nào, 17 ca đã đặt `moka_pot_2` lên bếp nhưng chưa từng gắp `moka_pot_1`.
+- Trong nhóm, độ lệch return so với trung bình nhóm tương quan 0.956 (task 0) và 0.965 (task 8) với độ lệch success (iter3): advantage gần như chỉ phản ánh thành công/thất bại.
+- Mỗi task có 2–3 nhóm/vòng mà cả 8 rollout đều thất bại; ở các nhóm này chỉ Φ và chi phí phân biệt được các rollout.
+
+
+## Phiên 31/10/2026 tối: số liệu cho fpo_v2.yaml (dữ liệu dùng, lọc nhóm, nhiễu gradient) (theo yêu cầu)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Python (chỉ đọc) trên `improve/outputs/fpo/iter{0..3}/{collect_info.json,groups.csv,decisions/g*.npz,train/train_info.json,train/train_log.csv}` | chỉ đọc |
+| 2 | Viết `grad_noise.py` trong scratch (`/tmp/claude-1003/-home-student-Lan-K68AI-temp/89ed5cfe-2f87-46c1-91f0-493cd4bd0a7c/scratchpad/grad_noise.py`, import `fpo_train.py`, không sửa repo) | scratch |
+| 3 | Chạy (theo yêu cầu (c)): `conda activate lerobot; cd ~/ffi26/improve; MUJOCO_GL=egl python <scratch>/grad_noise.py --out <scratch>/grad_noise` (117 s, đỉnh 8.5 GB). Gradient của loss FPO tại θ_old (r = 1) cho θ0 (input iter0) và θ3 (input iter3), task 0 và 8, các batch rời nhau: 6 cặp batch 32 và 4 cặp batch 128 (128 = cộng dồn 4 micro-batch 32) mỗi (iter, task). Không cập nhật trọng số, không lưu checkpoint | scratch (`grad_noise.csv`, `grad_noise.json`) |
+
+(a) Quyết định thu được và quyết định thực sự dùng để cập nhật:
+
+| Iter | Thu được | Dùng được (không bị loại, adv ≠ 0) | Bước × 32 | % dùng được / % thu được | Phần epoch đã đi trước khi dừng sớm |
+|---|---|---|---|---|---|
+| 0 | 11746 | 10914 | 100 × 32 = 3200 | 29.3% / 27.2% | 0.29 |
+| 1 | 11259 | 10414 | 69 × 32 = 2208 | 21.2% / 19.6% | 0.21 |
+| 2 | 11163 | 10747 | 50 × 32 = 1600 | 14.9% / 14.3% | 0.15 |
+| 3 | 11130 | 10261 | 43 × 32 = 1376 | 13.4% / 12.4% | 0.13 |
+
+(b) Lọc nhóm theo độ chênh return 0.1: bị loại 2, 2, 1, 2 trên 32 nhóm (6.2%, 6.2%, 3.1%, 6.2%); nhóm dùng được 30, 30, 31, 30. Mọi nhóm bị loại đều có 0/8 thành công. Nhóm toàn thành công không bị loại (2, 4, 5, 4 nhóm).
+
+(c) Cosine giữa gradient của hai batch rời nhau (trung bình ± SE):
+
+| θ | B = 32 (12 cặp) | B = 128 (8 cặp) | Cosine giữa task 0 và task 8 (trung bình 8 × 128 mỗi task) |
+|---|---|---|---|
+| θ0 | −0.031 ± 0.052 | 0.082 ± 0.036 | 0.070 |
+| θ3 | 0.121 ± 0.065 | 0.260 ± 0.055 | 0.522 |
+
+Theo task: θ0 task 0: −0.022 (32) / 0.070 (128); θ0 task 8: −0.039 / 0.093; θ3 task 0: 0.009 / 0.242; θ3 task 8: 0.232 / 0.277.
+Chuẩn gradient trước khi clip trong train v1: trung vị 19.6–23.5; số bước bị clip (> 10): 83/100, 61/69, 47/50, 39/43 (`train_log.csv`).
+Thời gian một bước B = 32 trong v1: khoảng 0.45 s (iter3, `time_s` từ bước 1 đến bước 19: 231.7 → 239.8 s).
+
+Nhận xét:
+- Ở B = 32, hai batch rời nhau cho gradient gần như không cùng hướng (cosine ≈ 0 ở θ0): bước cập nhật v1 chủ yếu là nhiễu. B = 128 cho cosine dương rõ hơn ở cả hai θ.
+- v1 chỉ dùng 12–27% số quyết định đã thu trước khi dừng sớm.
+- Grad clip 10 gần như luôn bật. Với AdamW, clip chủ yếu đổi tỉ lệ giữa các bước, không phải giới hạn an toàn thật sự [suy luận].
+
+
+## Phiên 31/10–1/11/2026: FPO v2 — chọn batch, code, dry-run, chạy đầy đủ (bạn đã duyệt)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | `grad_noise.py` (scratch) thêm tham số `--sizes`; chạy `--iters 0 --sizes 256:4,512:4` (184 s, đỉnh 8.5 GB) | scratch (`grad_noise_big/`) |
+| 2 | Kiểm tra (chỉ đọc + nạp model trên GPU): `load_policy` nạp checkpoint v1 θ3 → 129/145 tensor expert fp32 trong file bị đưa vào module bf16 (98.3% phần tử khác giá trị fp32). So file: phần tử expert bf16 khác θ0: θ1 8.47%, θ2 10.12%, θ3 10.97%, θ4 11.37%; trung bình \|fp32 − θ0\| ≈ 8e-6 ở cả 4 checkpoint (không tích luỹ qua các vòng) | chỉ đọc |
+| 3 | Viết `improve/scripts/fpo_train_v2.py`, `improve/scripts/fpo_v2_loop.sh`, `results/round2/configs/{fpo_v2,eval_fpo_v2_s3000,eval_fpo_v2_s4000,eval_fpo_v2_s5000,eval_fpo_v2_other,report_fpo_v2_s3000,report_fpo_v2_s4000,report_fpo_v2_s5000,report_fpo_v2_other}.yaml`. Không sửa script/config/kết quả v1 | **SỬA REPO** (file mới) |
+| 4 | Dry-run: `fpo_collect.py` với config v2 (seed 1200000), 1 nhóm → 8/8, 26 s; `fpo_train_v2.py` trên dữ liệu v1 iter0 (512 decision/task), 6 bước, `lambda_bc=1`, `--grad_parts`; rồi kiểm tra ranh giới vòng: thu 1 nhóm bằng checkpoint dry-run + train 1 bước từ nó | `outputs/fpo_v2/dryrun/` (mới) |
+| 5 | Chạy đầy đủ: tmux `fpo_v2` (`bash scripts/fpo_v2_loop.sh`, log `outputs/fpo_v2/loop.log`), tmux `fpo_v2_gpu` (`outputs/fpo_v2/gpu.csv`). Bắt đầu 31/10 23:29 | **GPU**, `outputs/fpo_v2/` (mới) |
+
+Bước 1, chọn batch (cosine gradient hai batch rời nhau tại θ0, 4 cặp/task): B 256: task 0 0.063, task 8 0.071, gộp 0.067; B 512: 0.127, 0.089, gộp 0.108 (B 128 trước đó: 0.082 ± 0.036). Theo quy tắc của bạn (512 nếu ≥ 0.2; 256 nếu rõ ràng hơn 128; nếu không thì 128) → **batch 128**.
+
+Dry-run (`outputs/fpo_v2/dryrun/train/{train_log,kl_log}.csv`, `train_info.json`):
+- Bước 1 (fp32, θ_new = θ_old): r ∈ [1.0, 1.0000017], std log r 1.5e-7, clip_frac 0.
+- Bước 2–6 (lr warmup 2e-7 → 1e-6): std log r 0.019, 0.016, 0.029, 0.056, 0.096; clip_frac 0, 0, 0, 0.016, 0.039. KL proxy so với θ0: 4.7e-4 (bước 2), 2.9e-3 (4), 1.1e-2 (6).
+- Thời gian: pass loss cũ 56 s cho 1024 decision × 2 cặp; một bước B = 128 khoảng 5.2 s (không có KL), KL probe khoảng 7 s. Đỉnh bộ nhớ torch 11.84 GB.
+- λ_bc: chuẩn gradient PPO (trung vị 6 bước) 18.8, BC với λ = 1 là 0.91 → λ = 0.25 · 18.8 / 0.91 = 5.2 → **λ_bc = 5** (quy tắc nêu trước khi đo: gradient BC ≈ 25% gradient PPO).
+- Ranh giới vòng: checkpoint v2 lưu expert fp32 145/145, VLM bf16 như v1; thu rollout nạp được (8/8); vòng sau khôi phục 155 tensor fp32 từ file; r ở bước 1 vẫn bằng 1 (std log r 5.7e-8).
+
+Quyết định (ghi rõ để bạn kiểm tra): khi thu rollout và eval vẫn nạp checkpoint như v1 (expert trong module bf16), để so sánh được với mọi eval trước; train v2 khôi phục trọng số fp32 từ file nên master fp32 được giữ qua các vòng. Hệ quả: policy thu rollout là bản làm tròn bf16 của master fp32 (giống RL mixed precision thông thường).
+
+Ước tính thời gian: thu 4 × khoảng 16 phút; train mỗi vòng khoảng 12 phút (nạp model + pass loss cũ fp32 khoảng 10 phút) cộng tối đa 3 epoch × khoảng 82 bước × 5.2 s (khoảng 21 phút, ít hơn nếu dừng sớm); eval 1060 ep × khoảng 5 s ≈ 90 phút. Tổng khoảng 3.3–4.9 h → xong khoảng 02:50–04:25 ngày 1/11.
+
+Còn mở: tmux `fpo_gpu` (monitor của v1) vẫn đang ghi vào `outputs/fpo/gpu.csv` (file kết quả v1); chưa dừng, chờ bạn quyết định. Quy tắc collapse đã đăng ký trước không có trong phiên này; loop chỉ eval θ4 của v2.
+
+
+## Phiên 31/10/2026 23:33–23:44: FPO v2 chạy lại với expert fp32 khi suy luận (theo yêu cầu)
+
+**Ghi cho báo cáo (v1):** trong v1, trọng số master fp32 bị làm tròn về bf16 ở mỗi ranh giới vòng (`load_policy` đưa 129/145 tensor expert vào module bf16, cả khi thu rollout lẫn khi vòng train sau nạp checkpoint). Vì vậy cập nhật không tích luỹ qua các vòng: trung bình \|fp32 − θ0\| của expert ≈ 8e-6 ở cả θ1–θ4 (8.58e-6, 8.12e-6, 8.28e-6, 8.24e-6). Phần cập nhật còn lại sau làm tròn: 8.5–11.4% phần tử expert bf16 khác θ0. Nguồn: mục "FPO v2 — chọn batch…" ở trên.
+
+**`outputs/fpo/gpu.csv`:** tmux `fpo_gpu` (monitor của v1) đã dừng lúc 23:33:52 (unix 1793464432; dòng cuối cùng của file có thời điểm này). Hoạt động v1 cuối cùng là báo cáo xác nhận, kết thúc 31/10 21:22:11 (unix 1793456531, `outputs/fpo/timing_confirm.txt`). **Các dòng có unix_time > 1793456531 không thuộc v1**; trong đó có cả bộ nhớ GPU của các kiểm tra và dry-run v2.
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Dừng tmux `fpo_v2`, `fpo_v2_gpu`, `fpo_gpu` (23:33:52). Chuyển `outputs/fpo_v2` → `outputs/fpo_v2_aborted` (iter0 dở dang 7 nhóm, dry-run, loop.log, gpu.csv) | **GPU dừng**; đổi tên thư mục |
+| 2 | `src/rollout.py`: thêm `checkpoint_file()` và tham số `load_policy(..., expert_fp32=False)`. Khi True: ép `lm_expert` sang fp32 và đọc lại giá trị từ file checkpoint; VLM giữ bf16. `scripts/fpo_collect.py`, `scripts/phase3_eval.py`: đọc key `expert_fp32` từ config (mặc định False → hành vi v1 không đổi). `scripts/fpo_train_v2.py`: dùng `checkpoint_file` chung | **SỬA REPO** (3 file v1, mặc định giữ nguyên hành vi) |
+| 3 | Kiểm tra (scratch `verify_fp32_expert.py`, checkpoint `fpo_v2_aborted/dryrun/train/pretrained_model` có expert fp32): policy nạp như khi thu rollout (`expert_fp32=True`) và policy nạp như khi train (`build_policy_fp32`) | scratch |
+| 4 | Đo chi phí thu rollout: `fpo_collect.py --max_groups 2` (official, seed 1200000), bf16 và fp32, mỗi loại chạy 2 lần | `outputs/fpo_v2_costtest/` (mới) |
+| 5 | `fpo_v2.yaml`: thêm `expert_fp32: true` và mô tả quy tắc collapse. Xoá các config eval/report v2 cũ (chưa từng dùng), viết `eval_fpo_v2_s{1000,3000,4000,5000}.tmpl.yaml`, `report_fpo_v2_{s3000,s4000,s5000,other,sanity}.yaml`. Viết lại `scripts/fpo_v2_loop.sh`: thêm lần thu iteration 4 (θ4, không train) chỉ để áp quy tắc collapse, chọn checkpoint → `outputs/fpo_v2/selection.json`, eval checkpoint được chọn. Đã thử logic chọn trên 3 bộ số giả (không giảm → θ4; giảm ở iter 3 → θ2; giảm ở iter 1 → official) | **SỬA REPO** |
+| 6 | Khởi động lại 23:43:29; `tee` không tạo được `loop.log` (thư mục chưa có) → dừng sau khoảng 20 s, xoá `outputs/fpo_v2` của lần chạy hỏng này, tạo thư mục trước rồi chạy lại lúc **23:43:59**: tmux `fpo_v2` (log `outputs/fpo_v2/loop.log`), tmux `fpo_v2_gpu` (`outputs/fpo_v2/gpu.csv`) | **GPU** |
+
+Kết quả kiểm tra (bước 3):
+- Trọng số: chênh lệch tối đa giữa policy thu rollout và policy train = 0.0 cho expert (fp32 khi thu), VLM (bf16 khi thu) và các projection (fp32). Nạp kiểu v1 thì expert lệch tối đa 4.0e-6.
+- Còn lại khác biệt tính toán: khi thu, VLM (đóng băng) tính ở bf16, còn khi train toàn bộ fp32. Trên cùng batch (256 decision, c = 24.6): c·\|Δl\| trung bình 0.023 (std 0.057, max 0.45) giữa policy thu rollout và policy train; nạp kiểu v1: 0.047 (std 0.099, max 0.82). Ratio ở bước 1 (l_old và l_new cùng tính trong train) phải bằng 1; sẽ kiểm trên log iter0 của lần chạy thật.
+
+Chi phí thu rollout (bước 4, 2 nhóm = 16 rollout): thời gian rollout bf16 61.97 s / 62.77 s, fp32 63.11 s / 62.98 s; bộ nhớ torch bf16 1.16 GB, fp32 1.36 GB. Mỗi chế độ cho kết quả giống hệt nhau giữa 2 lần chạy (bf16: 10/16 thành công, 640 decision; fp32: 11/16, 625 decision).
+
+Quy tắc collapse (đăng ký trước, theo bạn): báo cáo vòng cuối của v2, trừ khi tỉ lệ thành công khi thu của vòng k+1 thấp hơn vòng k quá 15 điểm; khi đó báo cáo checkpoint cuối trước lần giảm. Chỉ dựa vào tỉ lệ thu, không dựa vào eval. Cách hiểu đã cài đặt: θ_k là checkpoint thu vòng k; để áp quy tắc cho θ4 cần thêm một lần thu bằng θ4 (iteration 4, 256 rollout, không train). Chọn lần giảm đầu tiên.
+
+Eval (expert fp32 cho mọi nhánh): official, v1 θ3, v2 đã chọn × task 0, 8 × 50 × seed 3000/4000/5000; seed 1000: 8 task khác × 20 cho cả 3 nhánh, cùng dòng kiểm tra độ chính xác (official fp32, task 0, 8 × 50, so với official bf16 `outputs/eval_baseline`; chỉ báo cáo, không dùng để chọn).
+
+ETA: thu 5 × khoảng 16 phút; train 4 × khoảng 12–37 phút; eval 1480 ep × khoảng 5 s ≈ 2 h → xong khoảng 03:55–05:35 ngày 1/11.
+
+Kiểm tra lần chạy thật, iteration 0 (`outputs/fpo_v2/iter0/collect_info.json`, `iter0/train/train_log.csv`): thu 97/256, 1012 s, bộ nhớ torch 1.36 GB; pass loss cũ fp32 619 s (11245 decision × 2 cặp), c = 24.606. **Bước 1: r ∈ [0.99999976, 1.0000019], std log r 1.8e-7, clip_frac 0** → ratio bằng 1 khi l_old tính từ cùng trọng số fp32 đã dùng để thu. Bước 2–7: std log r 0.009, 0.055, 0.122, 0.061, 0.238, 0.127; clip_frac lên 0.10 ở bước 6. Mỗi bước khoảng 5.3 s.
+
+
+## Phiên 01/11/2026 00:30–00:45: video cho phần Improve (theo yêu cầu; chưa chạy GPU)
+
+Lúc này loop `fpo_v2` vẫn chạy (đang ở `train1`). Chưa chạy gì trên GPU; chỉ viết code và chọn episode.
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Đọc `phase3_eval.py`, `fpo_v2_loop.sh`, `src/rollout.py`, `src/reward_r2.py`, `results/round2/episodes.csv`, `results/round2/seed2000/episodes.csv` | chỉ đọc |
+| 2 | Viết script mới `improve/scripts/phase3_eval_video.py` (phương án (b)). **Không sửa** `phase3_eval.py`, `rollout.py`, `reward_r2.py`, `phase1_logging.py`. Lý do: loop v2 gọi `python scripts/phase3_eval.py` thành một process mới ở bước eval, nên nó sẽ đọc file trên đĩa tại thời điểm đó; mọi sửa đổi (kể cả lỗi cú pháp) sẽ ảnh hưởng đến eval của v2 | **SỬA REPO** (file mới) |
+| 3 | Viết `results/videos/configs/videos.yaml` (9 cặp episode, xem bên dưới) | **SỬA REPO** (file mới) |
+| 4 | Kiểm tra phần vẽ header trên CPU (`CUDA_VISIBLE_DEVICES=` rỗng), dùng episode Phase 1 `outputs/baseline/logged/task0/ep000` (npz + mp4): 520 frame, header đúng, sự kiện slip@71, collision@307, timeout@519 hiện đúng bước | scratch (`test_overlay.mp4`) |
+
+Cách replay chính xác: `phase3_eval.py` gọi `set_seed(seed)` một lần cho mỗi (model, task) rồi dùng RNG torch lần lượt qua các batch 8 env. Nhiễu của episode k vì thế phụ thuộc vào mọi batch trước nó, nên script chạy lại các batch 0..k//8 (cùng NAS = 10, batch 8, expert bf16 như các eval gốc). Chỉ ghi frame ở các batch có episode được chọn. Mọi episode chạy lại đều được lưu npz và so với bản gốc (success và length) trong `replay_check_{arm}.csv`.
+
+Episode được chọn (đều là init state held-out, không nằm trong `init_ids` của `fpo.yaml`/`fpo_v2.yaml`; nhãn lấy từ `episodes.csv`):
+
+| Loại | seed | task | init | official | v1 θ3 |
+|---|---|---|---|---|---|
+| official thất bại, θ3 thành công | 1000 | 0 | 0 | thất bại, A (1 slip, 1 collision) | thành công |
+| official thất bại, θ3 thành công | 2000 | 0 | 14 | thất bại, C (2 collision) | thành công |
+| official thất bại, θ3 thành công | 2000 | 8 | 1 | thất bại, E (subtask 0.5) | thành công |
+| official thành công, θ3 thất bại | 1000 | 0 | 43 | thành công | thất bại, C (2 slip) |
+| official thành công, θ3 thất bại | 1000 | 8 | 29 | thành công | thất bại, E |
+| official thành công, θ3 thất bại | 2000 | 0 | 20 | thành công | thất bại, A (6 slip) |
+| cả hai thất bại | 1000 | 0 | 18 | thất bại, C (2 collision) | thất bại, C (2 collision) |
+| cả hai thất bại | 2000 | 8 | 3 | thất bại, E (subtask 0.5) | thất bại, E (subtask 0.5) |
+| cả hai thành công | 2000 | 8 | 0 | thành công | thành công |
+
+Số episode phải chạy lại cho mỗi nhánh: seed 1000 task 0: 48 (batch 0–5), seed 1000 task 8: 32, seed 2000 task 0: 24, seed 2000 task 8: 8 → 112 episode/nhánh.
+
+Ước tính thời gian (dựa trên log eval gốc: 5.5 s/ep task 0, 4.7 s/ep task 8; thu rollout v2 fp32 ≈ bf16, 63 s so với 62 s cho 16 rollout): khoảng 10 phút/nhánh + nạp model và ghi video → official + θ3 khoảng 22 phút, nhánh v2 thêm khoảng 11 phút.
+
+Lưu ý: cấu hình gốc của official seed 1000 (`configs/phase3_r1.yaml`) đã bị xoá và không kiểm chứng được (xem D5). Nếu replay của official seed 1000 khác bản gốc thì có thể do cấu hình, không chỉ do tính không tất định. Nhánh v2 không có episode gốc ở seed 1000/2000 task 0/8, nên video v2 là episode mới và không có phép so khớp.
+
+Chưa chạy: chờ loop `fpo_v2` xong hẳn (bao gồm eval và report).
+
+
+## Phiên 01/11/2026 00:40–00:43: watcher tự chạy video sau v2 (theo yêu cầu)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Viết `improve/scripts/videos_index.py` (tạo `results/videos/index.md` từ `episodes_*.csv`, `replay_check_*.csv`; đánh dấu mọi episode khác bản gốc). Thử trên dữ liệu giả trong scratch; sửa lỗi kiểu dữ liệu (bool thành float khi gộp các nhánh) → đọc mọi cột dạng chuỗi | **SỬA REPO** (file mới) |
+| 2 | Chạy thử `main()` của `phase3_eval_video.py` trên CPU, thay policy/env/rollout bằng episode thật đã lưu (`r2/eval/fpo_it3`, `r2/eval_s2000/fpo_it3`): 112 episode/nhánh, frame chỉ ghi ở 7 batch có episode được chọn, nhãn và sự kiện khớp `episodes.csv`, so khớp 0/112 khác | scratch |
+| 3 | Viết `improve/scripts/videos_after_v2.sh` và chạy trong tmux `videos` lúc 00:42:25 (log `results/videos/run.log`, trạng thái `results/videos/watcher_status.txt`) | chờ, chưa dùng GPU |
+
+Điều kiện bắt đầu: process loop (pid 2719389) đã dừng, **và** `loop.log` có dòng `=== [done]`, **và** có `outputs/fpo_v2/selection.json` và `summary.md` trong cả 5 thư mục `results/round2/fpo_v2/{seed3000,seed4000,seed5000,seed1000_other,seed1000_precision}`. Không đọc được trực tiếp exit code của loop (không phải process con; pipeline `| tee` không lưu mã). Vì `fpo_v2_loop.sh` chạy với `set -euo pipefail` và `=== [done]` là dòng cuối cùng, có dòng này tương đương exit 0. Nếu thiếu điều kiện nào: không chạy gì, ghi lý do và 30 dòng cuối `loop.log` vào WORKLOG.
+
+Nếu đủ điều kiện: dừng tmux `fpo_v2_gpu`, để `outputs/fpo_v2/gpu.csv` không ghi thêm GPU của lần chạy video; ghi thời điểm vào `watcher_status.txt`. Sau đó chạy (a) official + v1 θ3, (b) v2 (đường dẫn từ `selection.json`, config sinh ra `results/videos/configs/videos_v2.yaml`, cùng 9 cặp episode), rồi chạy index. Phần chạy video chưa thử trên GPU (chỉ thử trên CPU như bước 2).
+
+### 01/11/2026 — FPO v2: kết quả vòng lặp đầy đủ (tmux `fpo_v2`, 31/10 23:43:59 → 01/11 03:27:25)
+
+Lệnh: `improve/scripts/fpo_v2_loop.sh` (đã duyệt). Tác động: SỬA REPO (output mới trong `improve/outputs/fpo_v2/`, `results/round2/fpo_v2/`); không sửa kết quả cũ. Tính lại thống kê gộp từ `results/round2/fpo_v2/seed{3000,4000,5000}/episodes.csv` và `seed1000_other/episodes.csv` (script trong scratchpad, chỉ đọc). Thời gian lấy từ `outputs/fpo_v2/timing.txt`.
+
+**Theo iteration** (nguồn: `outputs/fpo_v2/iter_summary.csv`, `iter{k}/rollouts.csv`). Batch 128 ở mọi iteration; mọi iteration dừng sớm (clip_frac 10 bước cuối > 0.2), không iteration nào chạm trần 3 epoch.
+
+| iter | bước | epoch dùng | clip_frac TB / 10 bước cuối | KL proxy vs θ0 (đầu → cuối) | thu (θ_k) task 0 / task 8 / tổng | thời gian thu / train (s) |
+|---|---|---|---|---|---|---|
+| 0 | 23 | 0.264 | 0.129 / 0.211 | 0 → 0.0325 | 55/128, 42/128, 97/256 = 37.9% | 1030 / 814 |
+| 1 | 27 | 0.321 | 0.120 / 0.213 | 0.0270 → 0.0456 | 46/128, 60/128, 106/256 = 41.4% | 1080 / 814 |
+| 2 | 16 | 0.193 | 0.136 / 0.213 | 0.0646 → 0.1825 | 47/128, 54/128, 101/256 = 39.5% | 763 / 735 |
+| 3 | 18 | 0.228 | 0.154 / 0.226 | 0.1906 → 0.1986 | 50/128, 59/128, 109/256 = 42.6% | 763 / 719 |
+| 4 (θ4, chỉ thu) | — | — | — | — | 38/128, 56/128, 94/256 = 36.7% | 768 / — |
+
+**Quy tắc collapse** (`outputs/fpo_v2/selection.json`): không có bước giảm > 15 điểm (giảm lớn nhất 42.6 → 36.7 = 5.9 điểm, iter3→4) → chọn θ4 = `outputs/fpo_v2/iter3/train/pretrained_model`.
+
+**Eval task 0, 8 × 50 init × seed 3000/4000/5000, expert fp32, gộp 300 episode/arm** (CI Wilson 95%; McNemar chính xác, ghép theo seed+task+init):
+
+| arm | task 0 | task 8 | tổng | held-out (204) | init đã train (96) |
+|---|---|---|---|---|---|
+| official | 61/150 = 40.7% | 60/150 = 40.0% | 121/300 = 40.3% (35–46) | 84/204 = 41.2% | 37/96 = 38.5% |
+| v1 θ3 | 62/150 = 41.3% | 36/150 = 24.0% | 98/300 = 32.7% (28–38) | 66/204 = 32.4% | 32/96 = 33.3% |
+| v2 θ4 | 50/150 = 33.3% | 76/150 = 50.7% | 126/300 = 42.0% (37–48) | 86/204 = 42.2% | 40/96 = 41.7% |
+
+Cặp (chỉ A / chỉ B, p): v2 vs official tổng 49/44 p = 0.68; task 0: 11/22 p = 0.080; task 8: 38/22 p = 0.052; held-out 32/30 p = 0.90. v1 vs official 40/63 p = 0.030 (task 8: 16/40 p = 0.002). v2 vs v1 67/39 p = 0.008 (task 8: 47/7 p < 0.001; task 0: 20/32 p = 0.13). Từng seed: xem `results/round2/fpo_v2/seed{3000,4000,5000}/summary.md`.
+
+**Quên (8 task khác × 20, seed 1000)**: official 127/160 = 79.4%, v1 θ3 111/160 = 69.4% (cặp 11/27, p = 0.014), v2 θ4 108/160 = 67.5% (cặp 9/28, p = 0.003); v2 vs v1 16/19 p = 0.74. Theo task (official / v1 / v2): 1: 17/18/12, 2: 16/13/11, 3: 20/20/20, 4: 13/10/12, 5: 18/20/17, 6: 9/7/9, 7: 16/7/10, 9: 18/16/17.
+
+**Kiểm tra độ chính xác (không dùng để chọn)**: official, seed 1000, task 0+8: expert bf16 (`outputs/eval_baseline`, phiên bản code không kiểm chứng được) 44/100 vs expert fp32 43/100; cặp 9/10, p = 1.00 (`results/round2/fpo_v2/seed1000_precision/summary.md`).
+
+Nhận xét: v2 không còn kém official như v1 trên tổng task đã train (42.0% vs 40.3%, không có ý nghĩa thống kê), nhưng là đánh đổi giữa task: task 8 tăng (+10.7 điểm, p = 0.052), task 0 giảm (−7.3 điểm, p = 0.080). Thu θ4 cũng cho thấy task 0 giảm (38/128). KL proxy tăng nhanh ở iter2 (0.065 → 0.18) dù có neo BC. Quên trên 8 task khác có ý nghĩa thống kê cho cả v1 và v2 (≈ −10 đến −12 điểm).
+
+
+## 01/11/2026 03:50: video replay xong (watcher tự chạy)
+
+Loop fpo_v2 kết thúc sạch. Watcher dừng tmux `fpo_v2_gpu` rồi chạy (a) official + v1 θ3 (exit 0), (b) v2 = `/home/student/ffi26/improve/outputs/fpo_v2/iter3/train/pretrained_model` (exit 0), index (exit 0).
+Kết quả: `results/videos/` (`index.md`, `replay_check_*.csv`, `episodes_*.csv`, `raw/`). Log: `results/videos/run.log`, `watcher_status.txt`.

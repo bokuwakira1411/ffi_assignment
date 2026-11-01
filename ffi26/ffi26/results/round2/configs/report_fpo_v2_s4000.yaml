@@ -1,0 +1,17 @@
+# Report for eval_fpo_v2_s4000 (expert fp32, all arms).
+trained_tasks: [0, 8]
+other_tasks: []
+heldout_from: ~/ffi26/results/round2/configs/round1.yaml
+reference: official
+out_dir: ~/ffi26/results/round2/fpo_v2/seed4000
+gap_pairs: []
+models:
+  - name: official
+    label: checkpoint chính thức, expert fp32, seed 4000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s4000/official
+  - name: fpo_v1_it3
+    label: FPO v1 θ3, expert fp32, seed 4000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s4000/fpo_v1_it3
+  - name: fpo_v2_sel
+    label: FPO v2 (checkpoint theo quy tắc collapse), expert fp32, seed 4000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s4000/fpo_v2_sel

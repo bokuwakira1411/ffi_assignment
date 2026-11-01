@@ -1,0 +1,17 @@
+# Forgetting, seed 1000, expert fp32 for all arms (other 8 tasks x 20). Tasks 0, 8 appear only for official (sanity run).
+trained_tasks: [0, 8]
+other_tasks: [1, 2, 3, 4, 5, 6, 7, 9]
+heldout_from: ~/ffi26/results/round2/configs/round1.yaml
+reference: official
+out_dir: ~/ffi26/results/round2/fpo_v2/seed1000_other
+gap_pairs: []
+models:
+  - name: official
+    label: checkpoint chính thức, expert fp32, seed 1000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s1000/official
+  - name: fpo_v1_it3
+    label: FPO v1 θ3, expert fp32, seed 1000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s1000/fpo_v1_it3
+  - name: fpo_v2_sel
+    label: FPO v2 (checkpoint theo quy tắc collapse), expert fp32, seed 1000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s1000/fpo_v2_sel

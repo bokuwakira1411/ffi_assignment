@@ -1,0 +1,5 @@
+iter_dir,batch_size,steps,epochs_used,stop_reason,clip_frac_mean,clip_frac_last10,kl_start,kl_end,collect_success,seconds_train
+iter0,128,23,0.264,early_stop,0.1287,0.2109,0.000e+00,3.248e-02,97/256,811
+iter1,128,27,0.321,early_stop,0.1201,0.2125,2.699e-02,4.563e-02,106/256,809
+iter2,128,16,0.193,early_stop,0.1357,0.2125,6.463e-02,1.825e-01,101/256,731
+iter3,128,18,0.228,early_stop,0.1536,0.2258,1.906e-01,1.986e-01,109/256,715
