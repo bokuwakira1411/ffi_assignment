@@ -945,3 +945,127 @@ Nhận xét (chỉ dựa trên các số ở trên):
 - Lúc đó RAM máy đầy: 60/61 GB đã dùng, load average 32. Claude Code báo đã dừng một tác vụ nền vì "system is running low on memory". Nguyên nhân có khả năng nhất là bị kill do thiếu RAM, nhưng chưa xác minh được (không đọc được log kernel).
 - Kết quả còn lại: `outputs/dsrl/probe/episodes.csv` và `outputs/dsrl/run1/actor_iter0.pt`, đều chưa xong. Kết quả GPU của step 0 nằm trong `step0_gpu.log`.
 - Chưa chạy lại; đang chờ người dùng quyết định.
+
+### 2026-11-01 13:16 — Chạy lại DSRL (theo yêu cầu: chỉ DSRL, bỏ auto-commit)
+- RAM trống 51 GB, GPU 58 MiB đã dùng.
+- Chạy `python scripts/dsrl_train.py --out outputs/dsrl/run1` trong tmux `dsrl_run1`, khởi động bằng `setsid` để tách khỏi shell của Claude Code. Log ghi tiếp vào `outputs/dsrl/run1.log`; dòng exit sẽ ghi vào `queue_status.txt`.
+- Script chạy tiếp từ checkpoint đã có (`run1/actor_iter0.pt`).
+- Không chạy probe và render.
+
+### 2026-11-01 13:40 — Kết quả DSRL run1 (exit 0, chạy 13:16–13:39)
+- Bảng đầy đủ ở `outputs/dsrl/run1/summary.md`, do `dsrl_train.py` tự sinh.
+- **Thu thập:** 4 iteration, thành công lần lượt 52, 49, 48, 50 trên 128. PPO lần nào cũng dừng sớm vì vượt target_kl (ở epoch 4–6).
+  - |mu| của actor tăng từ 0.011 lên 0.022, rất nhỏ so với σ=1.
+- **Eval:** task 8 × 50 init × 3 seed.
+
+  | arm | s3000 | s4000 | s5000 | gộp |
+  |---|---|---|---|---|
+  | dsrl | 25/50 | 21/50 | 27/50 | 73/150 (48.7%) |
+  | official | 18/50 | 22/50 | 20/50 | 60/150 (40.0%) |
+  | v2 θ4 | 26/50 | 29/50 | 21/50 | 76/150 (50.7%) |
+
+- **McNemar:**
+  - dsrl vs official: chỉ dsrl 26, chỉ official 13, p = 0.053.
+  - dsrl vs v2: 28 vs 31, p = 0.795.
+- **Chưa kết luận được là do học:**
+  - |mu| ≈ 0.02σ, tức noise chỉ lệch rất ít so với N(0,I).
+  - official và dsrl dùng các lần rút noise khác nhau.
+  - Thu thập ở iter 0 (actor = 0) cho 40.6%, nhưng trên 16 init_ids của train chứ không phải 50 init của eval, nên không so trực tiếp được.
+  - Thiếu đối chứng: eval `actor_iter0.pt` trên cùng 150 episode, để tách ảnh hưởng của lần rút noise khỏi ảnh hưởng của việc học. Đối chứng này chưa chạy.
+- **Ghi chú:** noise ở các chiều đệm 7..31 cũng ảnh hưởng tới action được thực thi (bước 0 trên GPU, D4 = 0.057). Actor chỉ điều khiển 7 chiều.
+- Probe noise chưa chạy.
+
+### 2026-11-01 13:53 — Đối chứng DSRL ctrl0 (exit 0, chạy 13:47–13:52)
+- Chạy script mới `scripts/dsrl_eval_ctrl.py`: dùng `run1/actor_iter0.pt` (mean = 0), cùng seed env, cùng init và cùng seed noise với eval của dsrl. Kết quả ở `outputs/dsrl/run1_ctrl0/{summary.md,paired.csv,eval_labels.csv}`.
+- **Kết quả gộp:**
+  - dsrl: 73/150 (48.7%)
+  - ctrl0: 72/150 (48.0%)
+  - official (eval cũ): 60/150 (40.0%)
+- **McNemar:**
+  - dsrl vs ctrl0: 18 vs 17, p = 1.000.
+  - ctrl0 vs official: 31 vs 19, p = 0.119.
+- **Kết luận:** DSRL run1 **không có tác dụng đo được**. Chênh lệch +8.7 điểm so với official là do lần rút noise khác nhau, không phải do học.
+- Dù |mu| chỉ khoảng 0.02, vẫn có 35/150 cặp đổi kết quả giữa dsrl và ctrl0. Vậy rollout rất nhạy với noise, nhưng sự thay đổi không có hướng.
+
+## 01/11/2026 ~13:20–14:00: phân tích thêm FPO v3 (chỉ CPU, không train, chỉ dùng eval đã có)
+
+Yêu cầu: (1) bảng task × init; (2) failure labeler v2 trên eval v3; (3) số bước gradient v2 vs v3; (4) commit kết quả.
+Tất cả lệnh chạy từ `~/ffi26/improve`, `conda activate lerobot`, `CUDA_VISIBLE_DEVICES=""`.
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Viết và chạy `scripts/fpo_v3_split.py` (dùng `load()` / `paired()` của `fpo_v3_pooled.py`) | **SỬA REPO**: thêm `results/round2/fpo_v3/split_task_init.{md,csv}` |
+| 2 | Viết và chạy `scripts/failure_labels_v3.py` (`label_episode_v2`, tâm vùng fixture lấy từ `outputs/failure_labels/region_centres.csv` đã commit). Kiểm tra: nhãn official + v2 tính lại trùng 100 % với `outputs/failure_labels/labels.csv` (920 episode, mọi cột nhãn). Không ghi đè `outputs/failure_labels/` | **SỬA REPO**: thêm `outputs/failure_labels_v3/` (labels.csv chỉ v3, primary/multilabel theo arm × task, task8_pots, task0_Efree, task4_pairs, summary.md). 4,8 s |
+| 3 | Viết và chạy `scripts/fpo_v3_grad_steps.py` (đọc `train_info.json`, `train_log.csv`, khoá `adv/rejected/task_id` của `decisions/g*.npz`) | **SỬA REPO**: thêm `results/round2/fpo_v3/grad_steps.md`, `grad_steps.csv`, `grad_steps_adv.csv`, `grad_steps_iter0_curve.csv`, `grad_steps_per_task.csv` |
+| 4 | `git add` đúng các file mới trên + `docs/WORKLOG.md` (gồm cả mục DSRL chưa commit, theo lựa chọn (a) của bạn); `git commit` theo yêu cầu. Không commit checkpoint, video, `.npz` | **COMMIT** |
+
+### Kết quả 1: task × init (gộp seed 3000/4000/5000; init đã train = `collect.init_ids` của `fpo_v3.yaml`, 16/task)
+
+| task | init | official | v2 θ4 | v3 θ4 | v3 vs official (chỉ v3 / chỉ off.), p | v3 vs v2 (chỉ v3 / chỉ v2), p |
+|---|---|---|---|---|---|---|
+| 0 | held-out | 39/102 = 38,2 % | 34/102 = 33,3 % | 29/102 = 28,4 % | 5/15, p = 0,041 | 6/11, p = 0,332 |
+| 0 | đã train | 22/48 = 45,8 % | 16/48 = 33,3 % | 17/48 = 35,4 % | 4/9, p = 0,267 | 6/5, p = 1,000 |
+| 8 | held-out | 45/102 = 44,1 % | 52/102 = 51,0 % | 58/102 = 56,9 % | 19/6, p = 0,015 | 23/17, p = 0,430 |
+| 8 | đã train | 15/48 = 31,2 % | 24/48 = 50,0 % | 30/48 = 62,5 % | 17/2, p = 0,001 | 14/8, p = 0,286 |
+
+- Task 8 trên held-out init **vẫn tăng** so với official (+12,7 điểm, p = 0,015). Tăng ở đủ 3 seed (41,2→50,0; 47,1→67,6; 44,1→52,9 %), xem `split_task_init.md`.
+- Task 0 trên held-out init **giảm** so với official (−9,8 điểm, p = 0,041).
+- Tổng held-out gần như không đổi (`pooled.md`: 41,2 / 42,2 / 42,6 %) vì task 8 tăng và task 0 giảm bù nhau.
+- 4 ô × 2 so sánh, chưa hiệu chỉnh cho nhiều phép so sánh.
+
+### Kết quả 2: nhãn thất bại (`outputs/failure_labels_v3/summary.md`; nhãn tự động, chưa xem video)
+
+Task 8 (150 ep/arm). "k ấm" = `n_pred_new_ever_true`, cùng định nghĩa với bảng 01/11 08:05.
+
+| arm | thành công | thất bại | 0 ấm | 1 ấm | 2 ấm (D) | lab_A | lab_E_contact |
+|---|---|---|---|---|---|---|---|
+| official | 60 | 90 | 14 | 73 | 3 | 25 (28 %) | 55 (61 %) |
+| v2 θ4 | 76 | 74 | 50 | 22 | 2 | 42 (57 %) | 67 (91 %) |
+| v3 θ4 | 88 | 62 | 13 | 46 | 3 | 25 (40 %) | 52 (84 %) |
+
+- v3 không còn kiểu thất bại "0 ấm" của v2 (50 → 13, ngang official 14).
+- Thất bại của v3 chủ yếu là "1 ấm": đã đặt một ấm lên bếp nhưng chưa xong ấm thứ hai. E_contact ∧ B: official 39, v2 20, v3 39.
+
+Task 0, thất bại có E_free:
+
+| arm | số ca | trung vị bước bắt đầu đoạn free |
+|---|---|---|
+| official | 14/89 | 353 |
+| v2 θ4 | 51/100 | 336 |
+| v3 θ4 | 18/104 | 363 |
+
+- E_free của v2 gần như biến mất ở v3 (18, gần official 14).
+- Nhưng thất bại task 0 của v3 vẫn chủ yếu có nhãn chính A (75/104): chưa nhấc được vật mục tiêu.
+- Nhãn đa C: 45/104 ở v3 (official 33/89, v2 43/100).
+
+Task 4 (20 ep, seed 1000), thành công 13 / 12 / 9:
+
+| arm | nhãn chính của thất bại |
+|---|---|
+| official | G 3, A 2, E_contact 2 |
+| v2 θ4 | G 3, E_contact 2, A 1, E_free 1, O 1 |
+| v3 θ4 | **G 6/11**, A 2, F 1, E_contact 1, O 1 |
+
+- Nhãn đa G ở v3: 7/11. G là đặt lệch, phần lớn là `porcelain_mug_1`, cách vùng đích 3,1–6,6 cm (`labels.csv`, cột `G_objs` / `G_dist`).
+- Theo cặp init: chỉ official thành công 5, chỉ v3 thành công 1 (p = 0,219).
+
+### Kết quả 3: số bước gradient (`results/round2/fpo_v3/grad_steps.md`)
+
+| | v2 | v3 |
+|---|---|---|
+| tổng số bước | 84 (23 / 27 / 16 / 18) | 402 (131 / 138 / 44 / 89) |
+| mẫu PPO | 10 752 | 51 456 |
+| mẫu BC rollout | 2 688 | 12 864 |
+| mẫu demo | 0 | 12 864 |
+| epoch / vòng | 0,19–0,32 | 0,55–1,62 |
+
+- Cả 8 vòng (của cả hai bản) dừng do early stop, không vòng nào chạm trần 3 epoch.
+- Iter 0 dùng cùng decision, cùng θ0 và cùng c = 24,61 cho v2 và v3.
+  - Ở bước 11–23, clip_frac của **từng task** trong v3 chỉ khoảng một nửa v2: task 0 là 0,095 so với 0,211; task 8 là 0,059 so với 0,152.
+  - Vậy ratio của mỗi task trôi chậm hơn mỗi bước. Riêng việc trộn hai task trong batch không giải thích được điều này.
+- Phần đóng góp phụ: ở v2, bước của task 0 clip nhiều hơn bước của task 8, và cửa sổ early stop của iter 0 có 7/10 bước là task 0.
+- Hai cơ chế khớp với log nhưng **chưa tách được** nếu không có ablation:
+  - (a) v2 không trừ trung bình advantage: Â trung bình ở task 0 là −0,31 và 63 % mẫu có Â < 0. v3 trừ trung bình theo task.
+  - (b) v3 có thêm số hạng demo, trong khi grad norm bị clip về 10 ở 80 % số bước của v2 và 91 % số bước của v3. Một phần bước cập nhật vì thế dành cho demo thay vì PPO.
+- Không phải do gai grad_norm: gai xuất hiện ở cả hai bản (v2 iter0 bước 14–15 với 349 và 1257; v3 iter0 bước 84 với 1960).
+- Kết luận: **"khớp với log", chưa xác nhận.**

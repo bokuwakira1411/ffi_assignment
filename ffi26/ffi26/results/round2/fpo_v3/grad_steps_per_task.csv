@@ -1,0 +1,9 @@
+run,iter,clip_t0_mean,ratio_mean_t0,clip_t8_mean,ratio_mean_t8,ratio_mean_all,ratio_mean_last10,grad_norm_mean,std_logr_last10
+v2,0,0.165,1.0185,0.082,0.973,0.9987,0.997,89.38,0.3139
+v2,1,0.131,0.9547,0.109,0.9512,0.953,0.9105,14.57,0.2087
+v2,2,0.162,0.9234,0.115,0.9453,0.9357,0.9016,15.03,0.2586
+v2,3,0.213,0.9097,0.06,0.9729,0.9343,0.8987,17.31,0.1818
+v3,0,0.149,— (không log theo task),0.135,— (không log theo task),0.9919,1.0787,29.95,0.2859
+v3,1,0.168,— (không log theo task),0.129,— (không log theo task),0.9551,0.9439,17.43,0.2606
+v3,2,0.152,— (không log theo task),0.119,— (không log theo task),0.9522,0.9395,17.07,0.2305
+v3,3,0.184,— (không log theo task),0.113,— (không log theo task),0.9535,0.9335,18.53,0.211
