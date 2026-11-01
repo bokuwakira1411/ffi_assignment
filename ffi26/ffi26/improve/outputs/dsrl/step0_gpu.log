@@ -1,0 +1,25 @@
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7620.88it/s]
+Reducing the number of VLM layers to 16 ...
+chunk_size 50, max_action_dim 32, num_steps 10, action dim (7,)
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+D1 same obs + same noise: max|diff| 0.000e+00; chunk shape (1, 50, 7)
+D2 select_action(noise) first action vs chunk[:,0]: max|diff| 0.000e+00; queue left 9
+D3 other noise: max|diff| 0.417, mean|diff| 0.054; mean|chunk| 0.798; first 10 steps mean|diff| 0.071
+D4 noise changed only in padded dims 7..31: executed part max|diff| 5.727e-02
+D5 zero noise vs N(0,I): mean|diff| 0.039

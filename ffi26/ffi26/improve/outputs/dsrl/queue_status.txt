@@ -1,0 +1,4 @@
+2026-11-01 11:03:09 start (gpu_free_MiB=14993)
+2026-11-01 11:03:32 step0 gpu exit 0
+2026-11-01 11:03:32 probe started
+2026-11-01 11:03:32 dsrl started

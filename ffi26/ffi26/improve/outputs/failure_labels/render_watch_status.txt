@@ -1,1 +1,2 @@
-2026-11-01 09:06:58 v3_loop_procs=2 gpu_free_MiB=3216
+2026-11-01 11:03:01 v3_loop_procs=0 gpu_free_MiB=14993
+2026-11-01 11:03:01 start render

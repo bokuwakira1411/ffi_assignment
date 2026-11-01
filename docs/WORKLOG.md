@@ -884,3 +884,64 @@ Kết quả:
 - Job đang chạy: tmux `fpo_v3` (`fpo_v3_loop.sh`, đang ở `fpo_train_v3.py` iter1; xong khi `outputs/fpo_v3/loop.log` có `=== [done]` và có `results/round2/fpo_v3/{seed1000_other,seed3000,seed4000,seed5000}/summary.md`); `fl_render_watch` (xong khi `outputs/failure_labels/render_watch_status.txt` có `render exit`); `dsrl_queue` (xong khi `outputs/dsrl/queue_status.txt` có `queue done`; kết quả `outputs/dsrl/probe/summary.md`, `outputs/dsrl/run1/summary.md`). `ffi`, `minh`, `octdl_resnet50_5fold`, `resnet20_p4p7_m3p7_reconstruct` và 2 process `run.py` không liên quan tới FFI26.
 - `.gitignore` hiện **không** loại `*.pt`, `pretrained_model/`, `*.mp4`, `*.gif`, `wandb/`, `.cache/` (ngoài `ckpt_files/.cache/`); đã loại `*.safetensors`, `*.npz`, `*.parquet`, `improve/data/`. Chưa có file chưa track nào > 10 MB (trừ file đã bị ignore). Trong danh sách sắp commit có 3 file `.pt` / `pretrained_model/`.
 - Tìm thông tin nhạy cảm (`hf_…`, `ghp_…`, `github_pat_`, `WANDB_API_KEY`, `api_key`, `password`, `secret`, private key, `.env`, `.netrc`, `credentials`) trong 358 file: **không thấy**.
+
+
+## 01/11/2026 11:02: FPO v3, kết quả đầy đủ (tmux `fpo_v3`, 08:05:30 → 11:02:05)
+
+Lệnh: `improve/scripts/fpo_v3_loop.sh` (đã duyệt). Tác động: SỬA REPO (output mới trong `improve/outputs/fpo_v3/`, `results/round2/fpo_v3/`); không sửa kết quả v2. Nguồn: `outputs/fpo_v3/iter_summary.csv`, `iter{k}/rollouts.csv`, `iter{k}/train/{kl_log,demo_probe}.csv`, `selection.json`, `timing.txt`; thống kê eval tính lại từ `ep*.meta.json` bằng `improve/scripts/fpo_v3_pooled.py` → `results/round2/fpo_v3/pooled.md`, `pooled.json`, `episodes_all.csv` (official và v2 dùng lại episode của `outputs/fpo_v2/eval_s*`). Từng seed: `results/round2/fpo_v3/seed{3000,4000,5000}/summary.md`, `seed1000_other/summary.md`.
+
+**Theo iteration** (batch 128 = 64/task, 1 cặp (τ, ε)/quyết định, λ_bc = λ_demo = 5; mọi iteration dừng sớm do clip_frac 10 bước cuối > 0.2):
+
+| iter | bước | epoch | clip_frac TB / 10 bước cuối | KL proxy vs θ0 (đầu → cuối) | L_CFM demo probe, 8 task không train (đầu → cuối) | thu (θ_k) task 0 / task 8 / tổng | thời gian train (s) |
+|---|---|---|---|---|---|---|---|
+| 0 | 131 | 1.506 | 0.142 / 0.204 | 0 → 0.0329 | 0.05730 → 0.05766 | 55/128, 42/128, 97/256 = 37.9% (dùng lại v2 iter0) | 1637 |
+| 1 | 138 | 1.624 | 0.149 / 0.206 | 0.0186 → 0.0275 | 0.05766 → 0.05818 | 58/128, 69/128, 127/256 = 49.6% | 1668 |
+| 2 | 44 | 0.550 | 0.136 / 0.202 | 0.0514 → 0.1077 | 0.05818 → 0.05883 | 61/128, 65/128, 126/256 = 49.2% | 980 |
+| 3 | 89 | 1.047 | 0.149 / 0.201 | 0.0915 → 0.1322 | 0.05883 → 0.05875 | 54/128, 59/128, 113/256 = 44.1% | 1326 |
+| 4 (θ4, chỉ thu) | — | — | — | — | — | 49/128, 75/128, 124/256 = 48.4% | — |
+
+L_CFM demo probe của θ0 = 0.05730 (`iter0/train/demo_probe.csv`, dòng `theta0`). So với v2 (cùng seed thu): v2 dùng tổng 84 bước, v3 402 bước. KL cuối iter3: v2 0.199, v3 0.132. Thu θ4: v2 38/128 + 56/128, v3 49/128 + 75/128.
+
+**Quy tắc collapse** (`outputs/fpo_v3/selection.json`): không có bước giảm > 15 điểm (giảm lớn nhất 49.2 → 44.1 = 5.1 điểm, iter2→3) → chọn θ4 = `outputs/fpo_v3/iter3/train/pretrained_model`.
+
+**Quên: 8 task không train × 20, seed 1000, expert fp32** (cặp theo task + init):
+
+| task | official | v2 θ4 | v3 θ4 | v3 vs official (chỉ v3 / chỉ off.), p | v3 vs v2 (chỉ v3 / chỉ v2), p |
+|---|---|---|---|---|---|
+| tổng 8 task | 127/160 = 79.4% | 108/160 = 67.5% | 115/160 = 71.9% | 5/17, p = 0.017 | 24/17, p = 0.35 |
+| 1 | 17 | 12 | 16 | 0/1, p = 1.00 | 5/1, p = 0.22 |
+| 2 | 16 | 11 | 16 | 0/0 | 6/1, p = 0.13 |
+| 3 | 20 | 20 | 20 | 0/0 | 0/0 |
+| 4 | 13 | 12 | 9 | 1/5, p = 0.22 | 2/5, p = 0.45 |
+| 5 | 18 | 17 | 17 | 0/1, p = 1.00 | 0/0 |
+| 6 | 9 | 9 | 10 | 3/2, p = 1.00 | 3/2, p = 1.00 |
+| 7 | 16 | 10 | 12 | 0/4, p = 0.13 | 6/4, p = 0.75 |
+| 9 | 18 | 17 | 15 | 1/4, p = 0.38 | 2/4, p = 0.69 |
+
+(p theo từng task: 8 phép so sánh, không hiệu chỉnh.)
+
+**Task 0, 8 × 50 init × seed 3000/4000/5000, expert fp32, gộp 300 episode/arm:**
+
+| tập | official | v2 θ4 | v3 θ4 | v3 vs official, p | v3 vs v2, p |
+|---|---|---|---|---|---|
+| tổng | 121/300 = 40.3% | 126/300 = 42.0% | 134/300 = 44.7% | 45/32, p = 0.17 | 49/41, p = 0.46 |
+| task 0 | 61/150 = 40.7% | 50/150 = 33.3% | 46/150 = 30.7% | 9/24, p = 0.014 | 12/16, p = 0.57 |
+| task 8 | 60/150 = 40.0% | 76/150 = 50.7% | 88/150 = 58.7% | 36/8, p < 0.001 | 37/25, p = 0.16 |
+| held-out init (204) | 84 = 41.2% | 86 = 42.2% | 87 = 42.6% | 24/21, p = 0.77 | 29/28, p = 1.00 |
+| init đã train (96) | 37 = 38.5% | 40 = 41.7% | 47 = 49.0% | 21/11, p = 0.11 | 20/13, p = 0.30 |
+| seed 3000 | 38/100 | 45/100 | 42/100 | 17/13, p = 0.59 | 14/17, p = 0.72 |
+| seed 4000 | 41/100 | 45/100 | 49/100 | 16/8, p = 0.15 | 16/12, p = 0.57 |
+| seed 5000 | 42/100 | 36/100 | 43/100 | 12/11, p = 1.00 | 19/12, p = 0.28 |
+
+Nhận xét (chỉ dựa trên các số ở trên):
+- (1) Quên: v3 quên ít hơn v2 về số (−7.5 điểm so với official, v2 là −11.9) nhưng vẫn kém official có ý nghĩa (p = 0.017). Chênh lệch v3 vs v2 không có ý nghĩa (p = 0.35). Task 1 và 2 hồi về mức official; task 4 và 9 thấp hơn v2 (không có ý nghĩa). L_CFM trên demo probe chỉ tăng 2.5% (0.0573 → 0.0588), nhưng điều này không ngăn được việc giảm tỉ lệ thành công trên 8 task kia.
+- (2) Đánh đổi task 0/8: KHÔNG được giải quyết. Task 8 tăng thêm (58.7%, p < 0.001 so với official), task 0 giảm (30.7%, p = 0.014 so với official; v2 là 33.3%, p = 0.080). Thu ở θ4 cho thấy cùng hướng (task 0 49/128 < θ0 55/128). Tổng trên task đã train 44.7% vs official 40.3%, không có ý nghĩa (p = 0.17). Trên init held-out gần như bằng official (42.6% vs 41.2%); phần tăng nằm ở init đã train (49.0% vs 38.5%, p = 0.11).
+- (3) Không làm (+70% thời gian/bước).
+
+### 2026-11-01 11:05 — Hàng đợi DSRL và render bị dừng
+- v3 loop xong lúc 11:02:05 (`outputs/fpo_v3/loop.log`: "=== [done]").
+- Lúc 11:03 cả hai hàng đợi đều bắt đầu chạy: `fl_render_watch` ("start render") và `dsrl_queue` (step0 GPU exit 0, rồi probe và DSRL).
+- Khoảng 11:04, mọi process của các job này biến mất, kể cả hai tmux session `dsrl_queue` và `fl_render_watch`. Log dừng giữa chừng, không có traceback. GPU còn 59 MiB đã dùng.
+- Lúc đó RAM máy đầy: 60/61 GB đã dùng, load average 32. Claude Code báo đã dừng một tác vụ nền vì "system is running low on memory". Nguyên nhân có khả năng nhất là bị kill do thiếu RAM, nhưng chưa xác minh được (không đọc được log kernel).
+- Kết quả còn lại: `outputs/dsrl/probe/episodes.csv` và `outputs/dsrl/run1/actor_iter0.pt`, đều chưa xong. Kết quả GPU của step 0 nằm trong `step0_gpu.log`.
+- Chưa chạy lại; đang chờ người dùng quyết định.
