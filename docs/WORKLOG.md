@@ -1259,3 +1259,75 @@ Cách đối chiếu: giữ như mục trước.
 - Kích thước n = 256 bạn CHƯA xác nhận. Kết quả n = 32 vẫn chạy đủ để giữ đúng thiết kế gốc.
 - Kết quả CPU dở dang (`grad_cos.csv`, 8/20 lần chia) giữ nguyên, không trộn với kết quả GPU.
 - `task0_diag_report.py`: làm một bảng B cho mỗi file kết quả gradient.
+
+## 01/11/2026 14:56–17:34: FPO v4, kết quả (train + eval xong, loop `exit 0` lúc 17:33:58)
+
+Lệnh: `bash scripts/fpo_v4_loop.sh` (tmux `fpo_v4`). Log: `outputs/fpo_v4/loop.log`; thời gian từng bước: `outputs/fpo_v4/timing.txt`. Không có lỗi.
+
+Lịch trình:
+- 14:56–16:51: train 4 iteration.
+- 16:51–17:04: collect θ4.
+- 17:04–17:24: eval task 0+8 ở seed 3000 / 4000 / 5000.
+- 17:24–17:33: eval quên ở seed 1000.
+
+### Log theo iteration (`outputs/fpo_v4/iter_summary.csv`, `iter{k}/train/train_info.json`)
+
+| iter | bước | epoch | clip_frac TB / 10 bước cuối | clip_frac có trọng số TB | KL đầu → cuối | L_CFM demo 8 task không train, đầu → cuối | success thu thập (t0 / t8) |
+|---|---|---|---|---|---|---|---|
+| 0 | 95 | 1,09 | 0,131 / 0,202 | 0,104 | 0 → 0,098 | 0,05730 → 0,05786 | 97/256 (55/42) |
+| 1 | 69 | 0,81 | 0,136 / 0,203 | 0,104 | 0,044 → 0,065 | 0,05786 → 0,05815 | 123/256 (54/69) |
+| 2 | 47 | 0,58 | 0,126 / 0,202 | 0,088 | 0,052 → 0,098 | 0,05815 → 0,05853 | 124/256 (57/67) |
+| 3 | 17 | 0,22 | 0,134 / 0,209 | 0,101 | 0,097 → 0,121 | 0,05853 → 0,05905 | 110/256 (53/57) |
+| θ4 | — | — | — | — | — | — | 112/256 (44/68) |
+
+- Tổng: **228 bước** (v3: 402; v2: 84). Cả 4 vòng dừng do early stop.
+- Quy tắc collapse không kích hoạt (97 → 123 → 124 → 110 → 112), nên chọn θ4 = `outputs/fpo_v4/iter3/train/pretrained_model` (`selection.json`).
+
+Dấu của Â mỗi vòng (cách của v4; TC = rollout thành công, TB = rollout thất bại):
+
+| iter | t0: TC Â < 0 | t0: TB Â > 0 | t0: Â TB theo rollout | t8: TC Â < 0 | t8: TB Â > 0 | t8: Â TB theo rollout | Â TB theo segment (t0 / t8) |
+|---|---|---|---|---|---|---|---|
+| 0 | 29,5 % | 19,9 % | −0,135 | 16,6 % | 21,5 % | −0,107 | −0,002 / −0,002 |
+| 1 | 22,2 % | 27,9 % | −0,127 | 18,6 % | 16,2 % | −0,101 | −0,002 / −0,006 |
+| 2 | 23,2 % | 10,8 % | −0,164 | 22,2 % | 22,9 % | −0,106 | −0,004 / −0,000 |
+| 3 | 30,4 % | 11,0 % | −0,121 | 19,0 % | 19,2 % | −0,130 | −0,004 / −0,002 |
+
+### Eval (`results/round2/fpo_v4/pooled.md`; script `improve/scripts/fpo_v4_pooled.py`; McNemar chính xác, cặp theo (seed, task, init))
+
+Task đã train, 50 init × seed 3000/4000/5000:
+
+| tập | official | v3 θ4 | v4 θ4 | v4 vs official (chỉ v4 / chỉ off.), p | v4 vs v3 (chỉ v4 / chỉ v3), p |
+|---|---|---|---|---|---|
+| tổng (0 + 8) | 121/300 = 40,3 % | 134/300 = 44,7 % | 140/300 = 46,7 % | 42/23, p = 0,025 | 38/32, p = 0,550 |
+| task 0 | 61/150 = 40,7 % | 46/150 = 30,7 % | 60/150 = 40,0 % | 12/13, p = 1,000 | 21/7, p = 0,013 |
+| task 8 | 60/150 = 40,0 % | 88/150 = 58,7 % | 80/150 = 53,3 % | 30/10, p = 0,002 | 17/25, p = 0,280 |
+| task 0, held-out | 39/102 | 29/102 | 38/102 | 7/8, p = 1,000 | 13/4, p = 0,049 |
+| task 0, đã train | 22/48 | 17/48 | 22/48 | 5/5, p = 1,000 | 8/3, p = 0,227 |
+| task 8, held-out | 45/102 | 58/102 | 53/102 | 15/7, p = 0,134 | 11/16, p = 0,442 |
+| task 8, đã train | 15/48 | 30/48 | 27/48 | 15/3, p = 0,008 | 6/9, p = 0,607 |
+| held-out (0 + 8) | 84/204 | 87/204 | 91/204 | 22/15, p = 0,324 | 24/20, p = 0,652 |
+
+Quên, 8 task × 20, seed 1000:
+
+| | official | v3 | v4 | v4 vs official, p | v4 vs v3, p |
+|---|---|---|---|---|---|
+| tổng | 127/160 = 79,4 % | 115/160 = 71,9 % | 125/160 = 78,1 % | 10/12, p = 0,832 | 17/7, p = 0,064 |
+
+- Theo task (official / v3 / v4): 1: 17/16/17; 2: 16/16/19; 3: 20/20/20; 4: 13/9/12; 5: 18/17/18; 6: 9/10/10; 7: 16/12/15; 9: 18/15/14.
+- p theo tập con và theo task chưa hiệu chỉnh cho nhiều phép so sánh.
+
+### Đối chiếu với dự đoán ghi trước (tiêu chí cố định trước khi train)
+
+| dự đoán | tiêu chí | số liệu | kết quả |
+|---|---|---|---|
+| (a) | task 0: p(v4 vs official) > 0,05 và v4 > v3 | v4 60/150, v3 46/150, official 61/150; p = 1,000 | **ĐÚNG** |
+| (b) | task 8: p(v4 vs official) < 0,05 và v4 > official | v4 80/150, official 60/150; p = 0,002 | **ĐÚNG** |
+| (c) | quên: v4 ≥ v3 | v4 125/160, v3 115/160 | **ĐÚNG** |
+
+### Failure labeler v2 (`outputs/failure_labels_v4/summary.md`; script `improve/scripts/failure_labels_v4.py`; nhãn tự động, chưa xem video)
+
+Kiểm tra: nhãn official + v2 tính lại trùng 100 % với `outputs/failure_labels/labels.csv` (920 episode); nhãn v3 trùng với `outputs/failure_labels_v3/labels.csv` (460 episode).
+
+- **Task 8, thất bại theo số ấm đã lên bếp (0 / 1 / 2):** official 14/73/3; v2 50/22/2; v3 13/46/3; v4 12/55/3. lab_A: official 25, v3 25, v4 23. lab_E_contact: official 55, v3 52, v4 62.
+- **Task 0, thất bại có E_free:** official 14/89; v2 51/100; v3 18/104; v4 36/90. Nhãn chính A: official 73, v3 75, v4 68.
+- **Task 4, nhãn chính của thất bại:** v3 có G 6/11; v4 có A 3, G 2, E_contact 1, B 1, O 1 (8 thất bại).

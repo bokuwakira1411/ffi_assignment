@@ -1,0 +1,9 @@
+model,task,n,k,subtask
+fpo_v2_sel,0,50,15,0.36
+fpo_v2_sel,8,50,21,0.52
+fpo_v3_sel,0,50,16,0.36
+fpo_v3_sel,8,50,27,0.72
+fpo_v4_sel,0,50,22,0.49
+fpo_v4_sel,8,50,24,0.68
+official,0,50,22,0.5
+official,8,50,20,0.64

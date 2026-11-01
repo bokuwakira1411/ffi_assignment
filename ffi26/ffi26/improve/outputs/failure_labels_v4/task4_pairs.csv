@@ -1,0 +1,21 @@
+init,official,official nhãn,v2 θ4,v2 θ4 nhãn,v3 θ4,v3 θ4 nhãn,v4,v4 nhãn
+0,S,,S,,S,,S,
+1,A,A∧G,A,A∧E_contact∧B,G,G,O,
+2,E_contact,E_contact,O,,F,F,B,B
+3,S,,G,G∧E_free,G,G∧E_free,S,
+4,S,,S,,S,,S,
+5,S,,S,,S,,S,
+6,E_contact,E_contact∧B,G,G∧E_contact∧E_free∧B,E_contact,E_contact∧B,E_contact,E_contact∧B
+7,S,,S,,S,,S,
+8,S,,S,,O,,S,
+9,S,,E_contact,E_contact∧B,S,,A,A∧B
+10,S,,S,,S,,S,
+11,G,G∧E_free∧B,E_contact,E_contact,A,A∧G∧E_free,G,G∧E_free∧B
+12,S,,S,,G,G∧E_free∧B,S,
+13,G,G∧E_free∧B,S,,S,,S,
+14,S,,S,,S,,S,
+15,S,,S,,G,G∧E_free∧B,S,
+16,S,,S,,G,G∧E_free∧B,A,A
+17,A,A∧E_free∧B,E_free,E_free∧B,A,A∧E_contact∧B,A,A∧E_free∧B
+18,G,G∧E_contact,S,,G,G∧E_free,G,G∧E_free
+19,S,,G,G∧E_free∧B,S,,S,
