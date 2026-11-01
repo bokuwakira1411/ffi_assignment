@@ -1,0 +1,13 @@
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7907.65it/s]
+Reducing the number of VLM layers to 16 ...
+[iter0] policy lerobot/smolvla_libero, c 24.606, decisions {0: 5054, 8: 6191}, 99880992 trainable, load 15s
+{"iter": 0, "rep": 0, "policy": "lerobot/smolvla_libero", "c": 24.6056, "n_dec_half": 256, "n_rollouts_0a": 60, "ahat_mean_0a": 0.0095, "n_rollouts_0b": 60, "ahat_mean_0b": -0.1344, "n_rollouts_8a": 64, "ahat_mean_8a": -0.1591, "n_rollouts_8b": 64, "ahat_mean_8b": 0.1134, "cos_0a_0b": 0.3228, "cos_8a_8b": -0.0642, "cos_0a_8a": -0.1308, "cos_0b_8b": 0.2425, "cos_0a_8b": 0.2674, "cos_0b_8a": 0.0225, "cos_0_8": 0.2575, "cos_0_demo": -0.0166, "cos_8_demo": 0.0351, "norm_0": 5.4338, "norm_8": 5.915, "norm_0a": 6.4306, "norm_0b": 6.9881, "norm_8a": 5.559, "norm_8b": 10.8104, "norm_demo": 4.0004, "seconds": 37.4}
+{"iter": 0, "rep": 1, "policy": "lerobot/smolvla_libero", "c": 24.6056, "n_dec_half": 256, "n_rollouts_0a": 60, "ahat_mean_0a": -0.1162, "n_rollouts_0b": 60, "ahat_mean_0b": 0.0822, "n_rollouts_8a": 64, "ahat_mean_8a": 0.1436, "n_rollouts_8b": 64, "ahat_mean_8b": -0.0977, "cos_0a_0b": 0.1774, "cos_8a_8b": 0.1515, "cos_0a_8a": -0.0283, "cos_0b_8b": 0.0248, "cos_0a_8b": -0.0788, "cos_0b_8a": -0.0648, "cos_0_8": -0.0626, "cos_0_demo": 0.083, "cos_8_demo": 0.0579, "norm_0": 4.9926, "norm_8": 2.6891, "norm_0a": 5.3869, "norm_0b": 7.5485, "norm_8a": 4.2181, "norm_8b": 2.7604, "norm_demo": 3.6782, "seconds": 37.3}
