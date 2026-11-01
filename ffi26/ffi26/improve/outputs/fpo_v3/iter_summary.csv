@@ -1,0 +1,2 @@
+iter_dir,batch_size,pairs_per_step,steps,epochs_used,stop_reason,clip_frac_mean,clip_frac_last10,kl_start,kl_end,demo_probe_untrained_start,demo_probe_untrained_end,collect_success,collect_task0,collect_task8,seconds_train
+iter0,128,1,131,1.506,early_stop,0.1422,0.2039,0.000e+00,3.287e-02,0.05730,0.05766,97/256,55/128,42/128,1637

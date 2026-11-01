@@ -1,0 +1,14 @@
+# FPO v3, seed 5000, expert fp32: v3 selected checkpoint, tasks 0, 8 x 50 init states (= v2 protocol,
+# outputs/fpo_v2/configs/eval_fpo_v2_s5000.yaml). Official / v2 episodes reused from outputs/fpo_v2/eval_s5000 for pairing.
+# Template: fpo_v3_loop.sh replaces V3_SEL_PATH and writes outputs/fpo_v3/configs/eval_fpo_v3_s5000.yaml.
+seed: 5000
+n_action_steps: 10
+batch_size: 8
+expert_fp32: true
+output_dir: ~/ffi26/improve/outputs/fpo_v3/eval_s5000
+models:
+  - name: fpo_v3_sel
+    path: V3_SEL_PATH
+    task_suffix: ""
+    jobs:
+      - {tasks: [0, 8], n_episodes: 50}

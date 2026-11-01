@@ -1,0 +1,16 @@
+# Replay for manual failure-label check (scripts/failure_labels_run.py). Settings = outputs/fpo_v2 evals.
+n_action_steps: 10
+batch_size: 8
+n_episodes: 20
+output_dir: /home/student/Lan_K68AI/temp/ffi26/ffi26/improve/outputs/failure_labels/videos/fpo_v2_sel_s1000
+arms:
+  - name: fpo_v2_sel
+    label: fpo_v2_sel
+    path: /home/student/ffi26/improve/outputs/fpo_v2/iter3/train/pretrained_model
+    expert_fp32: true
+originals:
+  fpo_v2_sel:
+    1000: /home/student/Lan_K68AI/temp/ffi26/ffi26/improve/outputs/fpo_v2/eval_s1000/fpo_v2_sel/task{task}
+episodes:
+  - {seed: 1000, task: 1, init: 18}
+  - {seed: 1000, task: 4, init: 2}

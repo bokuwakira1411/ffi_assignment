@@ -1,0 +1,37 @@
+# Video replay (scripts/phase3_eval_video.py): v2 θ4 (outputs/fpo_v2/iter3/train/pretrained_model, checkpoint theo
+# quy tắc collapse) trên eval quên seed 1000, task 1 và 7: tất cả episode THẤT BẠI trong bản gốc
+# outputs/fpo_v2/eval_s1000/fpo_v2_sel/task{1,7}/ep*.meta.json (task 1: 8, task 7: 10).
+# Thiết lập replay = eval gốc (outputs/fpo_v2/configs/eval_fpo_v2_s1000.yaml): n_action_steps 10, batch_size 8,
+# 20 episode mỗi (model, task), expert fp32. Mục đích: xem robot có gắp nhầm vật của task 0 không.
+seed_note: episode k uses init state k and env seed seed+k
+n_action_steps: 10
+batch_size: 8
+n_episodes: 20
+output_dir: ~/ffi26/results/videos/v2_forget
+arms:
+  - name: v2
+    label: v2 theta4 (FPO, selected)
+    path: /home/student/ffi26/improve/outputs/fpo_v2/iter3/train/pretrained_model
+    expert_fp32: true
+originals:
+  v2:
+    1000: ~/ffi26/improve/outputs/fpo_v2/eval_s1000/fpo_v2_sel/task{task}
+episodes:
+  - {seed: 1000, task: 1, init: 0, cat: v2F}
+  - {seed: 1000, task: 1, init: 3, cat: v2F}
+  - {seed: 1000, task: 1, init: 4, cat: v2F}
+  - {seed: 1000, task: 1, init: 11, cat: v2F}
+  - {seed: 1000, task: 1, init: 12, cat: v2F}
+  - {seed: 1000, task: 1, init: 16, cat: v2F}
+  - {seed: 1000, task: 1, init: 18, cat: v2F}
+  - {seed: 1000, task: 1, init: 19, cat: v2F}
+  - {seed: 1000, task: 7, init: 2, cat: v2F}
+  - {seed: 1000, task: 7, init: 3, cat: v2F}
+  - {seed: 1000, task: 7, init: 4, cat: v2F}
+  - {seed: 1000, task: 7, init: 5, cat: v2F}
+  - {seed: 1000, task: 7, init: 6, cat: v2F}
+  - {seed: 1000, task: 7, init: 7, cat: v2F}
+  - {seed: 1000, task: 7, init: 11, cat: v2F}
+  - {seed: 1000, task: 7, init: 12, cat: v2F}
+  - {seed: 1000, task: 7, init: 15, cat: v2F}
+  - {seed: 1000, task: 7, init: 18, cat: v2F}

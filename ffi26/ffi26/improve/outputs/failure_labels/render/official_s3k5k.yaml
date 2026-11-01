@@ -1,0 +1,22 @@
+# Replay for manual failure-label check (scripts/failure_labels_run.py). Settings = outputs/fpo_v2 evals.
+n_action_steps: 10
+batch_size: 8
+n_episodes: 50
+output_dir: /home/student/Lan_K68AI/temp/ffi26/ffi26/improve/outputs/failure_labels/videos/official_s3k5k
+arms:
+  - name: official
+    label: official
+    path: lerobot/smolvla_libero
+    expert_fp32: true
+originals:
+  official:
+    3000: /home/student/Lan_K68AI/temp/ffi26/ffi26/improve/outputs/fpo_v2/eval_s3000/official/task{task}
+    4000: /home/student/Lan_K68AI/temp/ffi26/ffi26/improve/outputs/fpo_v2/eval_s4000/official/task{task}
+    5000: /home/student/Lan_K68AI/temp/ffi26/ffi26/improve/outputs/fpo_v2/eval_s5000/official/task{task}
+episodes:
+  - {seed: 5000, task: 8, init: 11}
+  - {seed: 4000, task: 8, init: 32}
+  - {seed: 4000, task: 8, init: 3}
+  - {seed: 3000, task: 8, init: 17}
+  - {seed: 4000, task: 8, init: 20}
+  - {seed: 3000, task: 8, init: 32}

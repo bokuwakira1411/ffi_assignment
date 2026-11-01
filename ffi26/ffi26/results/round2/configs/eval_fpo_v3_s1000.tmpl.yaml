@@ -1,0 +1,14 @@
+# FPO v3, seed 1000, expert fp32: forgetting = v3 selected checkpoint on the other 8 tasks x 20 ep. Official / v2 arms
+# are NOT re-run: their episodes (same protocol, outputs/fpo_v2/configs/eval_fpo_v2_s1000.yaml) are reused for pairing.
+# Template: fpo_v3_loop.sh replaces V3_SEL_PATH and writes outputs/fpo_v3/configs/eval_fpo_v3_s1000.yaml.
+seed: 1000
+n_action_steps: 10
+batch_size: 8
+expert_fp32: true
+output_dir: ~/ffi26/improve/outputs/fpo_v3/eval_s1000
+models:
+  - name: fpo_v3_sel
+    path: V3_SEL_PATH
+    task_suffix: ""
+    jobs:
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 20}

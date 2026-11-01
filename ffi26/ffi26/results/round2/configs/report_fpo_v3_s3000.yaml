@@ -1,0 +1,17 @@
+# Report for FPO v3 seed 3000 (expert fp32): official / v2 episodes from outputs/fpo_v2/eval_s3000, v3 from outputs/fpo_v3/eval_s3000.
+trained_tasks: [0, 8]
+other_tasks: []
+heldout_from: ~/ffi26/results/round2/configs/round1.yaml  # same init_ids as fpo_v3.yaml collect (checked)
+reference: official
+out_dir: ~/ffi26/results/round2/fpo_v3/seed3000
+gap_pairs: []
+models:
+  - name: official
+    label: checkpoint chính thức, expert fp32, seed 3000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s3000/official
+  - name: fpo_v2_sel
+    label: FPO v2 θ4, expert fp32, seed 3000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s3000/fpo_v2_sel
+  - name: fpo_v3_sel
+    label: FPO v3 (checkpoint theo quy tắc collapse), expert fp32, seed 3000
+    root: ~/ffi26/improve/outputs/fpo_v3/eval_s3000/fpo_v3_sel
