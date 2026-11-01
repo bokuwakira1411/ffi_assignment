@@ -9,7 +9,7 @@ Xuất phát từ `lerobot/smolvla_libero` (NAS = 10). Train trên task 0 và ta
 | A1 | gắn nhãn advantage (text hoặc embedding) vào rollout rồi fine-tune | không hơn checkpoint gốc |
 | AWR | fine-tune có trọng số theo advantage | không hơn checkpoint gốc |
 | FPO v1 | PPO-clip với tỉ số xấp xỉ bằng loss flow matching, on-policy 4 vòng | tốt hơn ở seed eval 1000, không lặp lại ở seed 2000 |
-| FPO v2 | v1 + expert fp32, batch 128, neo BC | task 8 tăng, task 0 giảm, quên nhiều |
+| FPO v2 | v1 + expert fp32, batch 128, loss BC trên rollout thành công | task 8 tăng, task 0 giảm, quên nhiều |
 | FPO v3 | v2 + demo replay, chuẩn hoá advantage theo task | giảm quên, task 0 vẫn giảm |
 | **FPO v4** | v3 + trọng số advantage theo segment, không trừ mean | **tốt nhất** |
 
