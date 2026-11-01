@@ -1,0 +1,52 @@
+# Video replay (scripts/phase3_eval_video.py), 01/11/2026: official vs FPO v3 θ4 vs FPO v4 θ4 on the SAME episodes of the
+# final evals (tasks 0, 8; seeds 3000 / 4000 / 5000). Replay settings = original evals
+# (outputs/fpo_v2/configs/eval_fpo_v2_s*.yaml, outputs/fpo_v{3,4}/configs/eval_fpo_v{3,4}_s*.yaml): n_action_steps 10,
+# batch_size 8, 50 episodes per (model, task), expert fp32. Episode k: init state k, env seed seed + k; RNG reset with
+# set_seed(seed) per (model, task), batches 0..k//8 re-run, so replays must match the originals (replay_check_*.csv).
+# Episodes chosen from results/round2/fpo_v4/episodes_all.csv (original outcomes official / v3 / v4):
+#   task 0: s5000 init 4 (F / F / S), s5000 init 16 (F / F / S)   -> v4 wins over both
+#           s4000 init 9 (S / F / F)                               -> v4 loses to official
+#           s5000 init 2 (F / F / F)                               -> remaining failure
+#   task 8: s3000 init 0 (F / F / S), s3000 init 9 (F / F / S)    -> v4 wins over both
+#           s3000 init 6 (S / S / F)                               -> v4 loses to official and v3
+#           s3000 init 2 (F / F / F)                               -> remaining failure
+seed_note: episode k uses init state k and env seed seed+k
+n_action_steps: 10
+batch_size: 8
+n_episodes: 50
+output_dir: ~/ffi26/results/videos/v4_paired
+arms:
+  - name: official
+    label: official (lerobot/smolvla_libero)
+    path: lerobot/smolvla_libero
+    expert_fp32: true
+  - name: v3
+    label: FPO v3 theta4
+    path: /home/student/ffi26/improve/outputs/fpo_v3/iter3/train/pretrained_model
+    expert_fp32: true
+  - name: v4
+    label: FPO v4 theta4
+    path: /home/student/ffi26/improve/outputs/fpo_v4/iter3/train/pretrained_model
+    expert_fp32: true
+originals:
+  official:
+    3000: ~/ffi26/improve/outputs/fpo_v2/eval_s3000/official/task{task}
+    4000: ~/ffi26/improve/outputs/fpo_v2/eval_s4000/official/task{task}
+    5000: ~/ffi26/improve/outputs/fpo_v2/eval_s5000/official/task{task}
+  v3:
+    3000: ~/ffi26/improve/outputs/fpo_v3/eval_s3000/fpo_v3_sel/task{task}
+    4000: ~/ffi26/improve/outputs/fpo_v3/eval_s4000/fpo_v3_sel/task{task}
+    5000: ~/ffi26/improve/outputs/fpo_v3/eval_s5000/fpo_v3_sel/task{task}
+  v4:
+    3000: ~/ffi26/improve/outputs/fpo_v4/eval_s3000/fpo_v4_sel/task{task}
+    4000: ~/ffi26/improve/outputs/fpo_v4/eval_s4000/fpo_v4_sel/task{task}
+    5000: ~/ffi26/improve/outputs/fpo_v4/eval_s5000/fpo_v4_sel/task{task}
+episodes:
+  - {seed: 5000, task: 0, init: 4, cat: v4W}
+  - {seed: 5000, task: 0, init: 16, cat: v4W}
+  - {seed: 4000, task: 0, init: 9, cat: v4L}
+  - {seed: 5000, task: 0, init: 2, cat: allF}
+  - {seed: 3000, task: 8, init: 0, cat: v4W}
+  - {seed: 3000, task: 8, init: 9, cat: v4W}
+  - {seed: 3000, task: 8, init: 6, cat: v4L}
+  - {seed: 3000, task: 8, init: 2, cat: allF}

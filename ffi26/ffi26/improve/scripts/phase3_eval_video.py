@@ -118,7 +118,8 @@ def main():
             continue
         path = arm["path"]
         policy = load_policy(str(Path(path).expanduser()) if path.startswith(("~", "/")) else path,
-                             cfg["n_action_steps"], expert_fp32=arm.get("expert_fp32", False))
+                             cfg["n_action_steps"], adv_label=arm.get("adv_label"),
+                             expert_fp32=arm.get("expert_fp32", False))
         chk, sel = [], []
         for (seed, task), wanted in sorted(groups.items()):
             rdir = out / "raw" / name / f"s{seed}" / f"task{task}"

@@ -1,0 +1,9 @@
+arm,seed,task,init,file,success,length,primary,subtask_completion,events
+v4,3000,8,0,v4_t8_init0_s3000_success.mp4,True,391,S,1.0,
+v4,3000,8,2,v4_t8_init2_s3000_fail.mp4,False,520,A,0.5,slip@448 moka_pot_1; timeout@519
+v4,3000,8,6,v4_t8_init6_s3000_fail.mp4,False,520,D,0.0,timeout@519
+v4,3000,8,9,v4_t8_init9_s3000_success.mp4,True,363,S,1.0,
+v4,4000,0,9,v4_t0_init9_s4000_fail.mp4,False,520,A,0.0,slip@146 alphabet_soup_1; timeout@519
+v4,5000,0,2,v4_t0_init2_s5000_fail.mp4,False,520,A,0.0,slip@82 alphabet_soup_1; slip@138 alphabet_soup_1; timeout@519
+v4,5000,0,4,v4_t0_init4_s5000_success.mp4,True,498,S,1.0,slip@219 tomato_sauce_1; slip@284 tomato_sauce_1; slip@399 tomato_sauce_1
+v4,5000,0,16,v4_t0_init16_s5000_success.mp4,True,328,S,1.0,

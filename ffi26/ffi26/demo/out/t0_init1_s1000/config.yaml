@@ -1,0 +1,25 @@
+seed_note: episode k uses init state k and env seed seed+k
+n_action_steps: 10
+batch_size: 8
+n_episodes: 50
+output_dir: /home/student/ffi26/demo/out/t0_init1_s1000
+arms:
+- name: a1emb_pos
+  label: A1-emb nhãn advantage qua embedding, nhãn positive
+  path: /home/student/ffi26/improve/outputs/r2/train_a1emb_round1/checkpoints/002000/pretrained_model
+  expert_fp32: false
+  adv_label: positive
+- name: awr
+  label: A2 AWR, vòng 1, checkpoint 2000
+  path: /home/student/ffi26/improve/outputs/r2/train_awr_round1/checkpoints/002000/pretrained_model
+  expert_fp32: false
+originals:
+  a1emb_pos:
+    1000: /home/student/ffi26/improve/outputs/r2/eval/a1emb_r1_pos/task{task}
+  awr:
+    1000: /home/student/ffi26/improve/outputs/r2/eval/awr_r1/task{task}
+episodes:
+- seed: 1000
+  task: 0
+  init: 1
+  cat: demo

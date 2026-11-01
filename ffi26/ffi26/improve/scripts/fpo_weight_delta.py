@@ -1,7 +1,7 @@
 """Relative weight change of FPO checkpoints vs the official one, per tensor: |W - W0| / |W0| (Frobenius). CPU only.
 Also: the size of the PPO trust region in CFM-loss units, from c = ratio_scale_used (train_info.json):
 a sample is clipped when |c * (l_old - l_new)| > log(1.2) ~ 0.18.
-Output: ~/ffi26/results/round2/fpo_v3/weight_delta.csv (+ printed summary).
+Output: ~/ffi26/results/round2/fpo_v3/weight_delta.csv (v2, v3, v4) (+ printed summary).
 
     CUDA_VISIBLE_DEVICES="" python scripts/fpo_weight_delta.py
 """
@@ -21,7 +21,7 @@ from safetensors.torch import load_file  # noqa: E402
 from rollout import checkpoint_file  # noqa: E402
 
 O = ROOT / "outputs"
-CK = {f"{r}_theta{k + 1}": O / f"fpo_{r}/iter{k}/train/pretrained_model" for r in ("v2", "v3") for k in range(4)}
+CK = {f"{r}_theta{k + 1}": O / f"fpo_{r}/iter{k}/train/pretrained_model" for r in ("v2", "v3", "v4") for k in range(4)}
 
 
 def main():
@@ -41,7 +41,7 @@ def main():
     out = Path.home() / "ffi26/results/round2/fpo_v3/weight_delta.csv"
     df.to_csv(out, index=False)
     print(df.to_string(index=False))
-    for r in ("v2", "v3"):
+    for r in ("v2", "v3", "v4"):
         i = json.load(open(O / f"fpo_{r}/iter0/train/train_info.json"))
         c, lo = i["ratio_scale_used"], i["mean_l_old"]
         print(f"{r} iter0: c = {c:.2f}, mean l_old = {lo:.4f}; clipped when |l_old - l_new| > {math.log(1.2) / c:.4f} "

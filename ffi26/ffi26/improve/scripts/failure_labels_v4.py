@@ -12,7 +12,7 @@ are reproducible; check: official and v2 labels are recomputed and compared row 
 Outputs (outputs/failure_labels_v4/): labels.csv (v4 only), primary_by_arm_task.csv, multilabel_by_arm_task.csv,
 task8_pots.csv, task0_Efree.csv, task4_pairs.csv, summary.md (Vietnamese).
 Kettles on the stove = n_pred_new_ever_true (task 8: 2 predicates, moka_pot_1 / moka_pot_2 on the stove), as in the
-WORKLOG table of 01/11/2026 08:05 and dsrl_train.py.
+WORKLOG table of 01/11/2026 08:05.
 """
 
 import sys

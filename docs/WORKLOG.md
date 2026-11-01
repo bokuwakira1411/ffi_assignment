@@ -835,40 +835,6 @@ Diễn giải: ấm thứ nhất được đặt lên bếp nhưng không ở l�
 
 **3. Video mù.** `--blind`: header chỉ có `step i/T  Phi x` (đã xem ảnh thử); `episodes_<arm>.csv` để trống `primary`, `subtask_completion`, `events`. Tên file vẫn có arm và `_fail`, như trong `manual_check.csv`. **Chưa render.** Lúc 08:10, v3 đang train iter0 (pid 3573373, 3,8 GB). Train v2 cần tới 11,4 GB (`outputs/fpo_v2/iter*/train/train_info.json`, `torch_max_mem_allocated_gb`), nên chạy song song có nguy cơ OOM làm hỏng v3. Đổi batch size thì replay không còn khớp episode gốc (`phase3_eval_video.py`: nhiễu policy phụ thuộc thứ tự batch). Vì vậy render chạy sau v3: tmux `fl_render_watch` chạy `outputs/failure_labels/render_watch.sh`, kiểm tra mỗi 2 phút; khi không còn process `fpo_v3_loop.sh` và GPU trống ≥ 6000 MiB thì chạy `render_commands.sh`. Trạng thái: `render_watch_status.txt`, log: `render.log`, video: `outputs/failure_labels/videos/<arm>_<s1000|s3k5k>/`, kiểm tra tất định: `replay_check_<arm>.csv` trong từng thư mục.
 
-## 01/11/2026 ~08:15–08:30: DSRL nhỏ, chuẩn bị (bước 0) và xếp hàng chạy GPU
-
-Yêu cầu: chuẩn bị và chạy small-scale DSRL (Wagenmaker et al., CoRL 2025) trên `lerobot/smolvla_libero`, task 8; không đụng file hay process của v3; chỉ dùng GPU khi VRAM đủ; hạn 22:00.
-
-Tình trạng GPU lúc 08:15: v3 đang train iter0 (`fpo_train_v3.py`, pid 3573373, 11,7–12,6 GB), GPU trống 3,2 GB. Train FPO cần tới 11,4 GB (`torch_max_mem_allocated_gb`), nên chạy thêm process khoảng 3 GB có nguy cơ làm v3 OOM khi nó vào lại phase train. **Quyết định:** mọi việc cần SmolVLA trên GPU chờ loop v3 xong (hàng đợi bên dưới). Các test env (EGL, 1 env) chạy luôn: process không xuất hiện trong `nvidia-smi --query-compute-apps`, GPU trống trước/sau vẫn 3240 MiB.
-
-| # | Lệnh / thao tác | Lý do | Tác động |
-|---|---|---|---|
-| 1 | đọc `lerobot/policies/smolvla/modeling_smolvla.py` (197–290, 777–830), `processor/relative_action_processor.py:249`, `src/rollout.py`, `src/fpo_capture.py`, `src/logged_env.py`, `scripts/phase1_logging.py`, `fpo_v2.yaml`, `fpo_v3.yaml`, `outputs/fpo_v2/gpu.csv`, `loop.log` | bước 0 | chỉ đọc |
-| 2 | thử osmesa (`MUJOCO_GL=osmesa`) | render env không cần GPU | thất bại: không có osmesa |
-| 3 | **Tạo** `scripts/dsrl_step0_env.py`, chạy trên official s3000 task 8 init 12, t0 = 280 | R1/R2 | **SỬA REPO** (file mới); env EGL 1 env |
-| 4 | **Tạo** `scripts/dsrl_step0_policy.py`, chạy `--device cpu` | tính tất định, noise | **SỬA REPO** (file mới); CPU |
-| 5 | `scratchpad/pick_probe.py` | chọn episode cho bước 1 | scratch |
-| 6 | **Tạo** `src/dsrl_rollout.py` (`run_batch_noise`), `scripts/dsrl_probe.py`, `scripts/dsrl_train.py`. `src/rollout.py` không sửa | bước 1, 2 | **SỬA REPO** (file mới) |
-| 7 | `scratchpad/dsrl_smoke.py`: policy trên CPU, 2 env, 25 bước từ state khôi phục, actor → noise → `group_segment_labels` → `ppo_update` | kiểm tra code trước khi dùng GPU | scratch; env EGL 2 env |
-| 8 | **Tạo** `outputs/dsrl/run_queue.sh`, chạy trong tmux `dsrl_queue` | chờ v3 xong + GPU trống ≥ 8000 MiB, rồi: kiểm tra GPU → probe ∥ DSRL | chạy nền |
-
-### Bước 0: khả thi
-
-- **Noise từ ngoài: CÓ, không cần hook.** `SmolVLAPolicy.select_action(batch, *, noise=None)` (`modeling_smolvla.py:256–285`) và `predict_action_chunk(..., noise=)` (240–253) chuyển noise vào `VLAFlowMatching.sample_actions(..., noise=None)` (777–826). Noise chỉ được dùng khi hàng đợi action rỗng (mỗi `n_action_steps` = 10 bước). Shape (B, `chunk_size` = 50, `max_action_dim` = 32); output được cắt về 7 chiều (`_get_action_chunk`, dòng 223). `num_steps` = 10 bước Euler. `src/dsrl_rollout.py` truyền noise qua `select_action`, không sửa site-packages.
-- **Tính tất định** (`dsrl_step0_policy.py`, CPU, expert fp32, quan sát thật task 8 init 0): D1 cùng obs + cùng noise, 2 lần gọi: max|diff| = 0. D2 `select_action(noise)`: action đầu = chunk[:, 0], max|diff| = 0. D3 noise khác: mean|diff| chunk 0,054 (10 bước đầu 0,071; max 0,416) so với mean|chunk| 0,798. D4 chỉ đổi noise ở 25 chiều đệm (7..31): phần thực thi đổi tối đa 0,057. D5 noise 0 so với N(0, I): mean|diff| 0,039. **Kiểm tra trên GPU: chưa chạy** (bước đầu tiên của hàng đợi, log `outputs/dsrl/step0_gpu.log`).
-- **Khôi phục state: CÓ** (`dsrl_step0_env.py`, official s3000 task 8 init 12). Các episode eval không lưu sim state. R1: replay 520 action đã thực thi, open-loop từ reset (init 12, env seed 3012): max|ΔEE| = 0,0000 mm, max|Δvật| = 0,0000 mm, predicate khớp 521/521 hàng, kết quả khớp. R2: khởi động lại từ sim state ở hàng 280 (`LoggedLiberoEnv.next_sim_state`) rồi replay action 280..519: vật và predicate khớp 241/241 hàng; EE lệch cố định 0,2632 mm (đã có ngay ở hàng đầu, không tăng). Relative anchor là trạng thái lúc bắt đầu mỗi chunk (`bind_relative_anchor`), nên khởi động từ state không gây lệch.
-- Smoke test (CPU): `run_batch_noise` ghi quyết định ở bước 0/10/20 (ảnh 3×64×64, state 8 chiều); ratio PPO lúc bắt đầu = 1 ± 2e-5; PPO dừng theo KL. **Actor: 820.638 tham số.**
-
-### Bước 1: episode probe (`outputs/failure_labels/labels.csv`, seed 20261101)
-
-Ứng viên: official task 8 thất bại có đoạn E_contact bắt đầu sau khi ấm đầu tiên lên bếp: 31; v2 θ4 task 0 thất bại có E_free: 51. Chọn 10 + 10. t0 = ⌊(đầu stall − 20)/10⌋ × 10, tức là ranh giới replan. Ngân sách bước từ t0 = 520 − t0. Danh sách: `outputs/dsrl/probe/episodes.csv` (ghi khi chạy).
-
-### Bước 2: thiết kế đã cài (`scripts/dsrl_train.py`)
-
-Actor: CNN (agent view 64×64) + MLP state → mean 50 × 7; lớp cuối khởi tạo 0, σ = 1 cố định. 25 chiều đệm giữ N(0, I), không học. PPO clip 0,2, lr 1e-4, tối đa 10 epoch, minibatch 256, dừng khi approx KL > 0,03. Advantage: `reward_r2.group_segment_labels` với reward và `min_return_spread`/`adv_deadzone` của `fpo_v2.yaml`, chia cho std. Collect: 16 init task 8 của FPO × 8 rollout = 128 / iteration, env seed 7.000.000 + 100.000k + 1000g + j; 4 iteration. Eval: task 8 × 50 init × seed 3000/4000/5000, noise ~ N(μ, I).
-
-**Nhận xét trước khi chạy:** với σ = 1 trên 350 chiều, clip 0,2 (|Δlog p| ≈ ‖Δμ‖) và KL ≈ ½‖Δμ‖² ≤ 0,03, mỗi iteration μ chỉ dịch khoảng ‖Δμ‖ ≲ 0,25. Sau 4 iteration ‖μ‖ ≲ 1, tức khoảng 0,05 mỗi chiều, nhỏ so với noise chuẩn (‖ε‖ ≈ 18,7). Theo D3, mức này làm chunk đổi rất ít. Dự đoán: DSRL theo đúng spec (PPO, σ = 1, 512 episode) sẽ gần như không khác official.
-
 ## 01/11/2026 ~09:00: auto commit/push, bước 1 (kiểm tra). DỪNG ở xác thực push
 
 | # | Lệnh | Tác động |
@@ -881,7 +847,7 @@ Actor: CNN (agent view 64×64) + MLP state → mean 50 × 7; lớp cuối khởi
 Kết quả:
 - Branch `main`, đi trước `origin/main` 1 commit (`a477399`). Remote: `git@github.com:bokuwakira1411/ffi_assignment.git` (SSH).
 - **Push không hoạt động:** `git push --dry-run` → `Permission denied (publickey)`. Không có ssh-agent. Khoá mặc định `~/.ssh/id_ed25519` xác thực là tài khoản GitHub **InboxMeNow**, không phải chủ repo. `gh` cũng đăng nhập InboxMeNow. Có khoá `~/.ssh/id_ed25519_github_personal` (tạo 30/10) nhưng không có `~/.ssh/config` hay `core.sshCommand` trỏ tới nó; chưa kiểm tra được khoá này. Theo yêu cầu: **dừng, chưa sửa `.gitignore`, chưa viết script, chưa commit.**
-- Job đang chạy: tmux `fpo_v3` (`fpo_v3_loop.sh`, đang ở `fpo_train_v3.py` iter1; xong khi `outputs/fpo_v3/loop.log` có `=== [done]` và có `results/round2/fpo_v3/{seed1000_other,seed3000,seed4000,seed5000}/summary.md`); `fl_render_watch` (xong khi `outputs/failure_labels/render_watch_status.txt` có `render exit`); `dsrl_queue` (xong khi `outputs/dsrl/queue_status.txt` có `queue done`; kết quả `outputs/dsrl/probe/summary.md`, `outputs/dsrl/run1/summary.md`). `ffi`, `minh`, `octdl_resnet50_5fold`, `resnet20_p4p7_m3p7_reconstruct` và 2 process `run.py` không liên quan tới FFI26.
+- Job đang chạy: tmux `fpo_v3` (`fpo_v3_loop.sh`, đang ở `fpo_train_v3.py` iter1; xong khi `outputs/fpo_v3/loop.log` có `=== [done]` và có `results/round2/fpo_v3/{seed1000_other,seed3000,seed4000,seed5000}/summary.md`); `fl_render_watch` (xong khi `outputs/failure_labels/render_watch_status.txt` có `render exit`). `ffi`, `minh`, `octdl_resnet50_5fold`, `resnet20_p4p7_m3p7_reconstruct` và 2 process `run.py` không liên quan tới FFI26.
 - `.gitignore` hiện **không** loại `*.pt`, `pretrained_model/`, `*.mp4`, `*.gif`, `wandb/`, `.cache/` (ngoài `ckpt_files/.cache/`); đã loại `*.safetensors`, `*.npz`, `*.parquet`, `improve/data/`. Chưa có file chưa track nào > 10 MB (trừ file đã bị ignore). Trong danh sách sắp commit có 3 file `.pt` / `pretrained_model/`.
 - Tìm thông tin nhạy cảm (`hf_…`, `ghp_…`, `github_pat_`, `WANDB_API_KEY`, `api_key`, `password`, `secret`, private key, `.env`, `.netrc`, `credentials`) trong 358 file: **không thấy**.
 
@@ -938,54 +904,12 @@ Nhận xét (chỉ dựa trên các số ở trên):
 - (2) Đánh đổi task 0/8: KHÔNG được giải quyết. Task 8 tăng thêm (58.7%, p < 0.001 so với official), task 0 giảm (30.7%, p = 0.014 so với official; v2 là 33.3%, p = 0.080). Thu ở θ4 cho thấy cùng hướng (task 0 49/128 < θ0 55/128). Tổng trên task đã train 44.7% vs official 40.3%, không có ý nghĩa (p = 0.17). Trên init held-out gần như bằng official (42.6% vs 41.2%); phần tăng nằm ở init đã train (49.0% vs 38.5%, p = 0.11).
 - (3) Không làm (+70% thời gian/bước).
 
-### 2026-11-01 11:05 — Hàng đợi DSRL và render bị dừng
+### 2026-11-01 11:05 — Hàng đợi render bị dừng
 - v3 loop xong lúc 11:02:05 (`outputs/fpo_v3/loop.log`: "=== [done]").
-- Lúc 11:03 cả hai hàng đợi đều bắt đầu chạy: `fl_render_watch` ("start render") và `dsrl_queue` (step0 GPU exit 0, rồi probe và DSRL).
-- Khoảng 11:04, mọi process của các job này biến mất, kể cả hai tmux session `dsrl_queue` và `fl_render_watch`. Log dừng giữa chừng, không có traceback. GPU còn 59 MiB đã dùng.
+- Lúc 11:03 hàng đợi `fl_render_watch` bắt đầu chạy ("start render").
+- Khoảng 11:04, mọi process của job này biến mất, kể cả tmux session `fl_render_watch`. Log dừng giữa chừng, không có traceback. GPU còn 59 MiB đã dùng.
 - Lúc đó RAM máy đầy: 60/61 GB đã dùng, load average 32. Claude Code báo đã dừng một tác vụ nền vì "system is running low on memory". Nguyên nhân có khả năng nhất là bị kill do thiếu RAM, nhưng chưa xác minh được (không đọc được log kernel).
-- Kết quả còn lại: `outputs/dsrl/probe/episodes.csv` và `outputs/dsrl/run1/actor_iter0.pt`, đều chưa xong. Kết quả GPU của step 0 nằm trong `step0_gpu.log`.
 - Chưa chạy lại; đang chờ người dùng quyết định.
-
-### 2026-11-01 13:16 — Chạy lại DSRL (theo yêu cầu: chỉ DSRL, bỏ auto-commit)
-- RAM trống 51 GB, GPU 58 MiB đã dùng.
-- Chạy `python scripts/dsrl_train.py --out outputs/dsrl/run1` trong tmux `dsrl_run1`, khởi động bằng `setsid` để tách khỏi shell của Claude Code. Log ghi tiếp vào `outputs/dsrl/run1.log`; dòng exit sẽ ghi vào `queue_status.txt`.
-- Script chạy tiếp từ checkpoint đã có (`run1/actor_iter0.pt`).
-- Không chạy probe và render.
-
-### 2026-11-01 13:40 — Kết quả DSRL run1 (exit 0, chạy 13:16–13:39)
-- Bảng đầy đủ ở `outputs/dsrl/run1/summary.md`, do `dsrl_train.py` tự sinh.
-- **Thu thập:** 4 iteration, thành công lần lượt 52, 49, 48, 50 trên 128. PPO lần nào cũng dừng sớm vì vượt target_kl (ở epoch 4–6).
-  - |mu| của actor tăng từ 0.011 lên 0.022, rất nhỏ so với σ=1.
-- **Eval:** task 8 × 50 init × 3 seed.
-
-  | arm | s3000 | s4000 | s5000 | gộp |
-  |---|---|---|---|---|
-  | dsrl | 25/50 | 21/50 | 27/50 | 73/150 (48.7%) |
-  | official | 18/50 | 22/50 | 20/50 | 60/150 (40.0%) |
-  | v2 θ4 | 26/50 | 29/50 | 21/50 | 76/150 (50.7%) |
-
-- **McNemar:**
-  - dsrl vs official: chỉ dsrl 26, chỉ official 13, p = 0.053.
-  - dsrl vs v2: 28 vs 31, p = 0.795.
-- **Chưa kết luận được là do học:**
-  - |mu| ≈ 0.02σ, tức noise chỉ lệch rất ít so với N(0,I).
-  - official và dsrl dùng các lần rút noise khác nhau.
-  - Thu thập ở iter 0 (actor = 0) cho 40.6%, nhưng trên 16 init_ids của train chứ không phải 50 init của eval, nên không so trực tiếp được.
-  - Thiếu đối chứng: eval `actor_iter0.pt` trên cùng 150 episode, để tách ảnh hưởng của lần rút noise khỏi ảnh hưởng của việc học. Đối chứng này chưa chạy.
-- **Ghi chú:** noise ở các chiều đệm 7..31 cũng ảnh hưởng tới action được thực thi (bước 0 trên GPU, D4 = 0.057). Actor chỉ điều khiển 7 chiều.
-- Probe noise chưa chạy.
-
-### 2026-11-01 13:53 — Đối chứng DSRL ctrl0 (exit 0, chạy 13:47–13:52)
-- Chạy script mới `scripts/dsrl_eval_ctrl.py`: dùng `run1/actor_iter0.pt` (mean = 0), cùng seed env, cùng init và cùng seed noise với eval của dsrl. Kết quả ở `outputs/dsrl/run1_ctrl0/{summary.md,paired.csv,eval_labels.csv}`.
-- **Kết quả gộp:**
-  - dsrl: 73/150 (48.7%)
-  - ctrl0: 72/150 (48.0%)
-  - official (eval cũ): 60/150 (40.0%)
-- **McNemar:**
-  - dsrl vs ctrl0: 18 vs 17, p = 1.000.
-  - ctrl0 vs official: 31 vs 19, p = 0.119.
-- **Kết luận:** DSRL run1 **không có tác dụng đo được**. Chênh lệch +8.7 điểm so với official là do lần rút noise khác nhau, không phải do học.
-- Dù |mu| chỉ khoảng 0.02, vẫn có 35/150 cặp đổi kết quả giữa dsrl và ctrl0. Vậy rollout rất nhạy với noise, nhưng sự thay đổi không có hướng.
 
 ## 01/11/2026 ~13:20–14:00: phân tích thêm FPO v3 (chỉ CPU, không train, chỉ dùng eval đã có)
 
@@ -997,7 +921,7 @@ Tất cả lệnh chạy từ `~/ffi26/improve`, `conda activate lerobot`, `CUDA
 | 1 | Viết và chạy `scripts/fpo_v3_split.py` (dùng `load()` / `paired()` của `fpo_v3_pooled.py`) | **SỬA REPO**: thêm `results/round2/fpo_v3/split_task_init.{md,csv}` |
 | 2 | Viết và chạy `scripts/failure_labels_v3.py` (`label_episode_v2`, tâm vùng fixture lấy từ `outputs/failure_labels/region_centres.csv` đã commit). Kiểm tra: nhãn official + v2 tính lại trùng 100 % với `outputs/failure_labels/labels.csv` (920 episode, mọi cột nhãn). Không ghi đè `outputs/failure_labels/` | **SỬA REPO**: thêm `outputs/failure_labels_v3/` (labels.csv chỉ v3, primary/multilabel theo arm × task, task8_pots, task0_Efree, task4_pairs, summary.md). 4,8 s |
 | 3 | Viết và chạy `scripts/fpo_v3_grad_steps.py` (đọc `train_info.json`, `train_log.csv`, khoá `adv/rejected/task_id` của `decisions/g*.npz`) | **SỬA REPO**: thêm `results/round2/fpo_v3/grad_steps.md`, `grad_steps.csv`, `grad_steps_adv.csv`, `grad_steps_iter0_curve.csv`, `grad_steps_per_task.csv` |
-| 4 | `git add` đúng các file mới trên + `docs/WORKLOG.md` (gồm cả mục DSRL chưa commit, theo lựa chọn (a) của bạn); `git commit` theo yêu cầu. Không commit checkpoint, video, `.npz` | **COMMIT** |
+| 4 | `git add` đúng các file mới trên + `docs/WORKLOG.md`; `git commit` theo yêu cầu. Không commit checkpoint, video, `.npz` | **COMMIT** |
 
 ### Kết quả 1: task × init (gộp seed 3000/4000/5000; init đã train = `collect.init_ids` của `fpo_v3.yaml`, 16/task)
 
@@ -1088,11 +1012,6 @@ Kết quả:
 - **So sánh learning rate:** SmolVLA gốc fine-tune với lr 1e-4, warmup 1000, decay 25 000 bước (`config.json` của checkpoint). FPO dùng lr 1e-6 và tổng cộng 84 bước (v2) / 402 bước (v3).
 - **Giả thuyết chính (chưa xác nhận):** update quá nhỏ do early stop đến rất sớm, vì ratio được scale ×24,6 và lr là 1e-6. Cần đối chiếu định nghĩa ratio với bài FPO (mục 1 trong checklist).
 
-### 2026-11-01 13:58 — Chạy lại noise probe (bước 1)
-- Chạy `python scripts/dsrl_probe.py --out outputs/dsrl/probe` trong tmux `dsrl_probe`, khởi động bằng `setsid`. Log ghi tiếp vào `outputs/dsrl/probe.log`.
-- Script chạy tiếp từ phần đã có (`probe/episodes.csv` từ lần 11:03).
-- Lúc khởi động: RAM trống 52 GB, GPU trống.
-
 ## 01/11/2026 ~14:40–15:00: kiểm tra advantage thô, kiểm tra 1–3 (CPU, chỉ đọc; theo yêu cầu)
 
 | # | Thao tác | Tác động |
@@ -1130,21 +1049,6 @@ Cách đối chiếu (định nghĩa trước, cố định):
 - (a): McNemar chính xác v4 vs official trên task 0 (150 cặp, seed 3000/4000/5000) có p > 0,05, VÀ số thành công task 0 của v4 > v3 (46/150).
 - (b): McNemar v4 vs official trên task 8 có p < 0,05 và v4 > official.
 - (c): tổng forgetting 8 task × 20 (seed 1000) của v4 ≥ v3 (115/160).
-
-Lúc ghi: GPU đang bận bởi `dsrl_probe` (tmux, phiên khác, bắt đầu 14:37; 8,7/16 GB đã dùng). v3 train cần đỉnh 11,4 GB, nên chưa chạy được song song.
-
-### 2026-11-01 14:52 — Probe bị CUDA OOM ở ep 10, chạy lại
-- Probe chạy từ 14:37. Đã xong ep 0–9 (toàn bộ tập task 8) thì bị `torch.OutOfMemoryError` ở ep 10, ngay đầu tập task 0.
-- Lúc lỗi, process của mình chỉ dùng 1.36 GiB, GPU chỉ còn trống 27 MiB. Vậy GPU đã bị một process khác chiếm tạm thời. Lúc kiểm tra lại (14:52), GPU đã trống.
-- Chạy lại lúc 14:52 trong tmux `dsrl_probe2`. Script chạy tiếp theo từng episode.
-- **Lỗi ghi exit code:** các dòng "exit N" trước đây trong `queue_status.txt` không đáng tin. Biến `$?` được đọc sau `$(date)`, nên luôn ra 0. Lần này đã sửa: lưu `rc=$?` ngay sau lệnh python.
-  - Lần DSRL run1 vẫn được xác nhận là xong, vì `summary.md` và `info.json` đầy đủ.
-- **Kết quả tạm của task 8**, số rollout thành công trên 160 (10 episode × 16 rollout):
-  - N1: 11
-  - N1.5: 12
-  - N2: 32
-  - CEM: 31
-  - Số episode có ít nhất 1 thành công: N1 2/10, N1.5 2/10, N2 6/10, CEM 3/10.
 
 ## FPO v4: cập nhật giả thuyết và cách đặt trọng số (01/11/2026 14:53:07, vẫn TRƯỚC khi train, chưa có kết quả v4)
 
@@ -1186,8 +1090,6 @@ Cách đối chiếu: giữ như mục trước.
 - (b): p < 0,05 và v4 > official trên task 8.
 - (c): v4 ≥ 115/160.
 
-**Sự cố GPU:** probe DSRL (phiên khác) **dừng lỗi lúc 14:52:20**, CUDA out of memory: GPU chỉ còn trống 27 MiB / 15,5 GB, trong khi probe chỉ dùng 1,36 GiB. Vậy có tiến trình khác chiếm GPU, **không phải** của phiên này: mọi lệnh của phiên này chạy với `CUDA_VISIBLE_DEVICES=""`. Lúc 14:52:39 GPU trống (58 MiB).
-
 ## 01/11/2026 14:40–14:57: FPO v4, cài đặt, sanity check, khởi động (theo yêu cầu)
 
 | # | Thao tác | Tác động |
@@ -1200,8 +1102,7 @@ Cách đối chiếu: giữ như mục trước.
 | 6 | Smoke test GPU: `fpo_train_v3.py --config fpo_v4.yaml --max_steps 3 --no_probe` trên `outputs/fpo_v2/iter0`, output vào scratch. Kết quả: chạy được; trên 384 decision/task, mean Â có trọng số ≈ 0 (−0,0003) | scratch |
 | 7 | **14:56:23** khởi động `bash scripts/fpo_v4_loop.sh` trong tmux `fpo_v4` (`setsid`). Log: `outputs/fpo_v4/loop.log`. iter 0 dùng lại `outputs/fpo_v2/iter0` (đã kiểm tra các trường config giống hệt) | GPU, chạy dài |
 
-- Trước khi khởi động: GPU trống (0 %, 58 MiB) sau khi probe DSRL dừng lỗi; bạn chọn "Start v4 now".
-- **Probe DSRL không được chạy lại khi v4 đang chạy**, vì không đủ bộ nhớ GPU cho cả hai.
+- Trước khi khởi động: GPU trống (0 %, 58 MiB); bạn chọn "Start v4 now".
 - `scripts/auto_commit_when_done.sh` không tồn tại trong repo, nên sẽ **commit tay** khi xong.
 
 ## Chẩn đoán task 0 (v2/v3): nhãn thất bại + cosine gradient (01/11/2026 ~15:00, KHÔNG train, KHÔNG sửa code train)
@@ -1331,3 +1232,50 @@ Kiểm tra: nhãn official + v2 tính lại trùng 100 % với `outputs/failure_
 - **Task 8, thất bại theo số ấm đã lên bếp (0 / 1 / 2):** official 14/73/3; v2 50/22/2; v3 13/46/3; v4 12/55/3. lab_A: official 25, v3 25, v4 23. lab_E_contact: official 55, v3 52, v4 62.
 - **Task 0, thất bại có E_free:** official 14/89; v2 51/100; v3 18/104; v4 36/90. Nhãn chính A: official 73, v3 75, v4 68.
 - **Task 4, nhãn chính của thất bại:** v3 có G 6/11; v4 có A 3, G 2, E_contact 1, B 1, O 1 (8 thất bại).
+
+## 01/11/2026 18:05–18:45: hình báo cáo, video so sánh v4, kiểm kê thí nghiệm, demo, archive (theo yêu cầu; KHÔNG xoá file gốc nào)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | `fpo_weight_delta.py`: thêm v4 vào danh sách, chạy lại trên CPU. Số của v2, v3 không đổi | **SỬA REPO**: `results/round2/fpo_v3/weight_delta.csv` (thêm 4 dòng v4) |
+| 2 | Viết `report/scripts/make_figures.py`, chạy trên CPU → `report/figures/fig_{nas,round1,fpo_final,training,advantage}.pdf`, `figure_data.json` | **SỬA REPO** (file mới) |
+| 3 | Replay video trên GPU (18:14–18:26, tmux `v4_videos`): official / v3 θ4 / v4 θ4 trên 8 episode (task 0, 8). Config: `results/videos/v4_paired/configs/videos_v4_paired.yaml`. Script: `phase3_eval_video.py` | GPU; **SỬA REPO**: `results/videos/v4_paired/` |
+| 4 | `report/scripts/make_keyframes.py`: dải 4 khung (xoay 180° để hiển thị), video 3 arm cạnh nhau, `fig_keyframes.pdf` | **SỬA REPO** |
+| 5 | Viết lại `report/main.tex` (7 trang, 6 hình, 2 sơ đồ TikZ, ô `\review{}`); `report/MAIN_TEX_NOTES.md` | **SỬA REPO** (bản cũ ở `e245088`) |
+| 6 | `phase3_eval_video.py`: truyền thêm `adv_label=arm.get("adv_label")` vào `load_policy`. Không có khoá này thì giữ hành vi cũ | **SỬA REPO** (1 dòng) |
+| 7 | `ffi26/ffi26/demo/`: `methods.yaml` (11 phương pháp), `run_demo.py`, `archive_tool.py`, `README.md`. Test GPU 2 lần, cả 4 replay `match=True` | **SỬA REPO** (file mới); output ở `demo/out/` |
+| 8 | Tạo và kiểm tra `~/ffi26_archives/A1_research_results.zip` (6998 file, 73,8 → 7,9 MB) và `A2_visualization.zip` (2380 file, 286,7 → 271,7 MB). Kết quả: VERIFIED (CRC, manifest, 200 mẫu sha256 mỗi zip) | ngoài repo (`~/ffi26_archives`) |
+| 9 | `docs/inventory_storage.md`: danh sách thí nghiệm, môi trường demo, dung lượng, archive, danh sách dọn 3 nhóm | **SỬA REPO** |
+| 10 | Cập nhật `readme.md` (trạng thái, kết quả, cấu trúc), `docs/analyse.md` L5, `REVIEW_CHECKLIST.md` (thêm mục v4) | **SỬA REPO** |
+
+Kết quả và lưu ý:
+- **Replay:** 167/168 episode trùng bản gốc; 24/24 episode được chọn làm video đều trùng.
+  - Episode lệch: v3, seed 3000, task 8, init 1. Vẫn thành công nhưng 429 bước so với 431. Episode này không được chọn làm video.
+- **Episode được chọn** (kết quả official / v3 / v4):
+
+  | task | seed | init | official | v3 | v4 | loại |
+  |---|---|---|---|---|---|---|
+  | 0 | 5000 | 4 | F | F | S | v4 thắng cả hai |
+  | 0 | 5000 | 16 | F | F | S | v4 thắng cả hai |
+  | 0 | 4000 | 9 | S | F | F | v4 thua official |
+  | 0 | 5000 | 2 | F | F | F | cả ba thất bại |
+  | 8 | 3000 | 0 | F | F | S | v4 thắng cả hai |
+  | 8 | 3000 | 9 | F | F | S | v4 thắng cả hai |
+  | 8 | 3000 | 6 | S | S | F | v4 thua official và v3 |
+  | 8 | 3000 | 2 | F | F | F | cả ba thất bại |
+
+- **Decision cache không cần cho eval, video hay demo.** Các script đọc nó được liệt kê trong `docs/inventory_storage.md` §3.
+- **A3 (105,8 GB) chưa tạo.** Không đủ chỗ trên ổ chính. Đề xuất ghi lên `/mnt/hdd4tb`, chờ duyệt.
+- Không xoá file gốc nào. Không commit.
+
+## 01/11/2026 20:20: xoá thí nghiệm DSRL (theo yêu cầu)
+
+Báo cáo chỉ giữ DSRL ở dạng hướng tiếp theo (`report/main.tex`, cuối phần hạn chế, không có số liệu). Mọi file và ghi chép khác về DSRL đã bị xoá:
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | `git rm -r -f` 6 script `improve/scripts/dsrl_*.py`, `improve/src/dsrl_rollout.py`, toàn bộ `improve/outputs/dsrl/` (96 MB; gồm cả kết quả chưa track). Xoá thêm `__pycache__/dsrl_*.pyc` | **XOÁ** 341 file đã track (đã stage, chưa commit) |
+| 2 | Bỏ các dòng, đoạn và chú thích về DSRL khỏi `readme.md`, `docs/inventory_storage.md` (đánh số lại §7), `demo/README.md`, `demo/methods.yaml`, `demo/archive_tool.py` (bỏ mẫu `outputs/dsrl`), docstring của `failure_labels_v3.py` / `_v4.py`. Bỏ các mục DSRL trong WORKLOG này | **SỬA REPO** |
+| 3 | `~/ffi26_archives/A1_research_results.zip`: xoá 319 entry `improve/outputs/dsrl/`, cập nhật manifest (6998 → 6679 file). `archive_tool.py verify`: VERIFIED | ngoài repo |
+
+Không commit.

@@ -150,3 +150,16 @@ Thay đổi tương đối = ‖W − W0‖ / ‖W0‖ theo từng tensor, W0 = 
 2. Mục 1: đối chiếu định nghĩa ratio (scale c, mean hay sum của L_CFM) với bài FPO. (Mục 3, dấu: đã đọc, đúng.)
 3. Mục 4: advantage thô đã kiểm tra là đúng; còn 3 câu hỏi thiết kế (trọng số theo decision, cách tính mean_t, nhóm toàn thành công).
 4. Sau đó mới quyết định có thay lr / ratio scale / tiêu chí dừng (cần train lại, ngoài phạm vi phân tích này).
+
+---
+
+## Cập nhật 01/11/2026 18:40: kết quả FPO v4 (theo mục 4)
+
+- **v4 = v3 + một thay đổi:** trọng số $w = 1/n_\text{decision}(\text{segment})$ và không trừ mean. Config: `results/round2/configs/fpo_v4.yaml`.
+- **Kết quả** (`results/round2/fpo_v4/pooled.md`):
+  - task 0: 60/150, so với official 61 ($p = 1{,}0$) và v3 46 ($p = 0{,}013$);
+  - task 8: 80/150, so với official 60 ($p = 0{,}002$);
+  - quên: 125/160, so với official 127 ($p = 0{,}83$).
+- **Dự đoán ghi trước** (a), (b), (c): cả ba đúng theo tiêu chí cố định.
+- **Mục 1 và 2 vẫn còn mở:** scale của ratio và lr / tiêu chí dừng. Trọng số của v4 θ4 chỉ đổi trung vị 0,068 % (`weight_delta.csv`).
+

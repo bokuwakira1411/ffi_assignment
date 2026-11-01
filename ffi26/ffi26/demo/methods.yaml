@@ -1,0 +1,92 @@
+# Demo registry: every evaluated method -> the checkpoint and the inference settings of its ORIGINAL eval, and the
+# directories of the original eval episodes (used by run_demo.py to check that the replay reproduces them).
+# Source of each entry: the eval configs named in `eval_config` (do not change values here without changing those).
+# precision: expert_fp32 true = final protocol (FPO v2 onwards); false = round-1 screen protocol (bf16 expert at eval).
+methods:
+  official:
+    label: "lerobot/smolvla_libero (checkpoint chính thức)"
+    path: lerobot/smolvla_libero            # HF cache ~/.cache/huggingface/hub/models--lerobot--smolvla_libero
+    expert_fp32: true
+    eval_config: improve/outputs/fpo_v2/configs/eval_fpo_v2_s3000.yaml
+    originals: {1000: "improve/outputs/fpo_v2/eval_s1000/official/task{task}",
+                3000: "improve/outputs/fpo_v2/eval_s3000/official/task{task}",
+                4000: "improve/outputs/fpo_v2/eval_s4000/official/task{task}",
+                5000: "improve/outputs/fpo_v2/eval_s5000/official/task{task}"}
+  official_bf16:
+    label: "official, expert bf16 (giao thức sàng lọc, seed 1000)"
+    path: lerobot/smolvla_libero
+    expert_fp32: false
+    eval_config: results/round2/configs/eval_official.yaml
+    # tasks 0, 8 of this protocol are in outputs/eval_baseline (same script and seed, see eval_official.yaml); a list =
+    # candidates tried in order
+    originals: {1000: ["improve/outputs/r2/eval/official/task{task}", "improve/outputs/eval_baseline/task{task}"]}
+  fpo_v4:
+    label: "FPO v4 θ4 (trọng số advantage theo segment) — phương pháp cuối"
+    path: improve/outputs/fpo_v4/iter3/train/pretrained_model
+    expert_fp32: true
+    eval_config: improve/outputs/fpo_v4/configs/eval_fpo_v4_s3000.yaml
+    originals: {1000: "improve/outputs/fpo_v4/eval_s1000/fpo_v4_sel/task{task}",
+                3000: "improve/outputs/fpo_v4/eval_s3000/fpo_v4_sel/task{task}",
+                4000: "improve/outputs/fpo_v4/eval_s4000/fpo_v4_sel/task{task}",
+                5000: "improve/outputs/fpo_v4/eval_s5000/fpo_v4_sel/task{task}"}
+  fpo_v3:
+    label: "FPO v3 θ4 (demo replay + chuẩn hoá theo task)"
+    path: improve/outputs/fpo_v3/iter3/train/pretrained_model
+    expert_fp32: true
+    eval_config: improve/outputs/fpo_v3/configs/eval_fpo_v3_s3000.yaml
+    originals: {1000: "improve/outputs/fpo_v3/eval_s1000/fpo_v3_sel/task{task}",
+                3000: "improve/outputs/fpo_v3/eval_s3000/fpo_v3_sel/task{task}",
+                4000: "improve/outputs/fpo_v3/eval_s4000/fpo_v3_sel/task{task}",
+                5000: "improve/outputs/fpo_v3/eval_s5000/fpo_v3_sel/task{task}"}
+  fpo_v2:
+    label: "FPO v2 θ4 (fp32, batch 128, neo BC)"
+    path: improve/outputs/fpo_v2/iter3/train/pretrained_model
+    expert_fp32: true
+    eval_config: improve/outputs/fpo_v2/configs/eval_fpo_v2_s3000.yaml
+    originals: {1000: "improve/outputs/fpo_v2/eval_s1000/fpo_v2_sel/task{task}",
+                3000: "improve/outputs/fpo_v2/eval_s3000/fpo_v2_sel/task{task}",
+                4000: "improve/outputs/fpo_v2/eval_s4000/fpo_v2_sel/task{task}",
+                5000: "improve/outputs/fpo_v2/eval_s5000/fpo_v2_sel/task{task}"}
+  fpo_v1:
+    label: "FPO v1 θ3 (outputs/fpo/iter2), giao thức cuối (expert fp32)"
+    path: improve/outputs/fpo/iter2/train/pretrained_model
+    expert_fp32: true
+    eval_config: improve/outputs/fpo_v2/configs/eval_fpo_v2_s3000.yaml
+    originals: {1000: "improve/outputs/fpo_v2/eval_s1000/fpo_v1_it3/task{task}",
+                3000: "improve/outputs/fpo_v2/eval_s3000/fpo_v1_it3/task{task}",
+                4000: "improve/outputs/fpo_v2/eval_s4000/fpo_v1_it3/task{task}",
+                5000: "improve/outputs/fpo_v2/eval_s5000/fpo_v1_it3/task{task}"}
+  fpo_v1_bf16:
+    label: "FPO v1 θ3, giao thức sàng lọc (expert bf16, seed 1000)"
+    path: improve/outputs/fpo/iter2/train/pretrained_model
+    expert_fp32: false
+    eval_config: results/round2/configs/eval_fpo.yaml
+    originals: {1000: "improve/outputs/r2/eval/fpo_it3/task{task}"}
+  awr:
+    label: "A2 AWR, vòng 1, checkpoint 2000"
+    path: improve/outputs/r2/train_awr_round1/checkpoints/002000/pretrained_model
+    expert_fp32: false
+    eval_config: results/round2/configs/eval_round1_awr.yaml
+    originals: {1000: "improve/outputs/r2/eval/awr_r1/task{task}"}
+  awr6k_s2000:
+    label: "A2 AWR 6000 bước, checkpoint 2000"
+    path: improve/outputs/r2/train_awr6k_round1/checkpoints/002000/pretrained_model
+    expert_fp32: false
+    eval_config: results/round2/configs/eval_round1_awr6k.yaml
+    originals: {1000: "improve/outputs/r2/eval/awr6k_r1_s2000/task{task}"}
+  a1_prompt_pos:
+    label: "A1 nhãn advantage trong prompt, nhãn positive"
+    path: improve/outputs/r2/train_a1_round1/checkpoints/002000/pretrained_model
+    expert_fp32: false
+    task_suffix: " Advantage: positive"
+    eval_config: results/round2/configs/eval_round1.yaml
+    originals: {1000: "improve/outputs/r2/eval/a1_r1_pos/task{task}"}
+  a1emb_pos:
+    label: "A1-emb nhãn advantage qua embedding, nhãn positive"
+    path: improve/outputs/r2/train_a1emb_round1/checkpoints/002000/pretrained_model
+    expert_fp32: false
+    adv_label: positive
+    eval_config: results/round2/configs/eval_round1_emb.yaml
+    originals: {1000: "improve/outputs/r2/eval/a1emb_r1_pos/task{task}"}
+# Eval episodes of round 1 / v1 at seed 1000 exist for tasks 0, 8 (50 init) and, for some models,
+# the other 8 tasks (20 init): see results/round2/configs/eval_round1*.yaml.
