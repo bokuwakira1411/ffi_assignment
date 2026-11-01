@@ -1,0 +1,8 @@
+task,region,object,x,y,std_across_inits_max,n_init,n_episodes
+2,flat_stove_1_cook_region,moka_pot_1,-0.044506535,0.20079717,0.0218266,18,40
+3,white_cabinet_1_bottom_region,akita_black_bowl_1,-0.0109199295,0.29509816,0.009058689,20,60
+5,desk_caddy_1_back_contain_region,black_book_1,-0.42775813,-0.1545516,0.018774329,20,55
+6,living_room_table_plate_right_region,chocolate_pudding_1,0.108879015,0.116136804,0.01973075,16,30
+8,flat_stove_1_cook_region,moka_pot_1,-0.009666238,-0.1705015,0.01258667,43,179
+8,flat_stove_1_cook_region,moka_pot_2,-0.098450735,-0.22708106,0.009878263,49,333
+9,microwave_1_heating_region,white_yellow_mug_1,-0.008921362,0.33524197,0.016347067,20,52

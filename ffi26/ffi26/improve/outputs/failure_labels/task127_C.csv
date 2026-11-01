@@ -1,0 +1,10 @@
+task,arm,n_ep,n_fail,n_fail_C_any,n_primary_C,C_objs,only_arm_C,only_official_C,mcnemar_p_vs_official
+1,official,20,3,1,1,milk_1 ×1,0,0,1.0
+1,fpo_v1_it3,20,2,1,1,milk_1 ×1,0,0,1.0
+1,fpo_v2_sel,20,8,1,0,milk_1 ×1,0,0,1.0
+2,official,20,4,0,0,,0,0,1.0
+2,fpo_v1_it3,20,7,0,0,,0,0,1.0
+2,fpo_v2_sel,20,9,0,0,,0,0,1.0
+7,official,20,4,0,0,,0,0,1.0
+7,fpo_v1_it3,20,13,1,0,ketchup_1 ×1,1,0,1.0
+7,fpo_v2_sel,20,10,1,0,tomato_sauce_1 ×1,1,0,1.0

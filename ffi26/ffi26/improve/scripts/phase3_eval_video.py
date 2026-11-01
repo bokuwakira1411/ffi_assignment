@@ -8,7 +8,9 @@ episode k exactly, all batches 0..k//batch_size are re-run. Frames are recorded 
 hold a selected episode; every replayed episode is saved as .npz/.meta.json and compared with the
 original run (replay_check.csv) to test determinism.
 
-    python scripts/phase3_eval_video.py --config ~/ffi26/results/videos/configs/videos.yaml [--only official,v1t3]
+    python scripts/phase3_eval_video.py --config ~/ffi26/results/videos/configs/videos.yaml [--only official,v1t3] [--blind]
+--blind: the header shows only the step and Phi (no arm / task / init / seed, no SUCCESS / FAIL, no reward_r2 events),
+and episodes_{arm}.csv gets empty primary / events columns; for manual labelling without hints.
 Outputs (<output_dir>):
   {arm}_t{task}_init{k}_s{seed}_{success|fail}.mp4   agent view | wrist view, 20 fps, text header
   raw/{arm}/s{seed}/task{t}/ep{k:03d}.npz|.meta.json all replayed episodes
@@ -48,7 +50,7 @@ FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
 
 
 def annotate(frames: dict, log: dict, events: list[dict], *, arm: str, task: int, init: int, seed: int,
-             success: bool) -> list[np.ndarray]:
+             success: bool, blind: bool = False) -> list[np.ndarray]:
     """Frame i = observation before action i; Phi row i is the same state (log has T+1 rows)."""
     font = ImageFont.truetype(FONT, 12) if Path(FONT).exists() else ImageFont.load_default()
     phi = np.asarray(log["phi"])
@@ -60,6 +62,12 @@ def annotate(frames: dict, log: dict, events: list[dict], *, arm: str, task: int
         canvas = Image.new("RGB", (im.shape[1], im.shape[0] + HEADER), (0, 0, 0))
         canvas.paste(Image.fromarray(im), (0, HEADER))
         d = ImageDraw.Draw(canvas)
+        if blind:
+            d.text((4, 2), f"step {i:3d}/{T}  Phi {phi[i]:.3f}", fill=(255, 255, 255), font=font)
+            d.text((4, HEADER + 2), "agent view", fill=(255, 255, 0), font=font)
+            d.text((im.shape[1] // 2 + 4, HEADER + 2), "wrist view", fill=(255, 255, 0), font=font)
+            out.append(np.asarray(canvas))
+            continue
         d.text((4, 2), f"{arm} | task {task} | init {init} | eval seed {seed} (env seed {seed + init})",
                fill=(255, 255, 255), font=font)
         state = "SUCCESS" if succ[: i + 1].any() else ("FAIL (timeout)" if i == T - 1 and not success else "")
@@ -90,6 +98,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
     ap.add_argument("--only", default=None, help="comma-separated arm names to run")
+    ap.add_argument("--blind", action="store_true", help="header: step and Phi only; no labels / events in episodes csv")
     args = ap.parse_args()
     cfg = yaml.safe_load(open(args.config))
     out = Path(cfg["output_dir"]).expanduser()
@@ -138,11 +147,13 @@ def main():
                         fn = f"{name}_t{task}_init{k}_s{seed}_{'success' if rec['success'] else 'fail'}.mp4"
                         write_video(str(out / fn), annotate(rec["frames"], rec["log"], ev, arm=arm["label"],
                                                             task=task, init=k, seed=seed,
-                                                            success=rec["success"]), fps=FPS)
+                                                            success=rec["success"], blind=args.blind), fps=FPS)
                         sel.append({"arm": name, "seed": seed, "task": task, "init": k, "file": fn,
                                     "success": rec["success"], "length": rec["length"],
-                                    "primary": lab["primary"], "subtask_completion": lab["subtask_completion"],
-                                    "events": "; ".join(f"{e['type']}@{e['step']} {e['obj']}".strip() for e in ev)})
+                                    "primary": "" if args.blind else lab["primary"],
+                                    "subtask_completion": "" if args.blind else lab["subtask_completion"],
+                                    "events": "" if args.blind else "; ".join(f"{e['type']}@{e['step']} {e['obj']}".strip()
+                                                                             for e in ev)})
                     save_episode(rdir / f"ep{k:03d}", rec, video=False)
             g = [r for r in chk if r["seed"] == seed and r["task"] == task]
             print(f"[ok] {name} seed {seed} task {task}: {sum(r['success_replay'] for r in g)}/{len(g)} replayed"

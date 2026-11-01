@@ -642,3 +642,195 @@ Nhận xét: v2 không còn kém official như v1 trên tổng task đã train (
 
 Loop fpo_v2 kết thúc sạch. Watcher dừng tmux `fpo_v2_gpu` rồi chạy (a) official + v1 θ3 (exit 0), (b) v2 = `/home/student/ffi26/improve/outputs/fpo_v2/iter3/train/pretrained_model` (exit 0), index (exit 0).
 Kết quả: `results/videos/` (`index.md`, `replay_check_*.csv`, `episodes_*.csv`, `raw/`). Log: `results/videos/run.log`, `watcher_status.txt`.
+
+## 01/11/2026: viết hướng dẫn đọc kết quả
+
+Mục tiêu: bạn yêu cầu hướng dẫn đọc repo để phân tích kết quả; bạn đồng ý lưu thành file và tính lại số D_nas10.
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | `ls`, `find`, `cat`/`head` trên `readme.md`, `docs/*.md`, `results/round2/{README,summary}.md`, header CSV, `videos/index.md` | nắm cấu trúc repo và các nguồn kết quả | chỉ đọc |
+| 2 | viết `scratchpad/agg_nas10.py`, chạy `python3 -I agg_nas10.py .../runs/D_nas10/lerobot_smolvla_libero` | kiểm tra 72,8% (readme) so với 73,6% (analyse) | scratch; chỉ đọc kết quả |
+| 3 | **Ghi `docs/huong_dan_doc_ket_qua.md`** (file mới) | sản phẩm bạn yêu cầu | **SỬA REPO** |
+| 4 | ghi mục này vào `docs/WORKLOG.md` | quy tắc nhật ký | **SỬA REPO** |
+
+Kết quả bước 2 (30 job): seed 1000 368/500 = 73,6%, seed 1001 360/500 = 72,0%, seed 1002 364/500 = 72,8%, gộp 1092/1500 = 72,8%.
+Không mâu thuẫn: 73,6% trong `analyse.md` là số của riêng seed 1000. Không chạy script nào của repo; không sửa file nào trong `~/ffi26`.
+
+## 01/11/2026 ~07:50–08:30: kiểm tra và sửa failure labeler (CPU, không dùng GPU)
+
+Yêu cầu: kiểm tra `improve/src/failure_labels.py` (`label_episode`, `subtask_stats`), sửa chỗ có vấn đề, chạy trên mọi episode eval đã lưu. Mọi lệnh Python chạy với `CUDA_VISIBLE_DEVICES=""`. GPU lúc bắt đầu: 96 %, 12,6 GB do `run.py` của người dùng khác; **không thấy process FPO v3 nào và không có `outputs/fpo_v3`**.
+
+Dữ liệu: `improve/outputs/fpo_v2/eval_s{3000,4000,5000}/{official,fpo_v1_it3,fpo_v2_sel}/task{0,8}` (300 ep / arm) và `eval_s1000/<arm>/task{1..7,9}` (160 ep / arm): 1380 episode, 691 thành công, 689 thất bại. Ca kiểm tra bước 1: `results/videos/raw/v2/s2000/task8/ep001|ep003.npz` (v2 θ4, seed 2000).
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | `cat`/`sed` trên `src/failure_labels.py`, `src/reward.py`, `src/reward_r2.py`, `scripts/r2_report.py`, `scripts/phase3_eval_video.py`, config eval/video | hiểu labeler, nơi lưu log, cách render | chỉ đọc |
+| 2 | `scratchpad/step1.py`, `step1b.py` trên ep001, ep003 | bước 1 | scratch; chỉ đọc |
+| 3 | `scratchpad/load_all.py` (gom 1380 npz vào `scratchpad/all_eps.pkl`), `step2.py`, `step2b.py`, `regions.py` | bước 2 | scratch; chỉ đọc |
+| 4 | **Thêm** `label_episode_v2` + hàm phụ vào cuối `src/failure_labels.py` (126 dòng cũ giữ nguyên, kiểm bằng `diff` với bản sao `scratchpad/failure_labels.orig.py`) | bước 3. Không sửa `label_episode` vì `fpo_collect.py` (v3) và các báo cáo cũ dùng nó. Không sửa `reward.py` / `reward_r2.py` (chỉ import `detect_events`) | **SỬA REPO** |
+| 5 | **Tạo** `improve/tests/test_failure_labels_v2.py`, chạy `python -m pytest tests/test_failure_labels_v2.py -q` | unit test bằng log giả | **SỬA REPO**; 14/14 passed |
+| 6 | **Tạo** `improve/scripts/failure_labels_run.py`, chạy 3 lần (sửa: thư mục render riêng cho mỗi config, cách chọn mẫu tay, cột index thừa) | bước 4–5 | **SỬA REPO**: ghi `improve/outputs/failure_labels/` |
+
+### Bước 1: task 8, v2 θ4, seed 2000
+
+Trong log, `moka_pot_2` lên bếp ở bước 174; vật còn lại là `moka_pot_1`.
+
+| | init 1 (thành công, 418 bước) | init 3 (thất bại, 520 bước) |
+|---|---|---|
+| a) EE → tâm `moka_pot_1`: min; trung bình 270–519 | 0,073 m (bước 357); 0,145 m | 0,086 m (bước 520); **0,090 m** |
+| b) gripper 250–519: số lần mở→đóng; số bước đóng | 1; 83/168 | **0; 0/270** (cả episode: 1 lần đóng, 69 bước, cho `moka_pot_2`) |
+| c) \|a_xyz\| trung bình 0–250 → 270–519 | 0,373 → 0,508 | 0,469 → **0,239** |
+| d) EE dịch mỗi bước 270–519 | 6,29 mm | **0,28 mm** (max 0,86, trung vị 0,24) |
+| e) `label_episode` cũ | S | **E** (B, E; đoạn đứng dài nhất 253 bước) |
+
+Init 3 trong 270–519: hướng action gần như không đổi (cos với hướng trung bình: trung vị 0,995), chủ yếu đi xuống (−z); `contact` với `moka_pot_1` ở 251/251 hàng log 270–520 (chạm từ bước 266); EE cao hơn tâm ấm 6,9 cm; ấm dịch < 7 mm. Mỗi đơn vị \|a_xyz\| cho 12,5 mm dịch EE ở 0–250 nhưng chỉ 1,2 mm ở 270–519.
+**Kết luận:** policy **không** ra action ≈ 0. Nó ra action khác 0, cùng một hướng, nhưng EE bị chặn khi đang chạm `moka_pot_1` với gripper mở (đè lên ấm). Video chưa được xem để xác nhận.
+
+### Bước 2: các nghi vấn (1380 episode)
+
+| # | Nghi vấn | Trả lời | Số liệu |
+|---|---|---|---|
+| 1 | A bỏ sót khi đóng 1 lần rồi giữ | **CÓ** | Trong 600 (episode thất bại × vật mục tiêu chưa xong, chưa nhấc), 19 ca có đúng 1 lần đóng gần vật (< 0,10 m) và giữ đóng ≥ 20 bước gần vật, nhưng A không bắt. Thêm 45 ca không có lần đóng nào trong 0,10 m nhưng giữ đóng ≥ 20 bước trong 0,15 m. (Ca init 3 ở bước 1 không thuộc loại này: gripper không đóng lần nào.) |
+| 2 | NEAR_DIST = 0,10 m đến tâm quá chặt với moka pot | **KHÔNG** với moka pot, **CÓ** với vật khác | Khoảng cách EE → tâm khi `grasp` = True (p5/p50/p95): moka_pot 0,052/0,069/0,087, 0 % > 0,10; khi `contact`: 14 % > 0,10. Init 3: 0,086–0,090 m. Nhưng black_book khi grasp 0,105/0,107/0,119 (**100 % > 0,10**, nên A không bao giờ bắt được cho sách), porcelain_mug 10 %, white_yellow_mug 8 % > 0,10. |
+| 3 | Giỏ có trong goal_obj_mask ở task 0/1/7; C chỉ dựa vào moved_mask mà không cần chạm | Giỏ: **CÓ** trong mask. C không cần chạm: **KHÔNG**, nhưng C vẫn sai | goal_obj_mask: t0 {alphabet_soup, tomato_sauce, basket}; t1 {cream_cheese, butter, basket}; t2 {moka_pot}; t3 {akita_black_bowl}; t4 {porcelain_mug, white_yellow_mug, plate_1, plate_2}; t5 {black_book}; t6 {porcelain_mug, plate_1, chocolate_pudding}; t7 {alphabet_soup, cream_cheese, basket}; t8 {moka_pot_1, moka_pot_2}; t9 {white_yellow_mug}. Fixture (bếp, tủ, lò vi sóng, khay, vùng bàn) không phải vật di động nên không có trong log; không có gì để thêm. `moved_mask` có yêu cầu chạm (latch) nhưng đo dịch chuyển **từ vị trí reset**: 233/239 vật bị gán C đã dịch > 5 cm trước lần chạm đầu, và **113/239 không dịch > 5 cm sau lần chạm đầu** (chủ yếu task 0: orange_juice 89, ketchup 10, milk 7, xuất phát ở z 0,89–1,05 m rồi rơi xuống 0,51 m trước bước 20). |
+| 4 | D sai do predicate nhấp nháy | **CÓ** | Trong 691 episode thành công: 78 lần True→False→True với đoạn False ≤ 5 bước, ở 57 episode; 58 episode thành công có lab_D. Trong 64 thất bại có lab_D, 45 chỉ do lật ngắn (True < 5 hoặc False ≤ 5 bước). |
+| 5 | Ngưỡng stall bắt episode thành công | **CÓ, ít** (7,7 %), và **không phải** tiếp cận chậm trong không gian trống | 53/691 thành công có E (thất bại: 506/689). 56 đoạn đứng trong thành công: 98 % đoạn có chạm vật > 50 % số bước; trung bình 0,65 mm/bước; đoạn dài nhất trung vị 71 bước, max 222. Đó là thao tác chậm khi đang chạm vật. Với v2: E_free = 0/691 thành công, E_contact = 53/691. |
+
+### Bước 3: đã sửa (`label_episode_v2`; tên nhãn cũ giữ nguyên, thêm F, G, E_contact, E_free)
+
+- **A** (nghi vấn 1, 2): "gần" = EE < 0,10 m tới tâm **hoặc** gripper contact/grasp với vật (log không có bounding box; contact là tín hiệu điểm gần nhất có sẵn). A = (≥ 2 lần đóng khi gần) **hoặc** (đóng ≥ 20 bước khi gần), vật chưa xong và chưa từng được nhấc.
+- **C** (nghi vấn 3): vật không phải mục tiêu bị grasp, hoặc có sự kiện `collision` của `reward_r2` (dịch > 5 cm **tính từ vị trí lúc chạm đầu**). Không cần thêm vùng đích vào mask.
+- **D** (nghi vấn 4): chỉ tính khi predicate True ≥ 5 bước rồi False ≥ 5 bước.
+- **E**: tách theo đoạn đứng. Đoạn là E_contact nếu ≥ 50 % số bước có gripper đóng hoặc EE "gần" một vật (định nghĩa như A), ngược lại là E_free. Ngưỡng 2 mm / 50 bước giữ nguyên (nghi vấn 5: chỉ bắt đoạn có chạm vật ở thành công).
+- **F_drop**: dùng sự kiện `drop` của `reward_r2`: vật mục tiêu đã giữ và nhấc, được thả, rơi > 5 cm trong 30 bước, predicate vẫn False.
+- **G_misplace**: vật mục tiêu đã từng được nhấc, được thả, đứng yên (< 1 mm/bước trong 10 bước, không còn bị giữ), predicate False, cách đích < 10 cm theo xy. Đích là vật di động (giỏ, đĩa) thì lấy vị trí vật trong log; đích là fixture thì dùng tâm **ước lượng từ log** (vị trí của vật tại hàng cuối predicate True, trung bình theo init). Lệch chuẩn giữa các init ≤ 2,2 cm (`outputs/failure_labels/region_centres.csv`). Đánh giá được ở 689/689 thất bại.
+- **Thứ tự**: A > C > F > G > D > E_contact > E_free > B > O. Lý do: cơ chế trên vật mục tiêu trước (A: chưa lấy được vật); rồi nhầm vật (C); rồi làm mất vật đang giữ (F) hoặc đặt lệch (G). D đứng sau F/G vì rơi hay đặt lệch một vật đã xong cũng làm predicate lật. E là triệu chứng (E_contact trước E_free). B/O chỉ mô tả tiến độ.
+- Unit test 14/14 (`tests/test_failure_labels_v2.py`). Sanity check trên 2 episode bước 1: init 1 → S; init 3 → **E_contact** (đoạn 267–520 loại contact) + B. Cũ: E + B.
+
+### Bước 4: kết quả (`improve/outputs/failure_labels/summary.md`, `labels.csv`, ...)
+
+v3: **chưa có dữ liệu eval** (không có thư mục `fpo_v3_sel` trong `outputs/fpo_v2/eval_s*`, không có `outputs/fpo_v3`), nên không chạy.
+
+So với nhãn cũ trên 689 thất bại: lab_C 212 → 114, lab_D 64 → 23, lab_A 334 → 399. Nhãn chính cũ E (194 ep) chuyển thành A 43, F 17, G 14, E_contact 109, E_free 11. Nhãn cũ D (39 ep) chỉ còn 5 ở D (18 → G, 10 → E_contact). Trên 691 thành công: E_free 0, E_contact 53, F 9 (rơi rồi gắp lại), C 4, D 4, G 1.
+
+Task 8 (150 ep / arm, 3 seed), số thất bại theo số ấm đã lên bếp (0 / 1 / 2):
+
+| arm | thất bại | 0 ấm | 1 ấm | 2 ấm (D) | lab_A | lab_E_contact | E_contact ∧ B |
+|---|---|---|---|---|---|---|---|
+| official | 90 | 14 | 73 | 3 | 25 | 55 | 39 |
+| v1 θ3 | 114 | 53 | 59 | 2 | 59 | 88 | 37 |
+| v2 θ4 | 74 | 50 | 22 | 2 | 42 | 67 | 20 |
+
+Task 1, 2, 7 (seed 1000, 20 init, cặp theo init): episode thất bại có C, official / v2: task 1: 1 / 1 (milk_1 cả hai); task 2: 0 / 0; task 7: 0 / 1 (tomato_sauce_1); McNemar p = 1,00. Nhãn chính của v2: task 1 A 6/8, task 7 A 8/10.
+
+Task 0, thất bại có E_free: official 14/89, v1 9/88, **v2 51/100** (đoạn đứng free bắt đầu trung vị ở bước 336).
+
+### Bước 5: kiểm chứng bằng tay
+
+`outputs/failure_labels/manual_check.csv`: 20 thất bại (seed 20261101). Xoay vòng qua nhãn chính v2; mỗi lượt lấy arm được chọn ít nhất. Thứ tự dòng đã xáo trộn; cột `nhan_tay`, `nhan_script`, `ghi_chu` để trống. Phân bố: arm 7/7/6; mỗi nhãn 2–3; task 8: 14, task 0: 3, task 4: 2, task 1: 1. Chưa có video nào (0/20). Lệnh render: `outputs/failure_labels/render_commands.sh` (5 config trong `render/`, cùng thiết lập với eval gốc: NAS 10, batch 8, expert fp32, n_episodes 50 hoặc 20). **Chưa chạy**: cần GPU. Lưu ý: header video có in sự kiện drop/slip/collision của `reward_r2`, có thể gợi ý nhãn khi xem.
+
+
+## 01/11/2026 07:40–08:05: FPO v3, cài đặt + smoke test, khởi chạy loop
+
+Yêu cầu: FPO v3 = v2 + (1) demo replay trong số hạng BC, (2) chuẩn hoá advantage theo task + minibatch cân bằng 2 task, (3) tuỳ chọn: gấp đôi số cặp (τ, ε) cho ratio nếu tốn thêm < 30% thời gian/bước. Mọi thứ khác giữ như v2. Kế hoạch đã báo và được duyệt (kèm: dùng lại dữ liệu thu iteration 0 của v2). Không commit.
+
+### File mới (SỬA REPO: chỉ thêm file, không sửa file v2)
+
+- `improve/scripts/fpo_build_demo_cache.py`: lấy mẫu demo LIBERO-10, đưa qua đúng preprocessor của checkpoint official (như `lerobot_train._preprocess_dataset_batch`), lưu cùng định dạng với `decisions/g*.npz`.
+- `improve/scripts/fpo_v3_demo_check.py`: smoke test bắt buộc về định dạng demo.
+- `improve/scripts/fpo_train_v3.py`: bản sao của `fpo_train_v2.py` cộng 3 thay đổi, log thêm L_CFM trên demo probe theo từng task.
+- `improve/scripts/fpo_v3_loop.sh`, `improve/scripts/fpo_v3_pooled.py` (thống kê theo cặp, tính lại từ `ep*.meta.json`), `improve/scripts/v2_forget_wrong_object.py`.
+- Config: `results/round2/configs/fpo_v3.yaml`, `eval_fpo_v3_s{1000,3000,4000,5000}.tmpl.yaml`, `report_fpo_v3_{s3000,s4000,s5000,other}.yaml`, `results/videos/v2_forget/configs/videos_v2_forget.yaml`.
+- Dữ liệu: `improve/data/fpo_v3/demo_train.npz` (2000 mẫu = 200/task), `demo_probe.npz` (640 mẫu = 64/task, lấy từ 6 episode/task để riêng, không dùng để train), `demo_cache_info.json`, `demo_check.json`, `demo_vs_rollout.png`.
+
+### (1) Demo replay: đã dùng DEMO THẬT (không dùng phương án self-distillation)
+
+Nguồn: `improve/data/r2/demos_libero10` (379 episode của `lerobot/libero`, đủ 10 task; đây là dữ liệu train của `lerobot/smolvla_libero`). `task_index` của demo KHÁC task id của env. Ánh xạ theo câu lệnh ngôn ngữ (`demo_cache_info.json`): demo→env {0: 4, 1: 6, 2: 9, 3: 2, 4: 7, 5: 0, 6: 8, 7: 1, 8: 3, 9: 5}. Chunk 50 action liên tiếp (delta_timestamps i/fps, fps 10), `action_is_pad` → `n_exec` = số bước hợp lệ.
+
+Smoke test (`python scripts/fpo_v3_demo_check.py --config ~/ffi26/results/round2/configs/fpo_v3.yaml --data outputs/fpo_v2/iter0`, kết quả `improve/data/fpo_v3/demo_check.json`). θ0 fp32 giống lúc train; mọi biến thể dùng cùng (τ, ε) theo chỉ số mẫu, 128 mẫu/tập:
+
+| tập | L_CFM(θ0), trung bình (median) |
+|---|---|
+| rollout thành công task 0, bước đã thực thi (≤ 10) | 0.0373 (0.0144) |
+| rollout thành công task 8 | 0.0365 (0.0128) |
+| demo task 0, 10 bước đầu | 0.0655 (0.0225) |
+| demo task 8, 10 bước đầu | 0.0499 (0.0165) |
+| demo cả 10 task, 10 bước đầu / cả chunk hợp lệ | 0.0700 (0.0227) / 0.0647 (0.0247) |
+| đối chứng: ảnh demo xoay 180° | 2.077 (1.166) |
+| đối chứng: đổi camera1 ↔ camera2 | 1.567 (0.855) |
+| đối chứng: token ngôn ngữ của task khác | 0.947 (0.358) |
+
+Loss trên demo thấp, cùng cỡ với rollout thành công (khoảng 1.9 lần; rollout là action do chính θ0 sinh ra nên dự kiến thấp hơn). Cả 3 đối chứng sai định dạng đều cao hơn 13–30 lần, và cao hơn trên 100% mẫu (so theo cặp). Kiểm tra khác: token ngôn ngữ của demo task 0 và task 8 GIỐNG HỆT token trong rollout v2 iter0 (mỗi bên 1 chuỗi duy nhất). Khoảng cách pixel trung bình giữa ảnh đầu episode demo và rollout: camera1 task 0 là 8.7 khi giữ nguyên vs 46.5 khi xoay 180°; task 8 là 6.4 vs 94.0. Trung bình/độ lệch chuẩn state đã chuẩn hoá của demo và rollout cùng cỡ (`demo_check.json`). Kết luận: định dạng khớp, ảnh demo dùng nguyên (env processor đã xoay ảnh sim 180° lúc eval, `lerobot/processor/env_processor.py:59`).
+
+Quan sát phụ (không ảnh hưởng v3 so với v2): ở ảnh rollout bước 0 của task 0 thiếu vài vật (milk, orange juice, ketchup); các vật này xuất hiện từ bước 10 (`demo_vs_rollout.png`, so với ảnh bước 0/10/20/50 của cùng một rollout). Có vẻ là lỗi render khung đầu sau reset; ảnh hưởng như nhau tới v2 và v3.
+
+Số hạng train: mỗi bước + λ_demo · L_CFM(demo), λ_demo = λ_bc = 5, 32 mẫu demo/bước (3 mẫu/task cho cả 10 task + 2 mẫu cho 2 task bốc ngẫu nhiên không lặp), loss trên cả chunk hợp lệ (đúng mục tiêu lúc train gốc), (τ, ε) mới mỗi bước.
+
+### (2) Chuẩn hoá advantage theo task
+
+Â = clip((A − mean_t)/std_t, −5, 5), tính riêng cho task 0 và task 8 ở mỗi iteration (v2: A/std chung). Mỗi bước gradient gồm 64 quyết định task 0 + 64 quyết định task 8 (v2: một task/bước), lấy từ hai luồng xáo trộn riêng. Một epoch = Σ_t ⌊n_t/128⌋ bước như v2, tối đa 3 epoch. BC trên rollout thành công: 16 mẫu/task (tổng 32 như v2). Ví dụ trên dữ liệu iter0, 400 quyết định/task: mean/std task 0 = −0.0006/0.160, task 8 = −0.039/0.267.
+
+### (3) Gấp đôi số cặp (τ, ε) cho ratio: BỎ
+
+Đo trên dữ liệu v2 iter0, 6 bước, bỏ qua bước đầu. 1 cặp/quyết định: 6.29 s/bước, đỉnh bộ nhớ 11.4 GB. 2 cặp (ratio = exp(c · trung bình 2 cặp của l_old − l_new)): với micro-batch 32 thì hết bộ nhớ GPU; với micro-batch 16 (cùng phép tính) thì 10.71 s/bước, tức +70% > 30%. Giữ `pairs_per_step: 1` như v2.
+
+### Smoke test train
+
+`fpo_train_v3.py --max_steps 12 --max_decisions 400 --set kl_every=5` trên `outputs/fpo_v2/iter0` với θ0 (output ở scratchpad, không lưu vào repo): bước 1 có ratio = 1.000000 (min 0.9999984, max 1.0000037); chạy đủ 12 bước; KL proxy 0 → 0.0110; demo probe (8 task không train) 0.05730 → 0.05779; 6.29 s/bước; đỉnh bộ nhớ 10.7 GB.
+
+### Kiểm tra script thống kê
+
+`fpo_v3_pooled.py` chạy trên dữ liệu có sẵn (chưa có v3) cho lại đúng số của v2: official 121/300, v2 126/300, cặp 49/44 p = 0.68; quên: official 127/160, v2 108/160, cặp 9/28 p = 0.0026; từng task khớp với mục v2 ở trên. File thử đã xoá.
+
+### Khởi chạy
+
+08:05: tmux `fpo_v3`, `bash scripts/fpo_v3_loop.sh` (log `improve/outputs/fpo_v3/loop.log`, thời gian `timing.txt`). iter0: kiểm tra trường collect / reward / n_action_steps / expert_fp32 / init_policy của `fpo_v2.yaml` và `fpo_v3.yaml` giống nhau → symlink `decisions/`, `logs/` và copy các file csv/json nhỏ từ `outputs/fpo_v2/iter0`. Eval chỉ chạy arm v3: seed 1000 (quên) TRƯỚC, sau đó seed 3000/4000/5000. official và v2 dùng lại episode của `outputs/fpo_v2/eval_s*`.
+
+
+## 01/11/2026 07:45–08:10: video v2 θ4 thất bại ở task 1 và 7 (eval quên, seed 1000)
+
+Lệnh: tmux `v3_videos`, `python scripts/phase3_eval_video.py --config ~/ffi26/results/videos/v2_forget/configs/videos_v2_forget.yaml` (chạy trong lúc GPU rảnh trước khi khởi chạy loop v3). Tác động: SỬA REPO (output mới trong `results/videos/v2_forget/`). Kết quả: 18 video (task 1: 8, task 7: 10); `replay_check_v2.csv`: 0/40 episode replay khác bản gốc. Sau đó chạy `python scripts/v2_forget_wrong_object.py` (chỉ đọc log eval gốc, ghi `results/videos/v2_forget/index.md`, `wrong_object.csv`).
+
+Vật của task 0 không phải vật mục tiêu: task 1 có alphabet soup + tomato sauce; task 7 chỉ có tomato sauce (alphabet soup là vật mục tiêu của task 7). Bộ phát hiện tự động (`src/reward.py`; CHƯA xem video để xác nhận):
+
+| arm | task | thất bại | chạm vật task 0 (trong số thất bại) | nhấc vật task 0 (trong số thất bại) | chạm vật task 0 (mọi episode) |
+|---|---|---|---|---|---|
+| official | 1 | 3/20 | 0/3 | 0/3 | 0/20 |
+| v2 θ4 | 1 | 8/20 | 0/8 | 0/8 | 0/20 |
+| official | 7 | 4/20 | 1/4 | 0/4 | 2/20 |
+| v2 θ4 | 7 | 10/20 | 4/10 | 1/10 (init 6, tomato sauce) | 4/20 |
+
+Theo bộ phát hiện: ở task 1, v2 không chạm vật nào của task 0 (5/8 thất bại có nhấc cream cheese/butter, đúng vật mục tiêu). Ở task 7, v2 chạm tomato sauce ở 4/10 thất bại nhưng chỉ nhấc nó ở 1 episode (init 6). Như vậy dữ liệu log không cho thấy việc "gắp nhầm vật của task 0" là cơ chế chính của việc quên; cần xem video để xác nhận (danh sách trong `index.md`).
+
+Xem tay 1 trường hợp "nhấc" (task 7, init 6, `v2_t7_init6_s1000_fail.mp4`): bộ phát hiện đánh dấu tomato sauce "nhấc" ở bước 357–366 (10 bước). Ở 3 khung đã xem (bước 327, 366, 367), gripper ép vào lon tomato sauce, cạnh lon alphabet soup đã bị đổ, và không thấy rõ là đang gắp. Có thể là lon bị nghiêng/đẩy lên khi va chạm (header ghi `collision tomato_sauce_1 @357`) chứ không phải gắp có chủ đích. 17 video còn lại CHƯA xem.
+
+## 01/11/2026 ~08:05–08:20: câu hỏi tiếp theo về labeler, video "mù", commit
+
+| # | Lệnh / thao tác | Lý do | Tác động |
+|---|---|---|---|
+| 1 | `grep`/`sed` trên `scripts/fpo_collect.py`, `fpo_train_v3.py`, `fpo_train_v2.py`, `fpo_v3_loop.sh`, `src/reward_r2.py` | `label_episode` dùng vào việc gì trong v3 | chỉ đọc |
+| 2 | `scratchpad/t8_two.py`, `t8_two_b.py` (CPU) | 7 thất bại task 8 có cả hai predicate `on` từng True | scratch; chỉ đọc |
+| 3 | **Sửa** `scripts/phase3_eval_video.py`: thêm `--blind` (mặc định tắt; hành vi cũ giữ nguyên) | video cho kiểm chứng tay | **SỬA REPO** |
+| 4 | **Sửa** `scripts/failure_labels_run.py` (lệnh render có `--blind`), chạy lại (CPU) | sinh lại `render_commands.sh`; `manual_check.csv` giữ nguyên (cùng seed, cùng dữ liệu) | **SỬA REPO** (`outputs/failure_labels/`) |
+| 5 | `scratchpad/blind_test.py`: `annotate` trên frame giả, xem 2 ảnh header (CPU) | kiểm tra chế độ blind chỉ in step và Φ | scratch |
+| 6 | **Tạo** `outputs/failure_labels/render_watch.sh`, chạy trong tmux `fl_render_watch` | render sau khi v3 xong | chạy nền; chưa dùng GPU |
+| 7 | `git commit` các file labeler (bạn yêu cầu) | bước 4 | **COMMIT** |
+
+**1. `label_episode` trong v3 chỉ để log.** `fpo_collect.py:105` gọi `fl = label_episode(...)`, `:109` ghi `"primary": fl["primary"]` vào `roll_rows`, `:119` ghi ra `rollouts.csv`. Advantage tính từ `group_segment_labels` của `src/reward_r2.py` (`fpo_collect.py:84`, `:90–93`). `reward_r2.py` chỉ import `reward` (dòng 46), không import `failure_labels`. Trong train, `rollouts.csv` chỉ được đọc cột `success`: `fpo_train_v2.py:94–95` (`load_success_decisions`, chọn decision của rollout thành công cho BC, được `fpo_train_v3.py:39,94` dùng lại) và `fpo_train_v3.py:313–316` (đếm tỉ lệ thành công cho `train_info.json`). `grep primary` trong `fpo_train_v3.py`, `fpo_train_v2.py`, `fpo_v3_pooled.py`, `fpo_v3_loop.sh`: không có. Như vậy nhãn thất bại **không** ảnh hưởng lọc, advantage hay sampling. Collect của v3 từ iteration 1 sẽ import `failure_labels.py` đã sửa: `label_episode` không đổi, chỉ thêm `from reward_r2 import detect_events` ở cấp module (`fpo_collect.py` vốn đã import `reward_r2`).
+
+**2. Task 8, 7 thất bại có cả hai ấm từng lên bếp** (cột "2 ấm" trong mục trước; `n_pred_new_ever_true = 2`). Cả 7 cùng một mẫu: `moka_pot_2` lên bếp trước (True 14–38 bước, bắt đầu ở bước 170–252), rồi rời vùng bếp; sau đó `moka_pot_1` lên bếp (bước 383–516) và còn True đến cuối. **Không có hàng nào hai ấm cùng True.** Lúc kết thúc, `moka_pot_2` lệch về −y so với chỗ nó đứng khi True, cách tâm ước lượng (−0,098, −0,227) từ 0,027 đến 0,128 m.
+
+| arm | seed | init | `moka_pot_2` True | dịch sau khi thả: gripper chạm / không chạm | z cuối (reset 0,966) | nhãn v2 |
+|---|---|---|---|---|---|---|
+| official | 3000 | 13 | 246–284 (nhấp nháy 246–270) | 0,000 / 0,057 m | 0,989 | G (+D) |
+| official | 3000 | 28 | 184–198 | 0,000 / 0,011 m | 0,997 | G (+D, E_contact) |
+| official | 4000 | 20 | 252–265 | 0,009 / 0,068 m | 0,978 | G (+D, E_contact) |
+| v1 θ3 | 5000 | 19 | 180–211 | 0,015 / 0,121 m | 0,962 | G (+D) |
+| v1 θ3 | 5000 | 25 | 189–216 | 0,000 / 0,099 m | 0,964 | D (cách tâm 0,120 m > 0,10 nên không phải G) |
+| v2 θ4 | 5000 | 3 | 170–206 | 0,002 / 0,047 m | 0,997 | G (+D, E_contact) |
+| v2 θ4 | 5000 | 22 | 190–223 | 0,036 / 0,035 m | 0,997 | G (+D, E_contact) |
+
+Diễn giải: ấm thứ nhất được đặt lên bếp nhưng không ở lại. Phần lớn quãng dịch xảy ra khi **gripper không chạm ấm**. Ở 2 ca v1, z cuối ≈ z reset, tức ấm đã xuống mặt bàn. Log chỉ đo tiếp xúc của gripper (`check_contact(gripper, obj)`), nên **không xác định được** ấm tự trượt hay bị phần khác của cánh tay đẩy; cần xem video. Ca official s3000 init 13 có `slip` ở bước 120 (`reward_r2`).
+
+**3. Video mù.** `--blind`: header chỉ có `step i/T  Phi x` (đã xem ảnh thử); `episodes_<arm>.csv` để trống `primary`, `subtask_completion`, `events`. Tên file vẫn có arm và `_fail`, như trong `manual_check.csv`. **Chưa render.** Lúc 08:10, v3 đang train iter0 (pid 3573373, 3,8 GB). Train v2 cần tới 11,4 GB (`outputs/fpo_v2/iter*/train/train_info.json`, `torch_max_mem_allocated_gb`), nên chạy song song có nguy cơ OOM làm hỏng v3. Đổi batch size thì replay không còn khớp episode gốc (`phase3_eval_video.py`: nhiễu policy phụ thuộc thứ tự batch). Vì vậy render chạy sau v3: tmux `fl_render_watch` chạy `outputs/failure_labels/render_watch.sh`, kiểm tra mỗi 2 phút; khi không còn process `fpo_v3_loop.sh` và GPU trống ≥ 6000 MiB thì chạy `render_commands.sh`. Trạng thái: `render_watch_status.txt`, log: `render.log`, video: `outputs/failure_labels/videos/<arm>_<s1000|s3k5k>/`, kiểm tra tất định: `replay_check_<arm>.csv` trong từng thư mục.
