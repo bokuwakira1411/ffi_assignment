@@ -1,2 +1,0 @@
-iter,group,task_id,init_id,n_success,G,return_mean,return_spread,all_success,rejected,n_decisions,rollout_s
-1,0,0,1,8,8,0.8617216666624399,0.1566213447528504,True,False,221,24.51533007621765

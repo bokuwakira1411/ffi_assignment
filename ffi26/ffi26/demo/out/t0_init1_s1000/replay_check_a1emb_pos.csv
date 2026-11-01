@@ -1,9 +1,0 @@
-arm,seed,task,init,selected,success_replay,length_replay,success_orig,length_orig,match
-a1emb_pos,1000,0,0,False,True,273,True,273,True
-a1emb_pos,1000,0,1,True,True,256,True,256,True
-a1emb_pos,1000,0,2,False,False,520,False,520,True
-a1emb_pos,1000,0,3,False,True,269,True,269,True
-a1emb_pos,1000,0,4,False,True,479,True,479,True
-a1emb_pos,1000,0,5,False,False,520,False,520,True
-a1emb_pos,1000,0,6,False,False,520,False,520,True
-a1emb_pos,1000,0,7,False,False,520,False,520,True

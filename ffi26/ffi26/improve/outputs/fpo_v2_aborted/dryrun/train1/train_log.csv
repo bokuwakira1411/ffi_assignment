@@ -1,2 +1,0 @@
-step,epoch,task,loss_ppo,loss_bc,ratio_mean,ratio_min,ratio_max,std_logr,clip_frac,dl_absmean,l_new,grad_norm,gn_ppo,gn_bc_unit,lr,time_s,gpu_mem_gb
-1,0,0,0.00815403088927269,0.02099260315299034,1.0,0.9999997615814209,1.0000003576278687,5.659338597752139e-08,0.0,5.347828846424818e-10,0.032903168350458145,18.890396118164062,nan,nan,2e-07,35.7,9.924

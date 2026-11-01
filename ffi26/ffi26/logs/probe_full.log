@@ -1,330 +1,0 @@
-`torch_dtype` is deprecated! Use `dtype` instead!
-
-=== 0_versions ===
-{
-  "torch": "2.11.0+cu128",
-  "device": "cuda",
-  "gpu": "NVIDIA GeForce RTX 5070 Ti",
-  "lerobot": "0.6.2",
-  "policy_commit_sha": "a24f1f380461b665158d52acd140152c79e8b36d"
-}
-
-=== 1_load_policy_and_config ===
-Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
-Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 6938.17it/s]
-Reducing the number of VLM layers to 16 ...
-{
-  "config": {
-    "chunk_size": 50,
-    "n_action_steps": 50,
-    "num_steps": 10,
-    "max_state_dim": 32,
-    "max_action_dim": 32,
-    "resize_imgs_with_padding": [
-      512,
-      512
-    ],
-    "tokenizer_max_length": 48,
-    "vlm_model_name": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
-    "num_vlm_layers": 16,
-    "num_expert_layers": 0,
-    "expert_width_multiplier": 0.75,
-    "self_attn_every_n_layers": 2,
-    "attention_mode": "cross_attn",
-    "freeze_vision_encoder": false,
-    "train_expert_only": false,
-    "train_state_proj": true,
-    "use_cache": true,
-    "min_period": 0.004,
-    "max_period": 4.0,
-    "empty_cameras": 0
-  },
-  "input_features": {
-    "observation.state": {
-      "type": "FeatureType.STATE",
-      "shape": [
-        8
-      ]
-    },
-    "observation.images.camera1": {
-      "type": "FeatureType.VISUAL",
-      "shape": [
-        3,
-        256,
-        256
-      ]
-    },
-    "observation.images.camera2": {
-      "type": "FeatureType.VISUAL",
-      "shape": [
-        3,
-        256,
-        256
-      ]
-    }
-  },
-  "output_features": {
-    "action": {
-      "type": "FeatureType.ACTION",
-      "shape": [
-        7
-      ]
-    }
-  },
-  "normalization_mapping": {
-    "VISUAL": "NormalizationMode.IDENTITY",
-    "STATE": "NormalizationMode.MEAN_STD",
-    "ACTION": "NormalizationMode.MEAN_STD"
-  }
-}
-
-=== 2_parameters ===
-total 450.0 M, trainable (as loaded) 392.9 M
--- top-level children of policy.model (exact):
-     448.41 M  ( 99.6%)  trainable   391.27 M  vlm_with_expert
-       1.04 M  (  0.2%)  trainable     1.04 M  action_time_mlp_in
-       0.52 M  (  0.1%)  trainable     0.52 M  action_time_mlp_out
-       0.03 M  (  0.0%)  trainable     0.03 M  state_proj
-       0.02 M  (  0.0%)  trainable     0.02 M  action_in_proj
-       0.02 M  (  0.0%)  trainable     0.02 M  action_out_proj
--- depth 4 (find the vision encoder / text layers / expert layers here):
-     204.63 M  ( 45.5%)  trainable   194.79 M  vlm_with_expert.vlm.model.text_model
-      86.43 M  ( 19.2%)  trainable    86.43 M  vlm_with_expert.vlm.model.vision_model
-      47.31 M  ( 10.5%)  trainable     0.00 M  vlm_with_expert.vlm.lm_head.weight
-      11.80 M  (  2.6%)  trainable    11.80 M  vlm_with_expert.vlm.model.connector
-       6.27 M  (  1.4%)  trainable     6.27 M  vlm_with_expert.lm_expert.layers.0
-       6.27 M  (  1.4%)  trainable     6.27 M  vlm_with_expert.lm_expert.layers.2
-       6.27 M  (  1.4%)  trainable     6.27 M  vlm_with_expert.lm_expert.layers.4
-       6.27 M  (  1.4%)  trainable     6.27 M  vlm_with_expert.lm_expert.layers.6
-       6.27 M  (  1.4%)  trainable     6.27 M  vlm_with_expert.lm_expert.layers.8
-       6.27 M  (  1.4%)  trainable     6.27 M  vlm_with_expert.lm_expert.layers.10
-       6.27 M  (  1.4%)  trainable     6.27 M  vlm_with_expert.lm_expert.layers.12
-       6.27 M  (  1.4%)  trainable     6.27 M  vlm_with_expert.lm_expert.layers.14
-       6.01 M  (  1.3%)  trainable     6.01 M  vlm_with_expert.lm_expert.layers.1
-       6.01 M  (  1.3%)  trainable     6.01 M  vlm_with_expert.lm_expert.layers.3
-       6.01 M  (  1.3%)  trainable     6.01 M  vlm_with_expert.lm_expert.layers.5
-       6.01 M  (  1.3%)  trainable     6.01 M  vlm_with_expert.lm_expert.layers.7
-       6.01 M  (  1.3%)  trainable     6.01 M  vlm_with_expert.lm_expert.layers.9
-       6.01 M  (  1.3%)  trainable     6.01 M  vlm_with_expert.lm_expert.layers.11
-       6.01 M  (  1.3%)  trainable     6.01 M  vlm_with_expert.lm_expert.layers.13
-       6.01 M  (  1.3%)  trainable     6.01 M  vlm_with_expert.lm_expert.layers.15
-       1.04 M  (  0.2%)  trainable     1.04 M  action_time_mlp_in.weight
-       0.52 M  (  0.1%)  trainable     0.52 M  action_time_mlp_out.weight
-       0.03 M  (  0.0%)  trainable     0.03 M  state_proj.weight
-       0.02 M  (  0.0%)  trainable     0.02 M  action_in_proj.weight
-       0.02 M  (  0.0%)  trainable     0.02 M  action_out_proj.weight
-       0.00 M  (  0.0%)  trainable     0.00 M  state_proj.bias
-       0.00 M  (  0.0%)  trainable     0.00 M  vlm_with_expert.lm_expert.norm.weight
-       0.00 M  (  0.0%)  trainable     0.00 M  action_in_proj.bias
-       0.00 M  (  0.0%)  trainable     0.00 M  action_time_mlp_in.bias
-       0.00 M  (  0.0%)  trainable     0.00 M  action_time_mlp_out.bias
-       0.00 M  (  0.0%)  trainable     0.00 M  action_out_proj.bias
--- ModuleList lengths (layer counts):
-    12  vlm_with_expert.vlm.model.vision_model.encoder.layers
-    16  vlm_with_expert.vlm.model.text_model.layers
-    16  vlm_with_expert.lm_expert.layers
-
-=== 3_data_and_preprocess ===
-Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files:  25%|██▌       | 1/4 [00:00<00:02,  1.24it/s]Fetching 4 files:  75%|███████▌  | 3/4 [00:01<00:00,  1.66it/s]Fetching 4 files: 100%|██████████| 4/4 [00:01<00:00,  2.06it/s]
-Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 2348.11it/s]
-Fetching 457 files:   0%|          | 0/457 [00:00<?, ?it/s]Fetching 457 files:   0%|          | 1/457 [00:00<06:04,  1.25it/s]Fetching 457 files:   1%|          | 3/457 [00:01<03:21,  2.26it/s]Fetching 457 files:   1%|▏         | 6/457 [00:01<01:27,  5.13it/s]Fetching 457 files:   2%|▏         | 8/457 [00:01<01:05,  6.82it/s]Fetching 457 files:   2%|▏         | 10/457 [00:02<01:24,  5.29it/s]Fetching 457 files:   3%|▎         | 12/457 [00:02<01:46,  4.18it/s]Fetching 457 files:   3%|▎         | 15/457 [00:03<01:14,  5.91it/s]Fetching 457 files:   4%|▎         | 17/457 [00:03<01:30,  4.86it/s]Fetching 457 files:   4%|▍         | 18/457 [00:03<01:27,  5.01it/s]Fetching 457 files:   4%|▍         | 19/457 [00:04<01:49,  4.00it/s]Fetching 457 files:   5%|▍         | 22/457 [00:04<01:06,  6.58it/s]Fetching 457 files:   5%|▌         | 24/457 [00:04<00:55,  7.80it/s]Fetching 457 files:   6%|▌         | 26/457 [00:05<01:25,  5.02it/s]Fetching 457 files:   6%|▌         | 27/457 [00:05<01:47,  4.02it/s]Fetching 457 files:   6%|▋         | 29/457 [00:05<01:21,  5.26it/s]Fetching 457 files:   7%|▋         | 31/457 [00:06<01:02,  6.81it/s]Fetching 457 files:   7%|▋         | 33/457 [00:06<01:30,  4.68it/s]Fetching 457 files:   7%|▋         | 34/457 [00:06<01:23,  5.06it/s]Fetching 457 files:   8%|▊         | 35/457 [00:07<01:46,  3.98it/s]Fetching 457 files:   8%|▊         | 37/457 [00:07<01:14,  5.68it/s]Fetching 457 files:   9%|▊         | 39/457 [00:07<01:02,  6.64it/s]Fetching 457 files:   9%|▉         | 41/457 [00:08<01:29,  4.67it/s]Fetching 457 files:   9%|▉         | 42/457 [00:08<01:49,  3.80it/s]Fetching 457 files:   9%|▉         | 43/457 [00:09<01:42,  4.03it/s]Fetching 457 files:  10%|▉         | 44/457 [00:09<01:31,  4.50it/s]Fetching 457 files:  10%|▉         | 45/457 [00:09<01:30,  4.57it/s]Fetching 457 files:  10%|█         | 46/457 [00:09<01:38,  4.16it/s]Fetching 457 files:  11%|█         | 48/457 [00:10<01:58,  3.44it/s]Fetching 457 files:  11%|█         | 49/457 [00:10<02:07,  3.21it/s]Fetching 457 files:  11%|█         | 50/457 [00:11<02:03,  3.30it/s]Fetching 457 files:  11%|█         | 51/457 [00:11<01:57,  3.47it/s]Fetching 457 files:  11%|█▏        | 52/457 [00:11<01:47,  3.77it/s]Fetching 457 files:  12%|█▏        | 53/457 [00:11<02:02,  3.30it/s]Fetching 457 files:  12%|█▏        | 54/457 [00:12<02:02,  3.29it/s]Fetching 457 files:  12%|█▏        | 55/457 [00:12<01:51,  3.62it/s]Fetching 457 files:  12%|█▏        | 56/457 [00:12<02:13,  3.01it/s]Fetching 457 files:  12%|█▏        | 57/457 [00:13<02:09,  3.09it/s]Fetching 457 files:  13%|█▎        | 58/457 [00:13<01:43,  3.86it/s]Fetching 457 files:  13%|█▎        | 59/457 [00:13<01:31,  4.33it/s]Fetching 457 files:  13%|█▎        | 60/457 [00:13<01:20,  4.92it/s]Fetching 457 files:  13%|█▎        | 61/457 [00:13<01:30,  4.36it/s]Fetching 457 files:  14%|█▎        | 62/457 [00:14<01:49,  3.61it/s]Fetching 457 files:  14%|█▍        | 63/457 [00:14<02:04,  3.16it/s]Fetching 457 files:  14%|█▍        | 64/457 [00:14<01:59,  3.28it/s]Fetching 457 files:  14%|█▍        | 66/457 [00:15<01:21,  4.77it/s]Fetching 457 files:  15%|█▍        | 67/457 [00:15<01:40,  3.86it/s]Fetching 457 files:  15%|█▍        | 68/457 [00:15<01:35,  4.08it/s]Fetching 457 files:  15%|█▌        | 69/457 [00:16<01:59,  3.26it/s]Fetching 457 files:  15%|█▌        | 70/457 [00:16<01:40,  3.85it/s]Fetching 457 files:  16%|█▌        | 71/457 [00:16<01:36,  3.99it/s]Fetching 457 files:  16%|█▌        | 73/457 [00:16<01:27,  4.40it/s]Fetching 457 files:  16%|█▌        | 74/457 [00:17<01:26,  4.41it/s]Fetching 457 files:  16%|█▋        | 75/457 [00:17<01:44,  3.65it/s]Fetching 457 files:  17%|█▋        | 76/457 [00:17<01:36,  3.94it/s]Fetching 457 files:  17%|█▋        | 77/457 [00:18<01:34,  4.03it/s]Fetching 457 files:  17%|█▋        | 79/457 [00:18<01:46,  3.56it/s]Fetching 457 files:  18%|█▊        | 80/457 [00:19<01:51,  3.39it/s]Fetching 457 files:  18%|█▊        | 81/457 [00:19<02:03,  3.05it/s]Fetching 457 files:  18%|█▊        | 82/457 [00:20<03:56,  1.59it/s]Fetching 457 files:  18%|█▊        | 83/457 [00:21<03:15,  1.91it/s]Fetching 457 files:  18%|█▊        | 84/457 [00:21<02:50,  2.19it/s]Fetching 457 files:  19%|█▊        | 85/457 [00:21<02:23,  2.60it/s]Fetching 457 files:  19%|█▉        | 86/457 [00:21<02:14,  2.77it/s]Fetching 457 files:  19%|█▉        | 87/457 [00:22<01:51,  3.31it/s]Fetching 457 files:  19%|█▉        | 88/457 [00:22<01:44,  3.55it/s]Fetching 457 files:  19%|█▉        | 89/457 [00:22<01:43,  3.57it/s]Fetching 457 files:  20%|█▉        | 90/457 [00:22<01:42,  3.58it/s]Fetching 457 files:  20%|█▉        | 91/457 [00:23<01:33,  3.90it/s]Fetching 457 files:  20%|██        | 92/457 [00:23<01:43,  3.53it/s]Fetching 457 files:  20%|██        | 93/457 [00:23<01:27,  4.17it/s]Fetching 457 files:  21%|██        | 94/457 [00:23<01:28,  4.09it/s]Fetching 457 files:  21%|██        | 95/457 [00:24<01:26,  4.16it/s]Fetching 457 files:  21%|██        | 96/457 [00:24<01:30,  4.01it/s]Fetching 457 files:  21%|██▏       | 98/457 [00:24<01:05,  5.45it/s]Fetching 457 files:  22%|██▏       | 99/457 [00:24<01:18,  4.56it/s]Fetching 457 files:  22%|██▏       | 100/457 [00:25<01:30,  3.95it/s]Fetching 457 files:  22%|██▏       | 102/457 [00:25<01:09,  5.10it/s]Fetching 457 files:  23%|██▎       | 103/457 [00:25<01:12,  4.91it/s]Fetching 457 files:  23%|██▎       | 105/457 [00:25<00:50,  7.00it/s]Fetching 457 files:  23%|██▎       | 106/457 [00:26<01:06,  5.25it/s]Fetching 457 files:  23%|██▎       | 107/457 [00:26<01:20,  4.33it/s]Fetching 457 files:  24%|██▎       | 108/457 [00:26<01:20,  4.31it/s]Fetching 457 files:  24%|██▍       | 109/457 [00:27<01:32,  3.76it/s]Fetching 457 files:  24%|██▍       | 111/457 [00:27<01:06,  5.22it/s]Fetching 457 files:  25%|██▍       | 113/457 [00:27<01:03,  5.45it/s]Fetching 457 files:  25%|██▍       | 114/457 [00:28<01:16,  4.49it/s]Fetching 457 files:  25%|██▌       | 115/457 [00:28<01:12,  4.74it/s]Fetching 457 files:  25%|██▌       | 116/457 [00:28<01:45,  3.24it/s]Fetching 457 files:  26%|██▋       | 120/457 [00:29<00:56,  5.92it/s]Fetching 457 files:  26%|██▋       | 121/457 [00:29<01:09,  4.81it/s]Fetching 457 files:  27%|██▋       | 122/457 [00:29<01:02,  5.35it/s]Fetching 457 files:  27%|██▋       | 123/457 [00:30<01:38,  3.40it/s]Fetching 457 files:  28%|██▊       | 126/457 [00:30<01:01,  5.43it/s]Fetching 457 files:  28%|██▊       | 128/457 [00:31<01:17,  4.24it/s]Fetching 457 files:  28%|██▊       | 130/457 [00:31<01:22,  3.96it/s]Fetching 457 files:  29%|██▊       | 131/457 [00:31<01:19,  4.10it/s]Fetching 457 files:  29%|██▉       | 134/457 [00:32<00:56,  5.72it/s]Fetching 457 files:  30%|██▉       | 135/457 [00:32<01:14,  4.34it/s]Fetching 457 files:  30%|██▉       | 137/457 [00:33<01:28,  3.63it/s]Fetching 457 files:  30%|███       | 139/457 [00:33<01:10,  4.53it/s]Fetching 457 files:  31%|███       | 140/457 [00:33<01:03,  4.96it/s]Fetching 457 files:  31%|███       | 141/457 [00:34<01:15,  4.18it/s]Fetching 457 files:  31%|███▏      | 143/457 [00:34<01:30,  3.46it/s]Fetching 457 files:  32%|███▏      | 145/457 [00:35<01:10,  4.44it/s]Fetching 457 files:  32%|███▏      | 146/457 [00:35<01:07,  4.60it/s]Fetching 457 files:  32%|███▏      | 147/457 [00:35<01:09,  4.49it/s]Fetching 457 files:  33%|███▎      | 149/457 [00:36<01:31,  3.37it/s]Fetching 457 files:  33%|███▎      | 151/457 [00:36<01:12,  4.24it/s]Fetching 457 files:  33%|███▎      | 152/457 [00:36<01:09,  4.40it/s]Fetching 457 files:  33%|███▎      | 153/457 [00:36<01:02,  4.83it/s]Fetching 457 files:  34%|███▎      | 154/457 [00:37<00:56,  5.40it/s]Fetching 457 files:  34%|███▍      | 155/457 [00:37<01:45,  2.86it/s]Fetching 457 files:  34%|███▍      | 157/457 [00:38<01:13,  4.07it/s]Fetching 457 files:  35%|███▍      | 158/457 [00:38<01:13,  4.06it/s]Fetching 457 files:  35%|███▍      | 159/457 [00:38<01:07,  4.41it/s]Fetching 457 files:  35%|███▌      | 160/457 [00:38<01:00,  4.93it/s]Fetching 457 files:  35%|███▌      | 162/457 [00:39<01:12,  4.07it/s]Fetching 457 files:  36%|███▌      | 163/457 [00:39<01:03,  4.60it/s]Fetching 457 files:  36%|███▌      | 165/457 [00:39<00:51,  5.65it/s]Fetching 457 files:  36%|███▋      | 166/457 [00:39<00:50,  5.75it/s]Fetching 457 files:  37%|███▋      | 167/457 [00:39<00:54,  5.37it/s]Fetching 457 files:  37%|███▋      | 168/457 [00:40<00:48,  5.92it/s]Fetching 457 files:  37%|███▋      | 169/457 [00:40<00:45,  6.37it/s]Fetching 457 files:  37%|███▋      | 170/457 [00:40<01:10,  4.09it/s]Fetching 457 files:  37%|███▋      | 171/457 [00:40<00:59,  4.85it/s]Fetching 457 files:  38%|███▊      | 173/457 [00:40<00:45,  6.29it/s]Fetching 457 files:  38%|███▊      | 174/457 [00:41<00:46,  6.13it/s]Fetching 457 files:  38%|███▊      | 175/457 [00:41<00:55,  5.10it/s]Fetching 457 files:  39%|███▊      | 176/457 [00:41<00:48,  5.77it/s]Fetching 457 files:  39%|███▉      | 178/457 [00:42<01:04,  4.30it/s]Fetching 457 files:  40%|███▉      | 181/457 [00:42<00:43,  6.41it/s]Fetching 457 files:  40%|███▉      | 182/457 [00:42<00:44,  6.21it/s]Fetching 457 files:  40%|████      | 183/457 [00:42<00:51,  5.32it/s]Fetching 457 files:  40%|████      | 184/457 [00:43<00:46,  5.81it/s]Fetching 457 files:  40%|████      | 185/457 [00:43<00:47,  5.77it/s]Fetching 457 files:  41%|████      | 186/457 [00:43<01:06,  4.06it/s]Fetching 457 files:  41%|████      | 188/457 [00:43<00:49,  5.40it/s]Fetching 457 files:  41%|████▏     | 189/457 [00:44<00:52,  5.07it/s]Fetching 457 files:  42%|████▏     | 190/457 [00:44<00:55,  4.79it/s]Fetching 457 files:  42%|████▏     | 191/457 [00:44<00:54,  4.91it/s]Fetching 457 files:  42%|████▏     | 192/457 [00:44<00:48,  5.51it/s]Fetching 457 files:  42%|████▏     | 193/457 [00:45<01:12,  3.66it/s]Fetching 457 files:  43%|████▎     | 195/457 [00:45<00:48,  5.40it/s]Fetching 457 files:  43%|████▎     | 196/457 [00:45<00:50,  5.17it/s]Fetching 457 files:  43%|████▎     | 197/457 [00:45<01:06,  3.91it/s]Fetching 457 files:  43%|████▎     | 198/457 [00:46<00:59,  4.32it/s]Fetching 457 files:  44%|████▎     | 199/457 [00:46<01:00,  4.26it/s]Fetching 457 files:  44%|████▍     | 200/457 [00:46<01:03,  4.03it/s]Fetching 457 files:  44%|████▍     | 203/457 [00:47<00:46,  5.50it/s]Fetching 457 files:  45%|████▍     | 204/457 [00:47<01:05,  3.87it/s]Fetching 457 files:  45%|████▍     | 205/457 [00:47<01:06,  3.80it/s]Fetching 457 files:  45%|████▌     | 206/457 [00:48<01:04,  3.87it/s]Fetching 457 files:  46%|████▌     | 208/457 [00:48<00:52,  4.74it/s]Fetching 457 files:  46%|████▌     | 210/457 [00:48<01:00,  4.10it/s]Fetching 457 files:  46%|████▌     | 211/457 [00:49<01:03,  3.87it/s]Fetching 457 files:  46%|████▋     | 212/457 [00:49<01:01,  3.97it/s]Fetching 457 files:  47%|████▋     | 213/457 [00:49<00:58,  4.19it/s]Fetching 457 files:  47%|████▋     | 215/457 [00:50<00:48,  5.02it/s]Fetching 457 files:  47%|████▋     | 216/457 [00:50<00:58,  4.09it/s]Fetching 457 files:  47%|████▋     | 217/457 [00:50<01:01,  3.88it/s]Fetching 457 files:  48%|████▊     | 218/457 [00:50<01:00,  3.94it/s]Fetching 457 files:  48%|████▊     | 219/457 [00:51<00:58,  4.07it/s]Fetching 457 files:  48%|████▊     | 221/457 [00:51<01:02,  3.79it/s]Fetching 457 files:  49%|████▊     | 222/457 [00:51<00:53,  4.42it/s]Fetching 457 files:  49%|████▉     | 223/457 [00:52<01:00,  3.88it/s]Fetching 457 files:  49%|████▉     | 224/457 [00:52<01:06,  3.49it/s]Fetching 457 files:  49%|████▉     | 226/457 [00:52<00:47,  4.83it/s]Fetching 457 files:  50%|████▉     | 227/457 [00:53<01:01,  3.75it/s]Fetching 457 files:  50%|█████     | 229/457 [00:53<00:54,  4.19it/s]Fetching 457 files:  50%|█████     | 230/457 [00:53<00:52,  4.33it/s]Fetching 457 files:  51%|█████     | 231/457 [00:54<00:53,  4.23it/s]Fetching 457 files:  51%|█████     | 233/457 [00:54<00:42,  5.32it/s]Fetching 457 files:  51%|█████     | 234/457 [00:54<00:49,  4.50it/s]Fetching 457 files:  52%|█████▏    | 236/457 [00:55<00:51,  4.26it/s]Fetching 457 files:  52%|█████▏    | 237/457 [00:55<00:46,  4.78it/s]Fetching 457 files:  52%|█████▏    | 238/457 [00:55<00:46,  4.69it/s]Fetching 457 files:  53%|█████▎    | 240/457 [00:55<00:40,  5.34it/s]Fetching 457 files:  53%|█████▎    | 242/457 [00:56<00:36,  5.92it/s]Fetching 457 files:  53%|█████▎    | 243/457 [00:56<00:34,  6.20it/s]Fetching 457 files:  53%|█████▎    | 244/457 [00:56<00:45,  4.67it/s]Fetching 457 files:  54%|█████▎    | 245/457 [00:56<00:44,  4.81it/s]Fetching 457 files:  54%|█████▍    | 246/457 [00:56<00:39,  5.33it/s]Fetching 457 files:  54%|█████▍    | 247/457 [00:57<00:50,  4.20it/s]Fetching 457 files:  54%|█████▍    | 249/457 [00:57<00:37,  5.51it/s]Fetching 457 files:  55%|█████▍    | 250/457 [00:57<00:35,  5.81it/s]Fetching 457 files:  55%|█████▍    | 251/457 [00:58<00:52,  3.89it/s]Fetching 457 files:  55%|█████▌    | 253/457 [00:58<00:43,  4.74it/s]Fetching 457 files:  56%|█████▌    | 254/457 [00:58<00:46,  4.34it/s]Fetching 457 files:  56%|█████▌    | 256/457 [00:58<00:36,  5.55it/s]Fetching 457 files:  56%|█████▌    | 257/457 [00:59<00:34,  5.88it/s]Fetching 457 files:  56%|█████▋    | 258/457 [00:59<00:54,  3.64it/s]Fetching 457 files:  57%|█████▋    | 259/457 [00:59<00:50,  3.94it/s]Fetching 457 files:  57%|█████▋    | 260/457 [01:00<00:51,  3.82it/s]Fetching 457 files:  57%|█████▋    | 262/457 [01:00<00:41,  4.71it/s]Fetching 457 files:  58%|█████▊    | 263/457 [01:00<00:36,  5.32it/s]Fetching 457 files:  58%|█████▊    | 264/457 [01:01<00:52,  3.70it/s]Fetching 457 files:  58%|█████▊    | 265/457 [01:01<00:49,  3.90it/s]Fetching 457 files:  58%|█████▊    | 266/457 [01:01<00:50,  3.76it/s]Fetching 457 files:  59%|█████▊    | 268/457 [01:01<00:41,  4.56it/s]Fetching 457 files:  59%|█████▉    | 269/457 [01:02<00:36,  5.21it/s]Fetching 457 files:  59%|█████▉    | 270/457 [01:02<00:52,  3.58it/s]Fetching 457 files:  59%|█████▉    | 271/457 [01:03<01:05,  2.82it/s]Fetching 457 files:  60%|█████▉    | 273/457 [01:03<00:44,  4.10it/s]Fetching 457 files:  60%|█████▉    | 274/457 [01:03<00:39,  4.58it/s]Fetching 457 files:  60%|██████    | 275/457 [01:03<00:34,  5.30it/s]Fetching 457 files:  60%|██████    | 276/457 [01:04<00:49,  3.69it/s]Fetching 457 files:  61%|██████    | 277/457 [01:04<01:00,  2.95it/s]Fetching 457 files:  61%|██████    | 278/457 [01:04<00:53,  3.33it/s]Fetching 457 files:  61%|██████    | 279/457 [01:05<01:19,  2.25it/s]Fetching 457 files:  61%|██████▏   | 280/457 [01:05<01:08,  2.59it/s]Fetching 457 files:  61%|██████▏   | 281/457 [01:06<01:01,  2.88it/s]Fetching 457 files:  62%|██████▏   | 282/457 [01:06<00:55,  3.17it/s]Fetching 457 files:  62%|██████▏   | 283/457 [01:06<00:51,  3.40it/s]Fetching 457 files:  62%|██████▏   | 284/457 [01:06<00:56,  3.08it/s]Fetching 457 files:  62%|██████▏   | 285/457 [01:07<00:54,  3.17it/s]Fetching 457 files:  63%|██████▎   | 286/457 [01:07<00:49,  3.47it/s]Fetching 457 files:  63%|██████▎   | 287/457 [01:07<00:54,  3.14it/s]Fetching 457 files:  63%|██████▎   | 288/457 [01:08<00:49,  3.39it/s]Fetching 457 files:  63%|██████▎   | 289/457 [01:08<00:48,  3.49it/s]Fetching 457 files:  63%|██████▎   | 290/457 [01:08<00:52,  3.16it/s]Fetching 457 files:  64%|██████▍   | 292/457 [01:09<00:38,  4.33it/s]Fetching 457 files:  64%|██████▍   | 293/457 [01:09<00:45,  3.59it/s]Fetching 457 files:  64%|██████▍   | 294/457 [01:09<00:40,  4.07it/s]Fetching 457 files:  65%|██████▍   | 295/457 [01:09<00:40,  4.03it/s]Fetching 457 files:  65%|██████▍   | 296/457 [01:10<00:47,  3.41it/s]Fetching 457 files:  65%|██████▌   | 298/457 [01:10<00:40,  3.88it/s]Fetching 457 files:  65%|██████▌   | 299/457 [01:10<00:39,  3.96it/s]Fetching 457 files:  66%|██████▌   | 300/457 [01:11<00:33,  4.68it/s]Fetching 457 files:  66%|██████▌   | 302/457 [01:11<00:30,  5.14it/s]Fetching 457 files:  66%|██████▋   | 303/457 [01:11<00:36,  4.18it/s]Fetching 457 files:  67%|██████▋   | 304/457 [01:11<00:35,  4.29it/s]Fetching 457 files:  67%|██████▋   | 305/457 [01:12<00:34,  4.40it/s]Fetching 457 files:  67%|██████▋   | 306/457 [01:12<00:32,  4.61it/s]Fetching 457 files:  67%|██████▋   | 308/457 [01:12<00:21,  6.94it/s]Fetching 457 files:  68%|██████▊   | 309/457 [01:12<00:29,  4.94it/s]Fetching 457 files:  68%|██████▊   | 310/457 [01:13<00:34,  4.31it/s]Fetching 457 files:  68%|██████▊   | 311/457 [01:13<00:36,  4.02it/s]Fetching 457 files:  68%|██████▊   | 312/457 [01:13<00:32,  4.39it/s]Fetching 457 files:  68%|██████▊   | 313/457 [01:13<00:29,  4.80it/s]Fetching 457 files:  69%|██████▊   | 314/457 [01:13<00:26,  5.46it/s]Fetching 457 files:  69%|██████▉   | 315/457 [01:14<00:39,  3.62it/s]Fetching 457 files:  69%|██████▉   | 316/457 [01:14<00:33,  4.22it/s]Fetching 457 files:  69%|██████▉   | 317/457 [01:14<00:37,  3.69it/s]Fetching 457 files:  70%|██████▉   | 318/457 [01:15<00:35,  3.93it/s]Fetching 457 files:  70%|██████▉   | 319/457 [01:15<00:29,  4.66it/s]Fetching 457 files:  70%|███████   | 320/457 [01:15<00:26,  5.22it/s]Fetching 457 files:  70%|███████   | 321/457 [01:15<00:38,  3.49it/s]Fetching 457 files:  70%|███████   | 322/457 [01:16<00:32,  4.20it/s]Fetching 457 files:  71%|███████   | 323/457 [01:16<00:34,  3.84it/s]Fetching 457 files:  71%|███████   | 324/457 [01:16<00:31,  4.28it/s]Fetching 457 files:  71%|███████▏  | 326/457 [01:16<00:26,  4.96it/s]Fetching 457 files:  72%|███████▏  | 328/457 [01:17<00:27,  4.75it/s]Fetching 457 files:  72%|███████▏  | 329/457 [01:17<00:26,  4.87it/s]Fetching 457 files:  72%|███████▏  | 330/457 [01:17<00:31,  3.97it/s]Fetching 457 files:  73%|███████▎  | 332/457 [01:17<00:21,  5.86it/s]Fetching 457 files:  73%|███████▎  | 333/457 [01:18<00:25,  4.96it/s]Fetching 457 files:  73%|███████▎  | 335/457 [01:18<00:29,  4.07it/s]Fetching 457 files:  74%|███████▎  | 336/457 [01:19<00:33,  3.64it/s]Fetching 457 files:  74%|███████▍  | 338/457 [01:19<00:26,  4.43it/s]Fetching 457 files:  74%|███████▍  | 339/457 [01:19<00:25,  4.67it/s]Fetching 457 files:  75%|███████▍  | 341/457 [01:19<00:18,  6.16it/s]Fetching 457 files:  75%|███████▍  | 342/457 [01:20<00:26,  4.29it/s]Fetching 457 files:  75%|███████▌  | 343/457 [01:20<00:30,  3.75it/s]Fetching 457 files:  75%|███████▌  | 344/457 [01:21<00:28,  3.97it/s]Fetching 457 files:  75%|███████▌  | 345/457 [01:21<00:31,  3.55it/s]Fetching 457 files:  76%|███████▌  | 346/457 [01:21<00:29,  3.76it/s]Fetching 457 files:  76%|███████▌  | 347/457 [01:21<00:25,  4.24it/s]Fetching 457 files:  76%|███████▌  | 348/457 [01:22<00:31,  3.47it/s]Fetching 457 files:  77%|███████▋  | 350/457 [01:22<00:23,  4.53it/s]Fetching 457 files:  77%|███████▋  | 351/457 [01:23<00:37,  2.86it/s]Fetching 457 files:  77%|███████▋  | 353/457 [01:23<00:26,  3.89it/s]Fetching 457 files:  77%|███████▋  | 354/457 [01:23<00:23,  4.34it/s]Fetching 457 files:  78%|███████▊  | 355/457 [01:23<00:20,  4.93it/s]Fetching 457 files:  78%|███████▊  | 356/457 [01:23<00:21,  4.77it/s]Fetching 457 files:  78%|███████▊  | 357/457 [01:24<00:37,  2.65it/s]Fetching 457 files:  79%|███████▊  | 359/457 [01:25<00:26,  3.67it/s]Fetching 457 files:  79%|███████▉  | 361/457 [01:25<00:20,  4.65it/s]Fetching 457 files:  79%|███████▉  | 362/457 [01:25<00:18,  5.10it/s]Fetching 457 files:  79%|███████▉  | 363/457 [01:26<00:32,  2.87it/s]Fetching 457 files:  80%|███████▉  | 365/457 [01:26<00:23,  4.00it/s]Fetching 457 files:  80%|████████  | 366/457 [01:26<00:20,  4.48it/s]Fetching 457 files:  80%|████████  | 367/457 [01:26<00:17,  5.04it/s]Fetching 457 files:  81%|████████  | 369/457 [01:26<00:13,  6.73it/s]Fetching 457 files:  81%|████████  | 370/457 [01:27<00:28,  3.10it/s]Fetching 457 files:  81%|████████  | 371/457 [01:27<00:24,  3.52it/s]Fetching 457 files:  82%|████████▏ | 377/457 [01:28<00:08,  9.58it/s]Fetching 457 files:  83%|████████▎ | 380/457 [01:29<00:15,  5.01it/s]Fetching 457 files:  84%|████████▎ | 382/457 [01:30<00:24,  3.10it/s]Fetching 457 files:  84%|████████▍ | 384/457 [01:36<01:10,  1.04it/s]Fetching 457 files:  84%|████████▍ | 385/457 [01:42<02:09,  1.80s/it]Fetching 457 files:  84%|████████▍ | 386/457 [01:47<02:48,  2.37s/it]Fetching 457 files:  85%|████████▍ | 387/457 [01:49<02:34,  2.20s/it]Fetching 457 files:  85%|████████▍ | 388/457 [01:53<03:00,  2.61s/it]Fetching 457 files:  85%|████████▌ | 389/457 [01:55<02:56,  2.59s/it]Fetching 457 files:  85%|████████▌ | 390/457 [02:01<03:41,  3.30s/it]Fetching 457 files:  86%|████████▌ | 391/457 [02:01<02:47,  2.54s/it]Fetching 457 files:  86%|████████▌ | 392/457 [02:02<02:21,  2.17s/it]Fetching 457 files:  86%|████████▌ | 393/457 [02:03<01:46,  1.67s/it]Fetching 457 files:  86%|████████▌ | 394/457 [02:06<02:17,  2.18s/it]Fetching 457 files:  86%|████████▋ | 395/457 [02:06<01:39,  1.60s/it]Fetching 457 files:  87%|████████▋ | 396/457 [02:10<02:03,  2.03s/it]Fetching 457 files:  87%|████████▋ | 397/457 [02:14<02:47,  2.79s/it]Fetching 457 files:  87%|████████▋ | 398/457 [02:14<01:58,  2.01s/it]Fetching 457 files:  87%|████████▋ | 399/457 [02:16<01:55,  1.99s/it]Fetching 457 files:  88%|████████▊ | 400/457 [02:18<01:56,  2.05s/it]Fetching 457 files:  88%|████████▊ | 401/457 [02:23<02:30,  2.69s/it]Fetching 457 files:  88%|████████▊ | 402/457 [02:24<01:59,  2.18s/it]Fetching 457 files:  88%|████████▊ | 403/457 [02:26<02:01,  2.24s/it]Fetching 457 files:  88%|████████▊ | 404/457 [02:27<01:33,  1.76s/it]Fetching 457 files:  89%|████████▊ | 405/457 [02:37<03:45,  4.33s/it]Fetching 457 files:  89%|████████▉ | 406/457 [02:37<02:41,  3.16s/it]Fetching 457 files:  89%|████████▉ | 407/457 [02:38<01:55,  2.32s/it]Fetching 457 files:  89%|████████▉ | 408/457 [02:40<01:56,  2.37s/it]Fetching 457 files:  89%|████████▉ | 409/457 [02:44<02:08,  2.68s/it]Fetching 457 files:  90%|████████▉ | 410/457 [02:45<01:49,  2.34s/it]Fetching 457 files:  90%|████████▉ | 411/457 [02:46<01:29,  1.93s/it]Fetching 457 files:  90%|█████████ | 412/457 [02:49<01:39,  2.21s/it]Fetching 457 files:  90%|█████████ | 413/457 [02:51<01:40,  2.28s/it]Fetching 457 files:  91%|█████████ | 414/457 [02:54<01:38,  2.28s/it]Fetching 457 files:  91%|█████████ | 415/457 [02:55<01:26,  2.05s/it]Fetching 457 files:  91%|█████████ | 416/457 [02:56<01:03,  1.54s/it]Fetching 457 files:  91%|█████████ | 417/457 [02:56<00:49,  1.25s/it]Fetching 457 files:  91%|█████████▏| 418/457 [03:01<01:32,  2.37s/it]Fetching 457 files:  92%|█████████▏| 419/457 [03:06<01:58,  3.12s/it]Fetching 457 files:  92%|█████████▏| 421/457 [03:06<01:01,  1.71s/it]Fetching 457 files:  92%|█████████▏| 422/457 [03:08<01:01,  1.74s/it]Fetching 457 files:  93%|█████████▎| 423/457 [03:11<01:14,  2.19s/it]Fetching 457 files:  93%|█████████▎| 424/457 [03:14<01:15,  2.30s/it]Fetching 457 files:  93%|█████████▎| 425/457 [03:21<01:52,  3.50s/it]Fetching 457 files:  93%|█████████▎| 426/457 [03:21<01:23,  2.69s/it]Fetching 457 files:  93%|█████████▎| 427/457 [03:22<01:05,  2.19s/it]Fetching 457 files:  94%|█████████▎| 428/457 [03:23<00:54,  1.89s/it]Fetching 457 files:  94%|█████████▍| 430/457 [03:28<00:55,  2.05s/it]Fetching 457 files:  94%|█████████▍| 431/457 [03:28<00:41,  1.61s/it]Fetching 457 files:  95%|█████████▍| 432/457 [03:32<00:56,  2.27s/it]Fetching 457 files:  95%|█████████▍| 433/457 [03:33<00:45,  1.88s/it]Fetching 457 files:  95%|█████████▍| 434/457 [03:34<00:38,  1.69s/it]Fetching 457 files:  95%|█████████▌| 435/457 [03:36<00:34,  1.55s/it]Fetching 457 files:  95%|█████████▌| 436/457 [03:36<00:25,  1.22s/it]Fetching 457 files:  96%|█████████▌| 437/457 [03:36<00:18,  1.10it/s]Fetching 457 files:  96%|█████████▌| 438/457 [03:38<00:21,  1.11s/it]Fetching 457 files:  96%|█████████▌| 439/457 [03:40<00:24,  1.34s/it]Fetching 457 files:  96%|█████████▋| 440/457 [03:45<00:42,  2.51s/it]Fetching 457 files:  96%|█████████▋| 441/457 [03:45<00:30,  1.89s/it]Fetching 457 files:  97%|█████████▋| 442/457 [03:50<00:42,  2.86s/it]Fetching 457 files:  97%|█████████▋| 443/457 [03:51<00:28,  2.07s/it]Fetching 457 files:  97%|█████████▋| 444/457 [03:55<00:36,  2.80s/it]Fetching 457 files:  97%|█████████▋| 445/457 [03:57<00:31,  2.64s/it]Fetching 457 files:  98%|█████████▊| 447/457 [04:02<00:25,  2.55s/it]Fetching 457 files:  98%|█████████▊| 448/457 [04:07<00:27,  3.01s/it]Fetching 457 files:  98%|█████████▊| 449/457 [04:07<00:18,  2.29s/it]Fetching 457 files:  98%|█████████▊| 450/457 [04:10<00:16,  2.38s/it]Fetching 457 files:  99%|█████████▊| 451/457 [04:10<00:10,  1.81s/it]Fetching 457 files:  99%|█████████▉| 452/457 [04:12<00:08,  1.74s/it]Fetching 457 files:  99%|█████████▉| 453/457 [04:13<00:06,  1.72s/it]Fetching 457 files:  99%|█████████▉| 454/457 [04:13<00:03,  1.26s/it]Fetching 457 files: 100%|█████████▉| 455/457 [04:14<00:02,  1.03s/it]Fetching 457 files: 100%|█████████▉| 456/457 [04:15<00:01,  1.03s/it]Fetching 457 files: 100%|██████████| 457/457 [04:18<00:00,  1.56s/it]Fetching 457 files: 100%|██████████| 457/457 [04:18<00:00,  1.77it/s]
-{
-  "dataset": {
-    "repo_id": "lerobot/libero",
-    "revision": "a1aaacb7f6cd6ee5fb43120f673cebb0cfea7dd4",
-    "fps": 10.0,
-    "frames": 273465,
-    "episodes": 1693,
-    "features": [
-      "observation.images.image",
-      "observation.images.image2",
-      "observation.state",
-      "action",
-      "timestamp",
-      "frame_index",
-      "episode_index",
-      "index",
-      "task_index"
-    ],
-    "camera_keys": [
-      "observation.images.image",
-      "observation.images.image2"
-    ]
-  },
-  "raw_batch_shapes": {
-    "observation.state": [
-      8,
-      8
-    ],
-    "action": [
-      8,
-      50,
-      7
-    ],
-    "timestamp": [
-      8
-    ],
-    "frame_index": [
-      8
-    ],
-    "episode_index": [
-      8
-    ],
-    "index": [
-      8
-    ],
-    "task_index": [
-      8
-    ],
-    "action_is_pad": [
-      8,
-      50
-    ],
-    "observation.images.image": [
-      8,
-      3,
-      256,
-      256
-    ],
-    "observation.images.image2": [
-      8,
-      3,
-      256,
-      256
-    ]
-  },
-  "tasks_sampled": [
-    "pick up the bbq sauce and place it in the basket",
-    "pick up the black bowl between the plate and the ramekin and place it on the plate",
-    "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate",
-    "pick up the black bowl next to the ramekin and place it on the plate",
-    "pick up the black bowl on the ramekin and place it on the plate",
-    "pick up the black bowl on the wooden cabinet and place it on the plate",
-    "pick up the chocolate pudding and place it in the basket",
-    "pick up the cream cheese and place it in the basket",
-    "pick up the milk and place it in the basket",
-    "pick up the salad dressing and place it in the basket",
-    "pick up the tomato sauce and place it in the basket",
-    "push the plate to the front of the stove"
-  ],
-  "processor_overrides_used": [
-    "device_processor",
-    "rename_observations_processor"
-  ],
-  "processed_batch_shapes": {
-    "action": [
-      8,
-      50,
-      7
-    ],
-    "action_is_pad": [
-      8,
-      50
-    ],
-    "index": [
-      8
-    ],
-    "task_index": [
-      8
-    ],
-    "episode_index": [
-      8
-    ],
-    "frame_index": [
-      8
-    ],
-    "timestamp": [
-      8
-    ],
-    "observation.state": [
-      8,
-      8
-    ],
-    "observation.images.camera1": [
-      8,
-      3,
-      256,
-      256
-    ],
-    "observation.images.camera2": [
-      8,
-      3,
-      256,
-      256
-    ],
-    "observation.language.tokens": [
-      8,
-      48
-    ],
-    "observation.language.attention_mask": [
-      8,
-      48
-    ]
-  }
-}
-
-=== 4_pipeline_trace ===
-{
-  "images_after_prepare (B,3,H,W, range [-1,1])": [
-    [
-      8,
-      3,
-      512,
-      512
-    ],
-    [
-      8,
-      3,
-      512,
-      512
-    ]
-  ],
-  "state_after_pad": [
-    8,
-    32
-  ],
-  "tokens_per_image": 64,
-  "image_embed_dim": 960,
-  "language_tokens": [
-    8,
-    48
-  ],
-  "prefix_len (images + language + 1 state token)": 177,
-  "action_chunk_target (B, chunk, max_action_dim)": [
-    8,
-    50,
-    32
-  ],
-  "suffix_len (one token per chunk step)": 50
-}
-
-=== 5_loss_one_forward_no_update ===
-{
-  "loss_by_flow_time (t=1 is pure noise)": {
-    "0.1": 0.2753186821937561,
-    "0.3": 0.06764881188670795,
-    "0.5": 0.030725705126921337,
-    "0.7": 0.019210444142421085,
-    "0.9": 0.014666953434546789
-  },
-  "loss_default_time_sampling": 0.036486586555838585,
-  "zero_velocity_baseline_mse (approx, padding mask applied if present)": 1.4300300280253093,
-  "weights_unchanged": true,
-  "note": "Loss = MSE between predicted velocity and (noise - action). Convention NOISE_AT_ONE: x_t = t*noise + (1-t)*action. Batches: 3 x 8 samples spread over the dataset."
-}
-
-=== 6_inference_trace ===
-{
-  "action_chunk_shape (B, chunk, action_dim)": [
-    1,
-    50,
-    7
-  ],
-  "denoise_calls_per_chunk": 10,
-  "median_latency_ms_per_chunk (batch 1)": 96.5,
-  "peak_vram_gb": 1.06,
-  "policy_forward_calls_per_100_env_steps": 2.0,
-  "note": "Euler integration from noise (t=1) to action (t=0) with num_steps=10; a new chunk is generated every n_action_steps=50 env steps."
-}
-
-report written to /home/student/ffi26/results/probe_report.json  | all sections ok
