@@ -1,0 +1,13 @@
+# Analyse (02/11/2026): base SmolVLA on tasks 1-7, 9 x 50 init, seed 4000, same settings as the FPO v2/v4 final eval
+# (NAS=10, expert fp32, batch 8). Tasks 0, 8 for this seed already exist in outputs/fpo_v2/eval_s4000/official.
+seed: 4000
+n_action_steps: 10
+batch_size: 8
+expert_fp32: true
+output_dir: ~/ffi26/improve/outputs/analyse_base/eval_s4000
+models:
+  - name: official
+    path: lerobot/smolvla_libero
+    task_suffix: ""
+    jobs:
+      - {tasks: [1, 2, 3, 4, 5, 6, 7, 9], n_episodes: 50}

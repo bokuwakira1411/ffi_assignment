@@ -1,0 +1,43 @@
+arm,seed,task,init,file,success,length,primary,subtask_completion,events
+v4,3000,0,4,v4_t0_init4_s3000_success.mp4,True,366,S,1.0,slip@220 tomato_sauce_1; slip@270 tomato_sauce_1
+v4,3000,0,17,v4_t0_init17_s3000_success.mp4,True,275,S,1.0,
+v4,3000,8,0,v4_t8_init0_s3000_success.mp4,True,391,S,1.0,
+v4,3000,8,9,v4_t8_init9_s3000_success.mp4,True,363,S,1.0,
+v4,3000,8,12,v4_t8_init12_s3000_success.mp4,True,432,S,1.0,
+v4,3000,8,13,v4_t8_init13_s3000_success.mp4,True,422,S,1.0,slip@119 moka_pot_2
+v4,3000,8,14,v4_t8_init14_s3000_success.mp4,True,379,S,1.0,
+v4,3000,8,22,v4_t8_init22_s3000_success.mp4,True,385,S,1.0,
+v4,3000,8,24,v4_t8_init24_s3000_success.mp4,True,390,S,1.0,
+v4,3000,8,26,v4_t8_init26_s3000_success.mp4,True,373,S,1.0,
+v4,3000,8,30,v4_t8_init30_s3000_success.mp4,True,429,S,1.0,
+v4,3000,8,38,v4_t8_init38_s3000_success.mp4,True,364,S,1.0,
+v4,3000,8,40,v4_t8_init40_s3000_success.mp4,True,427,S,1.0,
+v4,3000,8,41,v4_t8_init41_s3000_success.mp4,True,436,S,1.0,
+v4,3000,8,42,v4_t8_init42_s3000_success.mp4,True,441,S,1.0,
+v4,3000,8,45,v4_t8_init45_s3000_success.mp4,True,351,S,1.0,drop@313 moka_pot_1; drop@315 moka_pot_1
+v4,4000,0,20,v4_t0_init20_s4000_success.mp4,True,255,S,1.0,
+v4,4000,0,24,v4_t0_init24_s4000_success.mp4,True,248,S,1.0,
+v4,4000,0,29,v4_t0_init29_s4000_success.mp4,True,275,S,1.0,
+v4,4000,0,36,v4_t0_init36_s4000_success.mp4,True,447,S,1.0,
+v4,4000,8,3,v4_t8_init3_s4000_success.mp4,True,453,S,1.0,
+v4,4000,8,8,v4_t8_init8_s4000_success.mp4,True,470,S,1.0,slip@317 moka_pot_1
+v4,4000,8,13,v4_t8_init13_s4000_success.mp4,True,482,S,1.0,slip@119 moka_pot_2
+v4,4000,8,23,v4_t8_init23_s4000_success.mp4,True,510,S,1.0,slip@345 moka_pot_1
+v4,4000,8,36,v4_t8_init36_s4000_success.mp4,True,362,S,1.0,
+v4,4000,8,38,v4_t8_init38_s4000_success.mp4,True,355,S,1.0,
+v4,4000,8,40,v4_t8_init40_s4000_success.mp4,True,391,S,1.0,
+v4,4000,8,41,v4_t8_init41_s4000_success.mp4,True,359,S,1.0,
+v4,5000,0,4,v4_t0_init4_s5000_success.mp4,True,498,S,1.0,slip@219 tomato_sauce_1; slip@284 tomato_sauce_1; slip@399 tomato_sauce_1
+v4,5000,0,16,v4_t0_init16_s5000_success.mp4,True,328,S,1.0,
+v4,5000,0,20,v4_t0_init20_s5000_success.mp4,True,254,S,1.0,
+v4,5000,0,36,v4_t0_init36_s5000_success.mp4,True,458,S,1.0,drop@374 tomato_sauce_1
+v4,5000,0,37,v4_t0_init37_s5000_success.mp4,True,307,S,1.0,slip@211 tomato_sauce_1
+v4,5000,0,38,v4_t0_init38_s5000_success.mp4,True,401,S,1.0,drop@305 tomato_sauce_1
+v4,5000,8,5,v4_t8_init5_s5000_success.mp4,True,384,S,1.0,
+v4,5000,8,8,v4_t8_init8_s5000_success.mp4,True,399,S,1.0,
+v4,5000,8,11,v4_t8_init11_s5000_success.mp4,True,371,S,1.0,
+v4,5000,8,17,v4_t8_init17_s5000_success.mp4,True,390,S,1.0,
+v4,5000,8,22,v4_t8_init22_s5000_success.mp4,True,374,S,1.0,
+v4,5000,8,25,v4_t8_init25_s5000_success.mp4,True,371,S,1.0,
+v4,5000,8,27,v4_t8_init27_s5000_success.mp4,True,361,S,1.0,
+v4,5000,8,30,v4_t8_init30_s5000_success.mp4,True,384,S,1.0,

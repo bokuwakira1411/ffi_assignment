@@ -140,6 +140,7 @@ ARMS = {"official": "improve/outputs/fpo_v2/eval_s{s}/official", "v1": "improve/
         "v2": "improve/outputs/fpo_v2/eval_s{s}/fpo_v2_sel", "v3": "improve/outputs/fpo_v3/eval_s{s}/fpo_v3_sel",
         "v4": "improve/outputs/fpo_v4/eval_s{s}/fpo_v4_sel"}
 LAB = {"official": "official", "v1": "FPO v1 θ3", "v2": "FPO v2 θ4", "v3": "FPO v3 θ4", "v4": "FPO v4 θ4"}
+LAB_SIMPLE = {"official": "SmolVLA gốc", "v1": "FPO v1", "v2": "FPO v2", "v3": "FPO v3", "v4": "FPO v4"}
 
 
 def load_final():
@@ -153,7 +154,8 @@ def load_final():
     return pd.DataFrame(rows)
 
 
-def fig_fpo_final():
+def fig_fpo_final(simple=False):
+    """simple=True: labels and titles for main_revised.tex, no footnote, writes fig_fpo_final_simple.pdf."""
     ep = load_final()
     tr = ep[ep.seed != 1000]
     fg = ep[ep.seed == 1000]
@@ -170,7 +172,8 @@ def fig_fpo_final():
             if not len(s):
                 continue
             xx = gi + (ai - 2) * w
-            bar_ci(a, [xx], [int(s.sum())], [len(s)], C[arm], w, LAB[arm] if gi == 0 else None)
+            lab = (LAB_SIMPLE if simple else LAB)[arm]
+            bar_ci(a, [xx], [int(s.sum())], [len(s)], C[arm], w, lab if gi == 0 else None)
             common = s.index.intersection(ref.index)
             bb, cc = int((s[common] & ~ref[common]).sum()), int((~s[common] & ref[common]).sum())
             p = mcnemar(bb, cc)
@@ -179,10 +182,11 @@ def fig_fpo_final():
                 lo, hi = wilson(int(s.sum()), len(s))
                 a.text(xx, 100 * hi + 1.5, stars(p).replace("*", "∗"), ha="center", va="bottom", fontsize=5.5,
                        rotation=90, color=C["pos"] if bb > cc else C["neg"])
-    a.set_xticks(range(len(groups)), [g for g, _ in groups])
+    a.set_xticks(range(len(groups)), [("8 task\ncòn lại" if simple and g == "quên" else g) for g, _ in groups])
     a.set_ylabel("tỉ lệ thành công (%)")
     a.set_ylim(0, 100)
-    a.set_title("(a) 150 ep / arm / task (3 seed); quên: 160 ep", loc="left", fontsize=7.5)
+    a.set_title("(a) task train và 8 task còn lại" if simple else "(a) 150 ep / arm / task (3 seed); quên: 160 ep",
+                loc="left", fontsize=7.5)
     tasks = (1, 2, 3, 4, 5, 6, 7, 9)
     for ai, arm in enumerate(arms):
         k = [int(fg[(fg.arm == arm) & (fg.task == t)].success.sum()) for t in tasks]
@@ -190,11 +194,15 @@ def fig_fpo_final():
         log[f"forget_per_task|{arm}"] = dict(zip(map(str, tasks), k))
     b.set_xticks(range(8), [f"task {t}" for t in tasks], fontsize=7)
     b.set_ylim(0, 105)
-    b.set_title("(b) quên theo task (20 ep / task, seed 1000; không vẽ CI)", loc="left", fontsize=7.5)
+    b.set_title("(b) từng task không train" if simple else "(b) quên theo task (20 ep / task, seed 1000; không vẽ CI)",
+                loc="left", fontsize=7.5)
     b.set_ylabel("tỉ lệ thành công (%)")
     h, l = a.get_legend_handles_labels()
     fig.legend(h, l, ncol=5, loc="upper center", bbox_to_anchor=(0.5, 1.07), frameon=False, fontsize=7.5)
     fig.tight_layout(w_pad=1.5)
+    if simple:
+        fig.savefig(OUT / "fig_fpo_final_simple.pdf")
+        return
     fig.text(0.01, -0.04, "Sao: McNemar chính xác so với official (cặp cùng seed, task, init); xanh = tốt hơn, đỏ = kém hơn; "
                           "* p<0,05, ** p<0,01, *** p<0,001; không hiệu chỉnh nhiều phép so sánh.", fontsize=6.5)
     fig.savefig(OUT / "fig_fpo_final.pdf")

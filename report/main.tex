@@ -40,7 +40,7 @@
 \newcommand{\figorbox}[2]{\IfFileExists{figures/#1}{\includegraphics[width=#2]{#1}}{\fbox{\parbox[c][2.5cm][c]{#2}{\centering\small thiếu \code{figures/#1}}}}}
 
 \title{\textbf{Fine-tune SmolVLA trên LIBERO-Long bằng học tăng cường}\\[2pt]
-\large Reproduce $\cdot$ Analyse $\cdot$ Improve}
+\large Study $\cdot$ Reproduce $\cdot$ Analyse $\cdot$ Improve}
 \author{\reviewinline{Tên, lớp, email}}
 \date{\reviewinline{Ngày nộp}}
 
@@ -66,11 +66,12 @@ fine-tune bằng RL on-policy. Đối với các mục:
   sm/.style={draw, rounded corners=2pt, fill=white, minimum height=1.0cm, text width=2.25cm, align=center, inner sep=2pt},
   lb/.style={font=\tiny, align=center, text=black!75, text width=2.1cm},
   ar/.style={->, thick}]
-% row 1: three phases
-\node[ph, fill=cR] (R) at (1.0,0) {\textbf{1. Reproduce}\\\code{smolvla_libero}, LIBERO-10 / Spatial $\Rightarrow$ NAS = 10};
-\node[ph, fill=cA] (A) at (5.3,0) {\textbf{2. Analyse}\\điểm mạnh, giới hạn, nhãn thất bại $\Rightarrow$ task 0, 8};
-\node[ph, fill=cI] (I) at (9.65,0) {\textbf{3. Improve (RL)}\\eval theo cặp (McNemar), kiểm tra quên 8 task};
-\draw[ar] (R) -- (A); \draw[ar] (A) -- (I);
+% row 1: four phases
+\node[ph, fill=cS] (S) at (0,0) {\textbf{1. Study}};
+\node[ph, fill=cR] (R) at (4.3,0) {\textbf{2. Reproduce}\\\code{smolvla_libero}, LIBERO-10 / Spatial $\Rightarrow$ NAS = 10};
+\node[ph, fill=cA] (A) at (8.6,0) {\textbf{3. Analyse}\\điểm mạnh, giới hạn, nhãn thất bại $\Rightarrow$ task 0, 8};
+\node[ph, fill=cI] (I) at (12.9,0) {\textbf{4. Improve (RL)}\\eval theo cặp (McNemar), kiểm tra quên 8 task};
+\draw[ar] (S) -- (R); \draw[ar] (R) -- (A); \draw[ar] (A) -- (I);
 % row 2: improve chain
 \foreach \n/\x/\t/\f in {r1/0.2/{\textbf{Sàng lọc}\\nhãn advantage, AWR, FPO v1}/gray!8,
                         v2/3.35/{\textbf{FPO v2}\\fp32, batch 128, neo BC}/white,
@@ -140,7 +141,7 @@ F\_spatial & LIBERO-Spatial & 1 & 3 seed $\times$ 10 init & 237/300 = 79{,}0\% (
 F\_spatial\_\{nas10, nas50, abs\} & LIBERO-Spatial & 10 / 50 / 1$^\dagger$ & 1 seed $\times$ 10 init & 82\% / 58\% / 2\% \\
 \bottomrule
 \end{tabular}
-\caption{Kết quả tái lập. $^\dagger$\code{abs}: NAS=1 với \code{control_mode=absolute}. (Nguồn: \code{eval_info.json} của từng job trong \code{results/runs/}; \code{docs/reproduce.md} \S4).}
+\caption{Kết quả tái lập. $^\dagger$\code{abs}: NAS=1 với \code{control_mode=absolute}.}
 \label{tab:repro}
 \end{table}
 
@@ -151,12 +152,11 @@ F\_spatial\_\{nas10, nas50, abs\} & LIBERO-Spatial & 10 / 50 / 1$^\dagger$ & 1 s
 % \label{fig:nas}
 % \end{figure}
 
-\paragraph{So với bài gốc.} Bài SmolVLA báo LIBERO-Long 71\% và Spatial 90\%
-\reviewinline{đối chiếu với PDF bài gốc}. Đọc theo nghĩa ``dự đoán lại sau mỗi hành động'' (NAS=1), chúng tôi thấp hơn
-(52{,}7\% và 79{,}0\%); với NAS=10 thì đạt 72{,}8\% trên LIBERO-10. Giá trị 10 lấy từ tài liệu LeRobot cho Pi0.5, không
-phải khuyến nghị cho SmolVLA, nên từ đây mọi phần dùng NAS=10. Hai lần chạy cùng cấu hình trùng 99/100 episode. Khác
-biệt chính: không train lại (dùng checkpoint công bố); 2 suite thay vì 4; phải thêm \code{--rename_map} cho camera;
-\code{smolvla_base} không chạy được trên LIBERO (action 6 chiều). Chi tiết: \code{differences.md}.
+\paragraph{So với bài gốc.} Bài SmolVLA báo LIBERO-Long 71\% và Spatial 90\%. Inference với NAS=1, tỷ lệ thành công thu được
+(52{,}7\% và 79{,}0\%); với NAS=10 thì đạt 72{,}8\% trên LIBERO-10. Để so sánh bản trước và sau cải thiện dùng RL, giá trị tốt nhất NAS=10 được sử dụng (để chắc chắn việc cải thiện mô hình là đến từ phần thêm RL).
+
+\textbf{Khác biệt chính trong phần tái tạo thí nghiệm}: không train lại, dùng checkpoint công bố bởi nhóm tác giả \code{lerobot/smolvla_libero}; 2 suite thay vì 4; phải thêm \code{--rename_map} cho camera;
+\code{smolvla_base} không chạy được trên LIBERO (action 6 chiều). 
 
 % ===================================================================== 3 ANALYSE
 \section{Analyse}\label{sec:analyse}
@@ -165,29 +165,33 @@ biệt chính: không train lại (dùng checkpoint công bố); 2 suite thay v�
 \centering\scriptsize
 \begin{tabularx}{\linewidth}{@{}p{0.33\linewidth} X@{}}
 \toprule
-\textbf{Điểm mạnh} & \textbf{Bằng chứng} (D10 = D\_nas10, 150 ep/task) \\
+\textbf{Điểm mạnh} & \textbf{Bằng chứng} (nguồn trong ngoặc vuông, xem chú thích) \\
 \midrule
-S1 Task một bước / vật khớp nối làm tốt & task 3: 146/150, task 2: 138, task 1: 136, task 5: 135 \\
-S2 Hiểu đúng câu lệnh & nhầm vật/đích (F5) chỉ 1/28 thất bại có video ở D10, 1/142 ở B\_main \\
-S3 Chunk + quan sát lại sửa được sai & NAS=10 cứu 10/16 lần gắp hỏng của NAS=50; 14/170 episode thành công có trượt vật rồi gắp lại \\
+S1 Task một bước / vật khớp nối làm tốt & [D10] tỷ lệ thành công task 3: 146/150, task 2: 138/150, task 1: 136/150, task 5: 135/150 \\
+S2 Hiểu đúng câu lệnh & [D10, mắt] nhầm vật/đích chỉ ở 1/28 episode thất bại có video \\
+S3 Chunk + quan sát lại sửa được sai & [FPO v2 eval] 22/248 episode thành công có trượt vật rồi gắp lại \\
 S4 Nhỏ, nhanh & 450M tham số, 96{,}5\,ms/chunk; train, eval, RL đều chạy trên 1 GPU 16\,GB \\
 \midrule
 \textbf{Giới hạn} & \\
 \midrule
-L1 Task dài: xong bước con đầu rồi dừng & hai task hai vật yếu nhất: task 0 60/150, task 8 71/150; task 8: 19/27 thất bại xong đúng một ấm \\
-L2 Thao tác tinh kém (7 loại, Bảng~\ref{tab:l2}) & 142/212 thất bại có $\ge$1 lỗi thao tác tự động, so với 5/248 thành công; gắp hỏng 111/212 so với 0/248 \\
-L3 Nhạy với cách thực thi & NAS 1/10/50: 54{,}6/73{,}6/47{,}8\%; \code{absolute} thay \code{relative}: 2/100 \\
-L4 Kết quả do cảnh quyết định & 500 cảnh $\times$ 3 seed: 289 thắng cả 3, 69 thua cả 3, chỉ 142 lẫn lộn \\
-L5 Khó fine-tune bằng recipe mặc định & expert nạp bf16: lr $10^{-5}$, 6000 bước chỉ đổi 5{,}5\% phần tử expert (Mục~\ref{sec:screen}) \\
+L1 Với task như libero-long, thường xong bước 1 và dừng lại & [D10] hai task hai vật yếu nhất: task 0 60/150, task 8 71/150. [FPO v2 eval] Task 8: 75/90 thất bại mắc lỗi này, chỉ có 1 ấm trên bếp \\
+L2 Kém trên các thao tác có độ phức tạp nhẹ (7 loại, Bảng~\ref{tab:l2}) & [FPO v2 eval] 142/212 thất bại có $\ge$1 lỗi thao tác tự động, so với 5/248 thành công; gắp hỏng 111/212 so với 0/248 \\
+L3 Nhạy với cách thực thi & [Reproduce, Bảng~\ref{tab:repro}] NAS 1/10/50: 54{,}6/73{,}6/47{,}8\%; \code{absolute} thay \code{relative}: 2/100 \\
 \bottomrule
 \end{tabularx}
-\caption{Điểm mạnh và giới hạn (nguồn: \code{docs/analyse.md}, \code{docs/failure_overview.md}; nhãn bằng mắt F0–F6 do
-một người gán, nhãn tự động A–G theo ngưỡng, xem \code{improve/src/failure_labels.py}).}
+\caption{Điểm mạnh và giới hạn. Cả hai nguồn đều là SmolVLA gốc (\code{lerobot/smolvla_libero}, chưa fine-tune), NAS=10, LIBERO-10.
+\textbf{[D10]} D\_nas10: \code{lerobot-eval}, expert bf16, 10 task $\times$ 50 init $\times$ seed 1000/1001/1002 = 150 episode/task;
+chỉ lưu thành công/thất bại và video. \textbf{[D10, mắt]} 28 thất bại có video của D10 (seed 1000), nhãn F0–F6 gán bằng mắt (một người).
+\textbf{[FPO v2 eval]} arm baseline trong đợt eval của FPO v2 (\code{improve/scripts/phase3_eval.py}, expert fp32): task 0, 8
+$\times$ 50 init $\times$ seed 3000/4000/5000, 8 task khác $\times$ 20 init $\times$ seed 1000; 460 episode = 212 thất bại + 248 thành công.
+Đợt này lưu log mô phỏng từng bước (vị trí vật, predicate BDDL), nên dùng để gán nhãn lỗi tự động (\code{improve/src/failure_labels.py});
+D10 không có log này. Mẫu số ở các ô [FPO v2 eval] là số thất bại (212, hoặc 90 của task 8) hoặc số thành công (248).
+Chi tiết: \code{docs/failure_overview.md}, \code{docs/analyse.md}.}
 \label{tab:analyse}
 \end{table}
 
 \paragraph{L2 chi tiết: SmolVLA thất bại vì những lỗi thao tác nào?}
-Bảng~\ref{tab:l2} tách L2 thành 7 loại lỗi. Dữ liệu tự động là arm \code{official} của eval FPO v2 (NAS=10, expert fp32):
+Bảng~\ref{tab:l2} tách L2 thành 7 loại lỗi. Dữ liệu tự động là nguồn [FPO v2 eval] (chú thích Bảng~\ref{tab:analyse}):
 task 0, 8 $\times$ 50 init $\times$ 3 seed, cộng 8 task khác $\times$ 20 init. Tổng cộng 460 episode, trong đó 212 thất
 bại. Nhãn được tính từ log mô phỏng (\code{improve/src/failure_labels.py}, \code{reward_r2.py}). Một episode có thể mang
 nhiều nhãn. Nhãn tự động không đo hướng của vật, nên lỗi ``kẹp sai tư thế'' chỉ có trong nhãn bằng mắt (D10, 28 thất bại).
@@ -206,7 +210,7 @@ L2c Chạm, xô lệch, cầm vật ngoài goal & nhãn C: cầm vật không th
 task 0: 33/89, chủ yếu hộp nước cam (30); 11 episode có \emph{cầm} vật ngoài goal, 22 chỉ chạm rồi làm dịch vật. D10: F5 1/28 (nước cam vào giỏ) \\
 L2d Làm rơi vật đang mang & sự kiện drop: vật đã nhấc rơi $>$5\,cm trong 30 bước & 13/212 / 3/248 & task 0: 6/89; task 8: 3/90; 8 task khác: 4/33 \\
 L2e Làm đổ, kẹp sai tư thế & chỉ có nhãn bằng mắt F2 & không đo được &
-\textbf{D10: F2 9/28}, nhóm lớn nhất: ấm thứ hai của task 8 bị kẹp nằm ngang/nghiêng (3), task 0: lon bị kẹp nghiêng/đổ (2), hộp nước cam rơi (1). AUTO: 15/90 thất bại task 8 nhấc được cả hai ấm nhưng ấm 2 không lên bếp (chưa kiểm bằng video) \\
+\textbf{D10: F2 9/28}, nhóm lớn nhất: ấm thứ hai của task 8 bị kẹp nằm ngang/nghiêng (3), task 0: lon bị kẹp nghiêng/đổ (2), hộp nước cam rơi (1). Nhãn tự động: 15/90 thất bại task 8 nhấc được cả hai ấm nhưng ấm 2 không lên bếp (chưa kiểm bằng video) \\
 L2f Đặt gần đích, env không tính & nhãn G: vật nằm yên cách tâm đích $<$10\,cm mà predicate vẫn sai & 13/212 / 0/248 &
 task 4, 6 (đặt cốc/pudding lên đĩa) 8/18; task 8 4/90. Lệch 1{,}2–8{,}6\,cm, trung vị 4{,}3\,cm (\code{On} cần $<$3\,cm). D10: F4 5/28 \\
 L2g Làm mất tiến độ & nhãn D: predicate goal đúng rồi sai lại & 8/212 / 1/248 & task 8: ấm đã lên bếp bị kéo ra (5/90); task 6: 3/11 \\
@@ -271,9 +275,10 @@ thành thất bại ở cuối. Các trạng thái như ``đã đặt xong ấm 
 kẹp'' hiếm khi có trong demo.
 \item RL học trên chính phân phối trạng thái mà policy gặp. Nó so sánh các cách xử lý khác nhau từ cùng một cảnh và
 đẩy policy về phía cách đi tới được mốc tiếp theo.
-\item Giới hạn L4 (kết quả do cảnh quyết định) cũng ảnh hưởng tới thiết kế: nếu cả 8 rollout của một cảnh đều thua
-hoặc đều thắng thì advantage theo nhóm bằng 0. Vì vậy 16 init train mỗi task được chọn trong các cảnh cho kết quả lẫn
-lộn ở eval gốc (\code{results/round2/configs/round1.yaml} dòng 15--22; tiêu chí ở \code{docs/WORKLOG.md}, mục D6).
+\item Kết quả phần lớn do cảnh quyết định (D10: 289/500 cảnh thắng cả 3 seed, 69 thua cả 3, \code{docs/analyse.md}).
+Nếu cả 8 rollout của một cảnh đều thua hoặc đều thắng thì advantage theo nhóm bằng 0. Vì vậy 16 init train mỗi task được
+chọn trong các cảnh cho kết quả lẫn lộn ở eval gốc (\code{results/round2/configs/round1.yaml} dòng 15--22; tiêu chí ở
+\code{docs/WORKLOG.md}, mục D6).
 \end{itemize}
 
 \paragraph{Giả thuyết.}
@@ -328,16 +333,13 @@ J(\theta)=\mathbb E\big[\,w\,\min\big(\hat r\hat A,\ \operatorname{clip}(\hat r,
 -\lambda_{\text{bc}}\,\mathcal L_\theta(\text{rollout thành công})-\lambda_{\text{demo}}\,\mathcal L_\theta(\text{demo LIBERO-10}).
 \label{eq:fpo}
 \end{equation}
-Cơ sở: theo bài FPO, $-\mathcal L_\theta$ cộng một hằng số là một ELBO của $\log\pi_\theta(a\mid o)$, nên chênh lệch
+So với FPO gốc, bản cài đặt này thêm trọng số $w$ và hai số hạng neo. Cơ sở: theo bài FPO, $-\mathcal L_\theta$ cộng một hằng số là một ELBO của $\log\pi_\theta(a\mid o)$, nên chênh lệch
 loss xấp xỉ chênh lệch log-likelihood. Tại $\theta=\thold$ ta có $\hat r=1$ và
 $\nabla_\theta(\hat r\hat A)=-c\,\hat A\,\nabla_\theta\Lhat_\theta$: chunk có $\hat A>0$ được kéo về phía loss nhỏ hơn
 (dễ được sinh ra hơn), chunk có $\hat A<0$ bị đẩy ra.
 Phần của bản cài đặt này: hệ số $c=1/\overline{\Lhat}_{\text{old}}$ (tự chọn, không có trong bài gốc); $\epsilon=0{,}2$;
 mỗi quyết định lưu 2 cặp $(\tau,\varepsilon)$, mỗi bước cập nhật dùng 1 cặp ngẫu nhiên; $w$ là trọng số theo segment (v4); hai số hạng neo BC và demo với $\lambda=5$ để hạn chế quên (v2, v3).
 Cấu hình đầy đủ: \code{results/round2/configs/fpo_v4.yaml}.
-
-\noindent\review{Kiểm tra định nghĩa tỉ lệ FPO gốc (có hệ số scale $c$ hay không, loss là mean hay sum theo chiều action; xem
-\code{results/round2/fpo_v3/REVIEW_CHECKLIST.md} mục 1).}
 
 \paragraph{Advantage không cần critic.}
 Mỗi init được chạy 8 rollout (một nhóm). Mốc $k$ là bước mà predicate goal thứ $k$ lần đầu đúng; segment $k$ là đoạn
@@ -382,8 +384,7 @@ việc không có tiến độ $\Phi$ và timeout. Một lỗ hổng đã biết
 % ---------------------------------------------------------------------
 \subsection{Training environment}\label{sec:env}
 \begin{itemize}
-\item \textbf{Mô phỏng:} LIBERO-10 (MuJoCo), cùng cấu hình như Reproduce:
-\code{control_mode=relative},
+\item \textbf{Mô phỏng:} LIBERO-10 (MuJoCo), cùng cấu hình như Reproduce: \code{control_mode=relative},
 NAS=10, tối đa 520 bước. Quan sát gồm 2 camera $256\times256$, state 8D và câu lệnh. Mỗi quyết định là một chunk
 $50\times7$, trong đó 10 hành động đầu được thực thi.
 \item \textbf{Task train:} task 0 và task 8, mỗi task 16 init (danh sách trong \code{fpo_v4.yaml}). 34 init/task còn
@@ -399,9 +400,9 @@ khi clip\_frac $>0{,}2$. Tổng 4 vòng, khoảng 3 giờ mỗi phiên bản tr�
 \begin{itemize}
 \item \textbf{Đóng băng:} vision encoder và toàn bộ VLM SmolVLM2 (\code{freeze_vision_encoder}, \code{train_expert_only},
 \code{improve/scripts/fpo_train.py}).
-\item \textbf{Được train:} action expert (16 lớp) cùng 5 lớp chiếu \code{state_proj}, \code{action_in_proj},
-\code{action_out_proj}, \code{action_time_mlp_in}, \code{action_time_mlp_out}: 155/500 tensor, 99{,}9M trên 450M tham số
-(\code{train_info.json}). Trọng số chính giữ ở fp32 (từ v2).
+\item \textbf{Được train:} action expert (16 lớp) và 5 lớp chiếu (\code{state_proj}, \code{action_in_proj},
+\code{action_out_proj}, \code{action_time_mlp_in}, \code{action_time_mlp_out}). Tổng cộng 155/500 tensor, 99{,}9M
+trên 450M tham số (\code{train_info.json}). Trọng số chính giữ ở fp32 (từ v2).
 \end{itemize}
 Có ba lý do. (1) Hai giới hạn cần sửa nằm ở \emph{cách hành động}, không nằm ở việc hiểu câu lệnh (S2), và chính
 action expert sinh ra chunk. (2) Đây cũng là phần mà recipe fine-tune mặc định của SmolVLA train
@@ -506,9 +507,9 @@ v1 tính từ \code{improve/outputs/fpo_v2/eval_s*/fpo_v1_it3}.}
 Trên init held-out, v4 chưa khác official có ý nghĩa (91 vs 84/204, $p=0{,}32$; task 8 held-out 53 vs 45/102, $p=0{,}13$).
 
 \subsection{Kiểm tra giả thuyết H1--H4}\label{sec:verify}
-Kiểu lỗi được so theo cặp giữa official và v4 trên cùng 300 (seed, task, init) (script \code{improve_error_shift.py} trong \code{docs/failures/tools/};
-dữ liệu \code{results/round2/fpo_v4/seed*/episodes.csv}). ``Xong một nửa'' nghĩa là ở cuối episode đúng một trong hai vật
-goal đã ở đích.
+Kiểu lỗi được so theo cặp giữa official và v4 trên cùng 300 (seed, task, init) (script \code{improve_error_shift.py} trong
+\code{docs/failures/tools/}; dữ liệu \code{results/round2/fpo_v4/seed*/episodes.csv}). ``Xong một nửa'' nghĩa là ở cuối
+episode đúng một trong hai vật goal đã ở đích.
 
 \begin{table}[H]
 \centering\scriptsize

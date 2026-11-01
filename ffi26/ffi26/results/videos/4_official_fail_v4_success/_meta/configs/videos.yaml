@@ -1,0 +1,69 @@
+# Video replay (scripts/phase3_eval_video.py), 02/11/2026: every episode of the final eval (tasks 0, 8 x 50 init x
+# seeds 3000/4000/5000) where official FAILED and FPO v4 theta4 SUCCEEDED: 42 episodes (task 0: 12, task 8: 30).
+# Selected from the raw ep*.meta.json of outputs/fpo_v2/eval_s*/official and outputs/fpo_v4/eval_s*/fpo_v4_sel.
+# Settings copied from results/videos/3_v4_paired/_meta/configs/videos_v4_paired.yaml (NAS 10, batch 8, expert fp32).
+n_action_steps: 10
+batch_size: 8
+n_episodes: 50
+output_dir: ~/ffi26/results/videos/4_official_fail_v4_success/_meta/replay
+arms:
+  - name: official
+    label: official (lerobot/smolvla_libero)
+    path: lerobot/smolvla_libero
+    expert_fp32: true
+  - name: v4
+    label: FPO v4 theta4
+    path: /home/student/ffi26/improve/outputs/fpo_v4/iter3/train/pretrained_model
+    expert_fp32: true
+originals:
+  official:
+    3000: ~/ffi26/improve/outputs/fpo_v2/eval_s3000/official/task{task}
+    4000: ~/ffi26/improve/outputs/fpo_v2/eval_s4000/official/task{task}
+    5000: ~/ffi26/improve/outputs/fpo_v2/eval_s5000/official/task{task}
+  v4:
+    3000: ~/ffi26/improve/outputs/fpo_v4/eval_s3000/fpo_v4_sel/task{task}
+    4000: ~/ffi26/improve/outputs/fpo_v4/eval_s4000/fpo_v4_sel/task{task}
+    5000: ~/ffi26/improve/outputs/fpo_v4/eval_s5000/fpo_v4_sel/task{task}
+episodes:
+  - {seed: 3000, task: 0, init: 4, cat: offF_v4S}
+  - {seed: 5000, task: 0, init: 4, cat: offF_v4S}
+  - {seed: 5000, task: 0, init: 16, cat: offF_v4S}
+  - {seed: 3000, task: 0, init: 17, cat: offF_v4S}
+  - {seed: 4000, task: 0, init: 20, cat: offF_v4S}
+  - {seed: 5000, task: 0, init: 20, cat: offF_v4S}
+  - {seed: 4000, task: 0, init: 24, cat: offF_v4S}
+  - {seed: 4000, task: 0, init: 29, cat: offF_v4S}
+  - {seed: 4000, task: 0, init: 36, cat: offF_v4S}
+  - {seed: 5000, task: 0, init: 36, cat: offF_v4S}
+  - {seed: 5000, task: 0, init: 37, cat: offF_v4S}
+  - {seed: 5000, task: 0, init: 38, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 0, cat: offF_v4S}
+  - {seed: 4000, task: 8, init: 3, cat: offF_v4S}
+  - {seed: 5000, task: 8, init: 5, cat: offF_v4S}
+  - {seed: 4000, task: 8, init: 8, cat: offF_v4S}
+  - {seed: 5000, task: 8, init: 8, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 9, cat: offF_v4S}
+  - {seed: 5000, task: 8, init: 11, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 12, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 13, cat: offF_v4S}
+  - {seed: 4000, task: 8, init: 13, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 14, cat: offF_v4S}
+  - {seed: 5000, task: 8, init: 17, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 22, cat: offF_v4S}
+  - {seed: 5000, task: 8, init: 22, cat: offF_v4S}
+  - {seed: 4000, task: 8, init: 23, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 24, cat: offF_v4S}
+  - {seed: 5000, task: 8, init: 25, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 26, cat: offF_v4S}
+  - {seed: 5000, task: 8, init: 27, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 30, cat: offF_v4S}
+  - {seed: 5000, task: 8, init: 30, cat: offF_v4S}
+  - {seed: 4000, task: 8, init: 36, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 38, cat: offF_v4S}
+  - {seed: 4000, task: 8, init: 38, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 40, cat: offF_v4S}
+  - {seed: 4000, task: 8, init: 40, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 41, cat: offF_v4S}
+  - {seed: 4000, task: 8, init: 41, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 42, cat: offF_v4S}
+  - {seed: 3000, task: 8, init: 45, cat: offF_v4S}
