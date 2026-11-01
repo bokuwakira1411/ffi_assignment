@@ -90,7 +90,7 @@ Dung lượng tính bằng `du -b`, đơn vị GiB (1024³ byte). **Chưa xoá f
 | Đường dẫn | Dung lượng | Lý do |
 |---|---|---|
 | `improve/scripts/__pycache__`, `improve/src/__pycache__` | < 1 MB | tự sinh lại |
-| `docs/huong_dan_doc_ket_qua.md` | 8 KB | gitignore, đã cũ (nói "FPO đang eval"); `readme.md` và `demo/README.md` thay thế |
+| `docs/huong_dan_doc_ket_qua.md` | 8 KB | gitignore, đã cũ (nói "FPO đang eval"); `readme.md` và `demo/readme_DEMO.md` thay thế |
 | `results/demo_tasks/` | 1,1 MB (đang track) | chạy với checkpoint cũ `HuggingFaceVLA/smolvla_libero`, không dùng trong kết quả; vẫn còn trong git history (`git rm`) |
 
 ### Nhóm 2: archive vào A3 rồi mới xoá bản gốc
