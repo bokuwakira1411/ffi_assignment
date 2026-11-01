@@ -2,3 +2,11 @@
 2026-11-01 11:03:32 step0 gpu exit 0
 2026-11-01 11:03:32 probe started
 2026-11-01 11:03:32 dsrl started
+2026-11-01 13:16:35 dsrl restart (manual, RAM free 51 GB)
+2026-11-01 13:39:40 dsrl exit 0
+2026-11-01 13:47:14 ctrl0 started
+2026-11-01 13:52:54 ctrl0 exit 0
+2026-11-01 14:37:27 probe restart (manual)
+2026-11-01 14:52:21 probe exit 0
+2026-11-01 14:52:42 probe restart 2 after CUDA OOM (GPU taken by another process, now free)
+2026-11-01 14:53:22 probe2 exit 1

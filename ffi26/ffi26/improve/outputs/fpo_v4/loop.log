@@ -1,0 +1,624 @@
+[iter0] v2 and v3 collection config identical -> reuse outputs/fpo_v2/iter0
+=== [train0] Sun Nov  1 14:56:23 +07 2026 python scripts/fpo_train_v3.py --config /home/student/ffi26/results/round2/configs/fpo_v4.yaml --policy lerobot/smolvla_libero --data outputs/fpo_v4/iter0 --out outputs/fpo_v4/iter0/train
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[fpo_v3] adv_weighting segment, adv_center none, norm {0: {'weighted_mean': -0.0007763753763951086, 'weighted_std': 0.3311019191612637, 'center': 'none'}, 8: {'weighted_mean': -0.0006237982732192094, 'weighted_std': 0.2729323860487438, 'center': 'none'}}, signs {0: {'n': 5054, 'n_success_dec': 1674, 'succ_raw_neg_pct': 29.45041816009558, 'succ_hat_neg_pct': 29.45041816009558, 'fail_raw_pos_pct': 19.881656804733726, 'fail_hat_pos_pct': 19.881656804733726, 'hat_mean_decision': -0.2862990200519562, 'hat_mean_rollout': -0.13540247082710266, 'hat_mean_segment': -0.0023448215797543526, 'hat_mean_weighted': -0.0023448251446762528, 'w_sum_success_rollouts': 110.0, 'w_sum_fail_rollouts': 98.0, 'n_success_rollouts': 55, 'n_fail_rollouts': 65}, 8: {'n': 6191, 'n_success_dec': 1719, 'succ_raw_neg_pct': 16.57940663176265, 'succ_hat_neg_pct': 16.57940663176265, 'fail_raw_pos_pct': 21.511627906976745, 'fail_hat_pos_pct': 21.511627906976745, 'hat_mean_decision': -0.17795990407466888, 'hat_mean_rollout': -0.10702086240053177, 'hat_mean_segment': -0.0022855408024042845, 'hat_mean_weighted': -0.0022855398873798637, 'w_sum_success_rollouts': 84.0, 'w_sum_fail_rollouts': 141.0, 'n_success_rollouts': 42, 'n_fail_rollouts': 86}}
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 8084.03it/s]
+Reducing the number of VLM layers to 16 ...
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7865.71it/s]
+Reducing the number of VLM layers to 16 ...
+[fpo_v3] decisions {0: 5054, 8: 6191}, success decisions {0: 1674, 8: 1719}, adv mean/std per task {0: (-0.0947941467165947, 0.35466670989990234), 8: (-0.04857102409005165, 0.26635387539863586)}; B 128 (64/task, micro 32), pairs/step 1, steps/epoch 87, max epochs 3, warmup 5; demo 2000 samples, lambda_demo 5.0 x 32; old-loss pass 614s, mean l_old 0.04064, c 24.606; fp32 restored 26; KL start {'kl_proxy': 0.0, 'absmean_dl_theta0': 0.0}; demo-probe untrained start 0.05730
+/home/student/Lan_K68AI/temp/ffi26/ffi26/improve/scripts/fpo_train_v3.py:244: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  lp += float(loss)
+[fpo_v3] step 10 ep 0.11 loss -0.0825 bc 0.0451 demo 0.0846 ratio [0.349,1.223] std_logr 0.1260 clip_frac(last10) 0.033 gn 11.33 KL 1.06e-02 763s
+[fpo_v3] step 20 ep 0.23 loss +0.1551 bc 0.0574 demo 0.0360 ratio [0.255,1.816] std_logr 0.1754 clip_frac(last10) 0.066 gn 23.50 KL 9.68e-03 833s
+[fpo_v3] step 30 ep 0.34 loss +0.0482 bc 0.0353 demo 0.0821 ratio [0.007,6.435] std_logr 0.5261 clip_frac(last10) 0.070 gn 21.33 KL 1.47e-02 902s
+[fpo_v3] step 40 ep 0.46 loss +0.0051 bc 0.0428 demo 0.0499 ratio [0.187,1.252] std_logr 0.1998 clip_frac(last10) 0.124 gn 22.80 KL 2.94e-02 972s
+[fpo_v3] step 50 ep 0.57 loss +0.0191 bc 0.0236 demo 0.0443 ratio [0.432,2.183] std_logr 0.1924 clip_frac(last10) 0.170 gn 20.25 KL 4.98e-02 1042s
+[fpo_v3] step 60 ep 0.69 loss +0.2301 bc 0.0531 demo 0.0682 ratio [0.183,2.700] std_logr 0.2648 clip_frac(last10) 0.154 gn 30.17 KL 4.45e-02 1112s
+[fpo_v3] step 70 ep 0.80 loss -0.0596 bc 0.0734 demo 0.1218 ratio [0.063,1.443] std_logr 0.2875 clip_frac(last10) 0.158 gn 12.41 KL 5.81e-02 1182s
+[fpo_v3] step 80 ep 0.92 loss -0.0411 bc 0.0234 demo 0.0651 ratio [0.284,1.929] std_logr 0.2359 clip_frac(last10) 0.178 gn 14.28 KL 8.09e-02 1251s
+[fpo_v3] step 90 ep 1.03 loss +0.1005 bc 0.0209 demo 0.0518 ratio [0.007,2.081] std_logr 0.5512 clip_frac(last10) 0.171 gn 10.46 KL 8.39e-02 1321s
+[fpo_v3] early stop at step 95: clip_frac over last 10 steps 0.202
+[done] {"policy": "lerobot/smolvla_libero", "data": "outputs/fpo_v4/iter0", "decisions": {"0": 5054, "8": 6191}, "success_decisions": {"0": 1674, "8": 1719}, "adv_mean_std_per_task": {"0": [-0.0947941467165947, 0.35466670989990234], "8": [-0.04857102409005165, 0.26635387539863586]}, "adv_weighting": "segment", "adv_center": "none", "adv_norm_per_task": {"0": {"weighted_mean": -0.0007763753763951086, "weighted_std": 0.3311019191612637, "center": "none"}, "8": {"weighted_mean": -0.0006237982732192094, "weighted_std": 0.2729323860487438, "center": "none"}}, "adv_signs_per_task": {"0": {"n": 5054, "n_success_dec": 1674, "succ_raw_neg_pct": 29.45041816009558, "succ_hat_neg_pct": 29.45041816009558, "fail_raw_pos_pct": 19.881656804733726, "fail_hat_pos_pct": 19.881656804733726, "hat_mean_decision": -0.2862990200519562, "hat_mean_rollout": -0.13540247082710266, "hat_mean_segment": -0.0023448215797543526, "hat_mean_weighted": -0.0023448251446762528, "w_sum_success_rollouts": 110.0, "w_sum_fail_rollouts": 98.0, "n_success_rollouts": 55, "n_fail_rollouts": 65}, "8": {"n": 6191, "n_success_dec": 1719, "succ_raw_neg_pct": 16.57940663176265, "succ_hat_neg_pct": 16.57940663176265, "fail_raw_pos_pct": 21.511627906976745, "fail_hat_pos_pct": 21.511627906976745, "hat_mean_decision": -0.17795990407466888, "hat_mean_rollout": -0.10702086240053177, "hat_mean_segment": -0.0022855408024042845, "hat_mean_weighted": -0.0022855398873798637, "w_sum_success_rollouts": 84.0, "w_sum_fail_rollouts": 141.0, "n_success_rollouts": 42, "n_fail_rollouts": 86}}, "clip_frac_w_mean": 0.10419327561792571, "batch_size": 128, "micro_batch": 32, "pairs_per_step": 1, "steps": 95, "steps_per_epoch": 87, "epochs_used": 1.0919540229885059, "stop_reason": "early_stop", "warmup_steps": 5, "ratio_scale_used": 24.605649477221927, "mean_l_old": 0.040641073137521744, "kl_start": {"kl_proxy": 0.0, "absmean_dl_theta0": 0.0}, "kl_end": {"kl_proxy": 0.09756391907710807, "absmean_dl_theta0": 0.008140579728205921}, "demo_probe_untrained_start": 0.057304360903799534, "demo_probe_untrained_end": 0.057860579807311296, "clip_frac_mean": 0.1305921052631579, "clip_frac_last10": 0.2015625, "step_s_mean_after_first": 6.280803680419922, "fp32_trainable_restored": 26, "seconds_total": 1377.1045262813568, "seconds_old_loss": 613.6101899147034, "trainable_params": 99880992, "torch_max_mem_allocated_gb": 11.44532224, "collect_success_per_task": {"0": "55/128", "8": "42/128"}, "collect_success": "97/256"}
+=== [collect1] Sun Nov  1 15:19:25 +07 2026 python scripts/fpo_collect.py --config /home/student/ffi26/results/round2/configs/fpo_v4.yaml --iter 1 --policy /home/student/ffi26/improve/outputs/fpo_v4/iter0/train/pretrained_model --out outputs/fpo_v4/iter1
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 5986.09it/s]
+Reducing the number of VLM layers to 16 ...
+Loading weights from local directory
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[group 0] task 0 init 1 succ=8/8 spread=0.033 rejected=False decisions=216 roll 19s save 0s
+[group 1] task 0 init 4 succ=7/8 spread=0.804 rejected=False decisions=343 roll 44s save 0s
+[group 2] task 0 init 6 succ=0/8 spread=0.087 rejected=True decisions=416 roll 43s save 0s
+[group 3] task 0 init 7 succ=0/8 spread=0.166 rejected=False decisions=416 roll 43s save 0s
+[group 4] task 0 init 9 succ=2/8 spread=1.181 rejected=False decisions=362 roll 43s save 0s
+[group 5] task 0 init 16 succ=5/8 spread=1.315 rejected=False decisions=316 roll 45s save 0s
+[group 6] task 0 init 19 succ=7/8 spread=0.930 rejected=False decisions=266 roll 42s save 0s
+[group 7] task 0 init 21 succ=3/8 spread=1.056 rejected=False decisions=361 roll 45s save 0s
+[group 8] task 0 init 22 succ=4/8 spread=1.050 rejected=False decisions=317 roll 45s save 0s
+[group 9] task 0 init 28 succ=3/8 spread=0.919 rejected=False decisions=358 roll 44s save 0s
+[group 10] task 0 init 31 succ=4/8 spread=0.992 rejected=False decisions=337 roll 43s save 0s
+[group 11] task 0 init 34 succ=7/8 spread=1.057 rejected=False decisions=240 roll 41s save 0s
+[group 12] task 0 init 37 succ=3/8 spread=1.047 rejected=False decisions=338 roll 44s save 0s
+[group 13] task 0 init 38 succ=1/8 spread=0.750 rejected=False decisions=404 roll 45s save 0s
+[group 14] task 0 init 41 succ=0/8 spread=0.374 rejected=False decisions=416 roll 45s save 0s
+[group 15] task 0 init 48 succ=0/8 spread=0.155 rejected=False decisions=416 roll 44s save 0s
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[group 16] task 8 init 26 succ=4/8 spread=0.773 rejected=False decisions=378 roll 42s save 0s
+[group 17] task 8 init 27 succ=8/8 spread=0.144 rejected=False decisions=314 roll 36s save 0s
+[group 18] task 8 init 33 succ=6/8 spread=0.701 rejected=False decisions=357 roll 23s save 0s
+[group 19] task 8 init 39 succ=3/8 spread=0.790 rejected=False decisions=373 roll 21s save 0s
+[group 20] task 8 init 43 succ=4/8 spread=0.629 rejected=False decisions=382 roll 22s save 0s
+[group 21] task 8 init 10 succ=3/8 spread=0.678 rejected=False decisions=388 roll 21s save 0s
+[group 22] task 8 init 13 succ=3/8 spread=0.626 rejected=False decisions=398 roll 21s save 0s
+[group 23] task 8 init 14 succ=3/8 spread=0.847 rejected=False decisions=385 roll 21s save 0s
+[group 24] task 8 init 16 succ=6/8 spread=0.682 rejected=False decisions=330 roll 21s save 0s
+[group 25] task 8 init 22 succ=6/8 spread=0.730 rejected=False decisions=337 roll 21s save 0s
+[group 26] task 8 init 30 succ=4/8 spread=0.728 rejected=False decisions=375 roll 21s save 0s
+[group 27] task 8 init 38 succ=3/8 spread=0.769 rejected=False decisions=391 roll 21s save 0s
+[group 28] task 8 init 40 succ=2/8 spread=0.710 rejected=False decisions=390 roll 22s save 0s
+[group 29] task 8 init 41 succ=7/8 spread=0.673 rejected=False decisions=349 roll 21s save 0s
+[group 30] task 8 init 44 succ=2/8 spread=0.697 rejected=False decisions=401 roll 21s save 0s
+[group 31] task 8 init 46 succ=5/8 spread=0.847 rejected=False decisions=358 roll 21s save 0s
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+[done] {"iter": 1, "policy": "/home/student/ffi26/improve/outputs/fpo_v4/iter0/train/pretrained_model", "seed0": 1300000, "seconds_total": 1065.2769565582275, "seconds_rollout": 1052.0783116817474, "seconds_save": 2.5235986709594727, "torch_max_mem_allocated_gb": 1.361101824, "n_rollouts": 256, "n_success": 123, "n_decisions": 11428}
+=== [train1] Sun Nov  1 15:37:25 +07 2026 python scripts/fpo_train_v3.py --config /home/student/ffi26/results/round2/configs/fpo_v4.yaml --policy /home/student/ffi26/improve/outputs/fpo_v4/iter0/train/pretrained_model --data outputs/fpo_v4/iter1 --out outputs/fpo_v4/iter1/train
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[fpo_v3] adv_weighting segment, adv_center none, norm {0: {'weighted_mean': -0.0006592565823939345, 'weighted_std': 0.3189384414101957, 'center': 'none'}, 8: {'weighted_mean': -0.001786108550975574, 'weighted_std': 0.29553242351109515, 'center': 'none'}}, signs {0: {'n': 5084, 'n_success_dec': 1652, 'succ_raw_neg_pct': 22.15496368038741, 'succ_hat_neg_pct': 22.15496368038741, 'fail_raw_pos_pct': 27.913752913752916, 'fail_hat_pos_pct': 27.913752913752916, 'hat_mean_decision': -0.3061409294605255, 'hat_mean_rollout': -0.12749654054641724, 'hat_mean_segment': -0.002067041350528598, 'hat_mean_weighted': -0.0020670351798253296, 'w_sum_success_rollouts': 106.0, 'w_sum_fail_rollouts': 94.0, 'n_success_rollouts': 54, 'n_fail_rollouts': 66}, 8: {'n': 5896, 'n_success_dec': 2838, 'succ_raw_neg_pct': 18.639887244538407, 'succ_hat_neg_pct': 18.639887244538407, 'fail_raw_pos_pct': 16.219751471550033, 'fail_hat_pos_pct': 16.219751471550033, 'hat_mean_decision': -0.18686747550964355, 'hat_mean_rollout': -0.10103422403335571, 'hat_mean_segment': -0.006043701432645321, 'hat_mean_weighted': -0.006043695170085531, 'w_sum_success_rollouts': 138.0, 'w_sum_fail_rollouts': 101.0, 'n_success_rollouts': 69, 'n_fail_rollouts': 59}}
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 6205.55it/s]
+Reducing the number of VLM layers to 16 ...
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 6642.98it/s]
+Reducing the number of VLM layers to 16 ...
+Loading weights from local directory
+[fpo_v3] decisions {0: 5084, 8: 5896}, success decisions {0: 1674, 8: 2838}, adv mean/std per task {0: (-0.09764010459184647, 0.3257645070552826), 8: (-0.055225398391485214, 0.30734410881996155)}; B 128 (64/task, micro 32), pairs/step 1, steps/epoch 85, max epochs 3, warmup 5; demo 2000 samples, lambda_demo 5.0 x 32; old-loss pass 598s, mean l_old 0.04092, c 24.439; fp32 restored 155; KL start {'kl_proxy': 0.04363305713618847, 'absmean_dl_theta0': 0.005311964000611624}; demo-probe untrained start 0.05786
+/home/student/Lan_K68AI/temp/ffi26/ffi26/improve/scripts/fpo_train_v3.py:244: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  lp += float(loss)
+[fpo_v3] step 10 ep 0.12 loss -0.0670 bc 0.0268 demo 0.0285 ratio [0.391,1.337] std_logr 0.1255 clip_frac(last10) 0.037 gn 10.97 KL 5.75e-02 746s
+[fpo_v3] step 20 ep 0.24 loss +0.0927 bc 0.0256 demo 0.0834 ratio [0.436,4.055] std_logr 0.1954 clip_frac(last10) 0.109 gn 19.32 KL 6.49e-02 816s
+[fpo_v3] step 30 ep 0.35 loss +0.0371 bc 0.0167 demo 0.0347 ratio [0.257,5.619] std_logr 0.3161 clip_frac(last10) 0.134 gn 14.78 KL 1.33e-01 885s
+[fpo_v3] step 40 ep 0.47 loss -0.1207 bc 0.0475 demo 0.0534 ratio [0.171,1.475] std_logr 0.2291 clip_frac(last10) 0.154 gn 16.54 KL 6.22e-02 955s
+[fpo_v3] step 50 ep 0.59 loss -0.0775 bc 0.0594 demo 0.0548 ratio [0.466,1.630] std_logr 0.1490 clip_frac(last10) 0.146 gn 14.53 KL 6.44e-02 1024s
+[fpo_v3] step 60 ep 0.71 loss -0.0546 bc 0.0271 demo 0.0439 ratio [0.141,1.747] std_logr 0.2726 clip_frac(last10) 0.177 gn 17.72 KL 8.83e-02 1094s
+[fpo_v3] early stop at step 69: clip_frac over last 10 steps 0.203
+[done] {"policy": "/home/student/ffi26/improve/outputs/fpo_v4/iter0/train/pretrained_model", "data": "outputs/fpo_v4/iter1", "decisions": {"0": 5084, "8": 5896}, "success_decisions": {"0": 1674, "8": 2838}, "adv_mean_std_per_task": {"0": [-0.09764010459184647, 0.3257645070552826], "8": [-0.055225398391485214, 0.30734410881996155]}, "adv_weighting": "segment", "adv_center": "none", "adv_norm_per_task": {"0": {"weighted_mean": -0.0006592565823939345, "weighted_std": 0.3189384414101957, "center": "none"}, "8": {"weighted_mean": -0.001786108550975574, "weighted_std": 0.29553242351109515, "center": "none"}}, "adv_signs_per_task": {"0": {"n": 5084, "n_success_dec": 1652, "succ_raw_neg_pct": 22.15496368038741, "succ_hat_neg_pct": 22.15496368038741, "fail_raw_pos_pct": 27.913752913752916, "fail_hat_pos_pct": 27.913752913752916, "hat_mean_decision": -0.3061409294605255, "hat_mean_rollout": -0.12749654054641724, "hat_mean_segment": -0.002067041350528598, "hat_mean_weighted": -0.0020670351798253296, "w_sum_success_rollouts": 106.0, "w_sum_fail_rollouts": 94.0, "n_success_rollouts": 54, "n_fail_rollouts": 66}, "8": {"n": 5896, "n_success_dec": 2838, "succ_raw_neg_pct": 18.639887244538407, "succ_hat_neg_pct": 18.639887244538407, "fail_raw_pos_pct": 16.219751471550033, "fail_hat_pos_pct": 16.219751471550033, "hat_mean_decision": -0.18686747550964355, "hat_mean_rollout": -0.10103422403335571, "hat_mean_segment": -0.006043701432645321, "hat_mean_weighted": -0.006043695170085531, "w_sum_success_rollouts": 138.0, "w_sum_fail_rollouts": 101.0, "n_success_rollouts": 69, "n_fail_rollouts": 59}}, "clip_frac_w_mean": 0.10407070447083396, "batch_size": 128, "micro_batch": 32, "pairs_per_step": 1, "steps": 69, "steps_per_epoch": 85, "epochs_used": 0.8117647058823529, "stop_reason": "early_stop", "warmup_steps": 5, "ratio_scale_used": 24.439251172455684, "mean_l_old": 0.040917783975601196, "kl_start": {"kl_proxy": 0.04363305713618847, "absmean_dl_theta0": 0.005311964000611624}, "kl_end": {"kl_proxy": 0.06471968652258896, "absmean_dl_theta0": 0.007934964525702526}, "demo_probe_untrained_start": 0.057860579807311296, "demo_probe_untrained_end": 0.0581503389403224, "clip_frac_mean": 0.13552989130434784, "clip_frac_last10": 0.203125, "step_s_mean_after_first": 6.256815703476176, "fp32_trainable_restored": 155, "seconds_total": 1174.4663834571838, "seconds_old_loss": 597.72119307518, "trainable_params": 99880992, "torch_max_mem_allocated_gb": 11.44532224, "collect_success_per_task": {"0": "54/128", "8": "69/128"}, "collect_success": "123/256"}
+=== [collect2] Sun Nov  1 15:57:03 +07 2026 python scripts/fpo_collect.py --config /home/student/ffi26/results/round2/configs/fpo_v4.yaml --iter 2 --policy /home/student/ffi26/improve/outputs/fpo_v4/iter1/train/pretrained_model --out outputs/fpo_v4/iter2
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7987.19it/s]
+Reducing the number of VLM layers to 16 ...
+Loading weights from local directory
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[group 0] task 0 init 1 succ=8/8 spread=0.179 rejected=False decisions=225 roll 20s save 0s
+[group 1] task 0 init 4 succ=8/8 spread=0.201 rejected=False decisions=330 roll 21s save 0s
+[group 2] task 0 init 6 succ=0/8 spread=0.002 rejected=True decisions=416 roll 25s save 0s
+[group 3] task 0 init 7 succ=0/8 spread=0.088 rejected=True decisions=416 roll 25s save 0s
+[group 4] task 0 init 9 succ=2/8 spread=1.205 rejected=False decisions=362 roll 25s save 0s
+[group 5] task 0 init 16 succ=4/8 spread=1.345 rejected=False decisions=328 roll 24s save 0s
+[group 6] task 0 init 19 succ=7/8 spread=0.918 rejected=False decisions=254 roll 23s save 0s
+[group 7] task 0 init 21 succ=1/8 spread=1.108 rejected=False decisions=398 roll 25s save 0s
+[group 8] task 0 init 22 succ=6/8 spread=1.074 rejected=False decisions=272 roll 24s save 0s
+[group 9] task 0 init 28 succ=2/8 spread=1.044 rejected=False decisions=369 roll 25s save 0s
+[group 10] task 0 init 31 succ=4/8 spread=1.047 rejected=False decisions=311 roll 24s save 0s
+[group 11] task 0 init 34 succ=7/8 spread=0.988 rejected=False decisions=238 roll 23s save 0s
+[group 12] task 0 init 37 succ=1/8 spread=1.229 rejected=False decisions=390 roll 25s save 0s
+[group 13] task 0 init 38 succ=5/8 spread=0.760 rejected=False decisions=358 roll 25s save 0s
+[group 14] task 0 init 41 succ=0/8 spread=0.172 rejected=False decisions=416 roll 25s save 0s
+[group 15] task 0 init 48 succ=2/8 spread=0.999 rejected=False decisions=371 roll 25s save 0s
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[group 16] task 8 init 26 succ=4/8 spread=0.820 rejected=False decisions=359 roll 23s save 0s
+[group 17] task 8 init 27 succ=8/8 spread=0.323 rejected=False decisions=320 roll 19s save 0s
+[group 18] task 8 init 33 succ=6/8 spread=0.730 rejected=False decisions=337 roll 21s save 0s
+[group 19] task 8 init 39 succ=2/8 spread=0.722 rejected=False decisions=390 roll 22s save 0s
+[group 20] task 8 init 43 succ=4/8 spread=0.631 rejected=False decisions=388 roll 22s save 0s
+[group 21] task 8 init 10 succ=2/8 spread=0.728 rejected=False decisions=397 roll 21s save 0s
+[group 22] task 8 init 13 succ=5/8 spread=0.590 rejected=False decisions=380 roll 22s save 0s
+[group 23] task 8 init 14 succ=4/8 spread=0.775 rejected=False decisions=381 roll 22s save 0s
+[group 24] task 8 init 16 succ=7/8 spread=0.694 rejected=False decisions=322 roll 21s save 0s
+[group 25] task 8 init 22 succ=7/8 spread=0.663 rejected=False decisions=335 roll 21s save 0s
+[group 26] task 8 init 30 succ=4/8 spread=0.821 rejected=False decisions=367 roll 22s save 0s
+[group 27] task 8 init 38 succ=2/8 spread=0.872 rejected=False decisions=401 roll 21s save 0s
+[group 28] task 8 init 40 succ=3/8 spread=0.700 rejected=False decisions=392 roll 21s save 0s
+[group 29] task 8 init 41 succ=4/8 spread=0.892 rejected=False decisions=369 roll 21s save 0s
+[group 30] task 8 init 44 succ=1/8 spread=0.639 rejected=False decisions=408 roll 21s save 0s
+[group 31] task 8 init 46 succ=4/8 spread=0.866 rejected=False decisions=363 roll 21s save 0s
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+[done] {"iter": 2, "policy": "/home/student/ffi26/improve/outputs/fpo_v4/iter1/train/pretrained_model", "seed0": 1400000, "seconds_total": 736.0644149780273, "seconds_rollout": 724.4504797458649, "seconds_save": 2.2681829929351807, "torch_max_mem_allocated_gb": 1.361101824, "n_rollouts": 256, "n_success": 124, "n_decisions": 11363}
+=== [train2] Sun Nov  1 16:09:33 +07 2026 python scripts/fpo_train_v3.py --config /home/student/ffi26/results/round2/configs/fpo_v4.yaml --policy /home/student/ffi26/improve/outputs/fpo_v4/iter1/train/pretrained_model --data outputs/fpo_v4/iter2 --out outputs/fpo_v4/iter2/train
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[fpo_v3] adv_weighting segment, adv_center none, norm {0: {'weighted_mean': -0.0013531433725491326, 'weighted_std': 0.3340340625627957, 'center': 'none'}, 8: {'weighted_mean': -7.668348877180361e-05, 'weighted_std': 0.2941025065173097, 'center': 'none'}}, signs {0: {'n': 4622, 'n_success_dec': 1762, 'succ_raw_neg_pct': 23.15550510783201, 'succ_hat_neg_pct': 23.15550510783201, 'fail_raw_pos_pct': 10.76923076923077, 'fail_hat_pos_pct': 10.76923076923077, 'hat_mean_decision': -0.3426493704319, 'hat_mean_rollout': -0.164473295211792, 'hat_mean_segment': -0.004050914663821459, 'hat_mean_weighted': -0.0040509154494740955, 'w_sum_success_rollouts': 114.0, 'w_sum_fail_rollouts': 78.99999999999999, 'n_success_rollouts': 57, 'n_fail_rollouts': 55}, 8: {'n': 5872, 'n_success_dec': 2712, 'succ_raw_neg_pct': 22.197640117994098, 'succ_hat_neg_pct': 22.197640117994098, 'fail_raw_pos_pct': 22.943037974683545, 'fail_hat_pos_pct': 22.943037974683545, 'hat_mean_decision': -0.1991509646177292, 'hat_mean_rollout': -0.10619212687015533, 'hat_mean_segment': -0.00026073900517076254, 'hat_mean_weighted': -0.0002607399130757635, 'w_sum_success_rollouts': 133.0, 'w_sum_fail_rollouts': 105.0, 'n_success_rollouts': 67, 'n_fail_rollouts': 61}}
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7680.78it/s]
+Reducing the number of VLM layers to 16 ...
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7357.82it/s]
+Reducing the number of VLM layers to 16 ...
+Loading weights from local directory
+[fpo_v3] decisions {0: 4622, 8: 5872}, success decisions {0: 1762, 8: 2737}, adv mean/std per task {0: (-0.11445655673742294, 0.33904215693473816), 8: (-0.05857079476118088, 0.30824053287506104)}; B 128 (64/task, micro 32), pairs/step 1, steps/epoch 81, max epochs 3, warmup 5; demo 2000 samples, lambda_demo 5.0 x 32; old-loss pass 571s, mean l_old 0.04040, c 24.751; fp32 restored 155; KL start {'kl_proxy': 0.05202523060487549, 'absmean_dl_theta0': 0.006518846239487175}; demo-probe untrained start 0.05815
+/home/student/Lan_K68AI/temp/ffi26/ffi26/improve/scripts/fpo_train_v3.py:244: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  lp += float(loss)
+[fpo_v3] step 10 ep 0.12 loss -0.0009 bc 0.0167 demo 0.0859 ratio [0.528,1.313] std_logr 0.1276 clip_frac(last10) 0.027 gn 13.93 KL 6.21e-02 719s
+[fpo_v3] step 20 ep 0.25 loss -0.0338 bc 0.0364 demo 0.0583 ratio [0.214,1.750] std_logr 0.2298 clip_frac(last10) 0.120 gn 12.42 KL 5.98e-02 789s
+[fpo_v3] step 30 ep 0.37 loss +0.1048 bc 0.0451 demo 0.0603 ratio [0.440,1.608] std_logr 0.1654 clip_frac(last10) 0.124 gn 11.50 KL 6.80e-02 858s
+[fpo_v3] step 40 ep 0.49 loss -0.0578 bc 0.0446 demo 0.0686 ratio [0.079,2.478] std_logr 0.3488 clip_frac(last10) 0.178 gn 18.44 KL 1.04e-01 928s
+[fpo_v3] early stop at step 47: clip_frac over last 10 steps 0.202
+[done] {"policy": "/home/student/ffi26/improve/outputs/fpo_v4/iter1/train/pretrained_model", "data": "outputs/fpo_v4/iter2", "decisions": {"0": 4622, "8": 5872}, "success_decisions": {"0": 1762, "8": 2737}, "adv_mean_std_per_task": {"0": [-0.11445655673742294, 0.33904215693473816], "8": [-0.05857079476118088, 0.30824053287506104]}, "adv_weighting": "segment", "adv_center": "none", "adv_norm_per_task": {"0": {"weighted_mean": -0.0013531433725491326, "weighted_std": 0.3340340625627957, "center": "none"}, "8": {"weighted_mean": -7.668348877180361e-05, "weighted_std": 0.2941025065173097, "center": "none"}}, "adv_signs_per_task": {"0": {"n": 4622, "n_success_dec": 1762, "succ_raw_neg_pct": 23.15550510783201, "succ_hat_neg_pct": 23.15550510783201, "fail_raw_pos_pct": 10.76923076923077, "fail_hat_pos_pct": 10.76923076923077, "hat_mean_decision": -0.3426493704319, "hat_mean_rollout": -0.164473295211792, "hat_mean_segment": -0.004050914663821459, "hat_mean_weighted": -0.0040509154494740955, "w_sum_success_rollouts": 114.0, "w_sum_fail_rollouts": 78.99999999999999, "n_success_rollouts": 57, "n_fail_rollouts": 55}, "8": {"n": 5872, "n_success_dec": 2712, "succ_raw_neg_pct": 22.197640117994098, "succ_hat_neg_pct": 22.197640117994098, "fail_raw_pos_pct": 22.943037974683545, "fail_hat_pos_pct": 22.943037974683545, "hat_mean_decision": -0.1991509646177292, "hat_mean_rollout": -0.10619212687015533, "hat_mean_segment": -0.00026073900517076254, "hat_mean_weighted": -0.0002607399130757635, "w_sum_success_rollouts": 133.0, "w_sum_fail_rollouts": 105.0, "n_success_rollouts": 67, "n_fail_rollouts": 61}}, "clip_frac_w_mean": 0.08772461063307806, "batch_size": 128, "micro_batch": 32, "pairs_per_step": 1, "steps": 47, "steps_per_epoch": 81, "epochs_used": 0.5802469135802469, "stop_reason": "early_stop", "warmup_steps": 5, "ratio_scale_used": 24.75063670993522, "mean_l_old": 0.04040300101041794, "kl_start": {"kl_proxy": 0.05202523060487549, "absmean_dl_theta0": 0.006518846239487175}, "kl_end": {"kl_proxy": 0.0984730309634712, "absmean_dl_theta0": 0.009582940672771656}, "demo_probe_untrained_start": 0.0581503389403224, "demo_probe_untrained_end": 0.05852540396153927, "clip_frac_mean": 0.12566489361702127, "clip_frac_last10": 0.2015625, "step_s_mean_after_first": 6.256183924882309, "fp32_trainable_restored": 155, "seconds_total": 996.1454081535339, "seconds_old_loss": 571.3293616771698, "trainable_params": 99880992, "torch_max_mem_allocated_gb": 11.447954432, "collect_success_per_task": {"0": "57/128", "8": "67/128"}, "collect_success": "124/256"}
+=== [collect3] Sun Nov  1 16:26:13 +07 2026 python scripts/fpo_collect.py --config /home/student/ffi26/results/round2/configs/fpo_v4.yaml --iter 3 --policy /home/student/ffi26/improve/outputs/fpo_v4/iter2/train/pretrained_model --out outputs/fpo_v4/iter3
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7864.29it/s]
+Reducing the number of VLM layers to 16 ...
+Loading weights from local directory
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[group 0] task 0 init 1 succ=8/8 spread=0.039 rejected=False decisions=218 roll 18s save 0s
+[group 1] task 0 init 4 succ=8/8 spread=0.200 rejected=False decisions=338 roll 23s save 0s
+[group 2] task 0 init 6 succ=0/8 spread=0.087 rejected=True decisions=416 roll 25s save 0s
+[group 3] task 0 init 7 succ=0/8 spread=0.088 rejected=True decisions=416 roll 25s save 0s
+[group 4] task 0 init 9 succ=1/8 spread=1.228 rejected=False decisions=389 roll 25s save 0s
+[group 5] task 0 init 16 succ=6/8 spread=1.050 rejected=False decisions=303 roll 24s save 0s
+[group 6] task 0 init 19 succ=5/8 spread=0.956 rejected=False decisions=316 roll 24s save 0s
+[group 7] task 0 init 21 succ=3/8 spread=1.063 rejected=False decisions=374 roll 25s save 0s
+[group 8] task 0 init 22 succ=5/8 spread=1.124 rejected=False decisions=305 roll 24s save 0s
+[group 9] task 0 init 28 succ=1/8 spread=1.273 rejected=False decisions=391 roll 25s save 0s
+[group 10] task 0 init 31 succ=6/8 spread=1.062 rejected=False decisions=271 roll 24s save 0s
+[group 11] task 0 init 34 succ=7/8 spread=0.924 rejected=False decisions=262 roll 24s save 0s
+[group 12] task 0 init 37 succ=1/8 spread=1.099 rejected=False decisions=391 roll 25s save 0s
+[group 13] task 0 init 38 succ=2/8 spread=0.799 rejected=False decisions=396 roll 25s save 0s
+[group 14] task 0 init 41 succ=0/8 spread=0.443 rejected=False decisions=416 roll 25s save 0s
+[group 15] task 0 init 48 succ=0/8 spread=0.086 rejected=True decisions=416 roll 25s save 0s
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[group 16] task 8 init 26 succ=4/8 spread=0.630 rejected=False decisions=380 roll 23s save 0s
+[group 17] task 8 init 27 succ=8/8 spread=0.021 rejected=False decisions=300 roll 16s save 0s
+[group 18] task 8 init 33 succ=8/8 spread=0.175 rejected=False decisions=318 roll 19s save 0s
+[group 19] task 8 init 39 succ=3/8 spread=0.654 rejected=False decisions=386 roll 21s save 0s
+[group 20] task 8 init 43 succ=3/8 spread=0.634 rejected=False decisions=389 roll 21s save 0s
+[group 21] task 8 init 10 succ=2/8 spread=0.711 rejected=False decisions=396 roll 21s save 0s
+[group 22] task 8 init 13 succ=2/8 spread=0.608 rejected=False decisions=406 roll 21s save 0s
+[group 23] task 8 init 14 succ=3/8 spread=0.746 rejected=False decisions=384 roll 21s save 0s
+[group 24] task 8 init 16 succ=4/8 spread=0.669 rejected=False decisions=359 roll 21s save 0s
+[group 25] task 8 init 22 succ=6/8 spread=0.851 rejected=False decisions=355 roll 21s save 0s
+[group 26] task 8 init 30 succ=3/8 spread=0.764 rejected=False decisions=376 roll 21s save 0s
+[group 27] task 8 init 38 succ=4/8 spread=0.890 rejected=False decisions=358 roll 21s save 0s
+[group 28] task 8 init 40 succ=1/8 spread=0.816 rejected=False decisions=402 roll 22s save 0s
+[group 29] task 8 init 41 succ=3/8 spread=0.767 rejected=False decisions=381 roll 21s save 0s
+[group 30] task 8 init 44 succ=0/8 spread=0.000 rejected=True decisions=416 roll 22s save 0s
+[group 31] task 8 init 46 succ=3/8 spread=0.849 rejected=False decisions=376 roll 21s save 0s
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+Local assets not found. Downloading from HuggingFace Hub...
+Assets already downloaded at /home/student/.cache/libero/assets
+[done] {"iter": 3, "policy": "/home/student/ffi26/improve/outputs/fpo_v4/iter2/train/pretrained_model", "seed0": 1500000, "seconds_total": 731.3174297809601, "seconds_rollout": 719.3652172088623, "seconds_save": 2.314256429672241, "torch_max_mem_allocated_gb": 1.361101824, "n_rollouts": 256, "n_success": 110, "n_decisions": 11600}
+=== [train3] Sun Nov  1 16:38:39 +07 2026 python scripts/fpo_train_v3.py --config /home/student/ffi26/results/round2/configs/fpo_v4.yaml --policy /home/student/ffi26/improve/outputs/fpo_v4/iter2/train/pretrained_model --data outputs/fpo_v4/iter3 --out outputs/fpo_v4/iter3/train
+[robosuite WARNING] No private macro file found! (__init__.py:7)
+WARNING:robosuite_logs:No private macro file found!
+[robosuite WARNING] It is recommended to use a private macro file (__init__.py:8)
+WARNING:robosuite_logs:It is recommended to use a private macro file
+[robosuite WARNING] To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py (__init__.py:9)
+WARNING:robosuite_logs:To setup, run: python /home/student/.conda/envs/lerobot/lib/python3.12/site-packages/robosuite/scripts/setup_macros.py
+[fpo_v3] adv_weighting segment, adv_center none, norm {0: {'weighted_mean': -0.001305330108574059, 'weighted_std': 0.3204230876614475, 'center': 'none'}, 8: {'weighted_mean': -0.0006272191792692368, 'weighted_std': 0.2871071395414808, 'center': 'none'}}, signs {0: {'n': 4348, 'n_success_dec': 1696, 'succ_raw_neg_pct': 30.424528301886795, 'succ_hat_neg_pct': 30.424528301886795, 'fail_raw_pos_pct': 11.010558069381599, 'fail_hat_pos_pct': 11.010558069381599, 'hat_mean_decision': -0.29976099729537964, 'hat_mean_rollout': -0.12079150229692459, 'hat_mean_segment': -0.004073770716786385, 'hat_mean_weighted': -0.004073771678240472, 'w_sum_success_rollouts': 104.0, 'w_sum_fail_rollouts': 73.0, 'n_success_rollouts': 53, 'n_fail_rollouts': 51}, 8: {'n': 5566, 'n_success_dec': 2290, 'succ_raw_neg_pct': 18.951965065502183, 'succ_hat_neg_pct': 18.951965065502183, 'fail_raw_pos_pct': 19.230769230769234, 'fail_hat_pos_pct': 19.230769230769234, 'hat_mean_decision': -0.21939869225025177, 'hat_mean_rollout': -0.12951163947582245, 'hat_mean_segment': -0.00218460476025939, 'hat_mean_weighted': -0.0021846148176019957, 'w_sum_success_rollouts': 114.0, 'w_sum_fail_rollouts': 104.0, 'n_success_rollouts': 57, 'n_fail_rollouts': 63}}
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 7789.24it/s]
+Reducing the number of VLM layers to 16 ...
+Loading  HuggingFaceTB/SmolVLM2-500M-Video-Instruct weights ...
+Loading weights:   0%|          | 0/489 [00:00<?, ?it/s]Loading weights: 100%|██████████| 489/489 [00:00<00:00, 8160.03it/s]

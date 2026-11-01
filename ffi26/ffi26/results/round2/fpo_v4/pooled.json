@@ -1,0 +1,777 @@
+{
+ "counts": {
+  "official s1000": 160,
+  "official s3000": 100,
+  "official s4000": 100,
+  "official s5000": 100,
+  "v2 s1000": 160,
+  "v2 s3000": 100,
+  "v2 s4000": 100,
+  "v2 s5000": 100,
+  "v3 s1000": 160,
+  "v3 s3000": 100,
+  "v3 s4000": 100,
+  "v3 s5000": 100
+ },
+ "trained": {
+  "tổng (task 0 + 8)": {
+   "counts": {
+    "official": [
+     121,
+     300
+    ],
+    "v2": [
+     126,
+     300
+    ],
+    "v3": [
+     134,
+     300
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 0": {
+   "counts": {
+    "official": [
+     61,
+     150
+    ],
+    "v2": [
+     50,
+     150
+    ],
+    "v3": [
+     46,
+     150
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 8": {
+   "counts": {
+    "official": [
+     60,
+     150
+    ],
+    "v2": [
+     76,
+     150
+    ],
+    "v3": [
+     88,
+     150
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "held-out init": {
+   "counts": {
+    "official": [
+     84,
+     204
+    ],
+    "v2": [
+     86,
+     204
+    ],
+    "v3": [
+     87,
+     204
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "init đã train": {
+   "counts": {
+    "official": [
+     37,
+     96
+    ],
+    "v2": [
+     40,
+     96
+    ],
+    "v3": [
+     47,
+     96
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 0, held-out": {
+   "counts": {
+    "official": [
+     39,
+     102
+    ],
+    "v2": [
+     34,
+     102
+    ],
+    "v3": [
+     29,
+     102
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 0, đã train": {
+   "counts": {
+    "official": [
+     22,
+     48
+    ],
+    "v2": [
+     16,
+     48
+    ],
+    "v3": [
+     17,
+     48
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 8, held-out": {
+   "counts": {
+    "official": [
+     45,
+     102
+    ],
+    "v2": [
+     52,
+     102
+    ],
+    "v3": [
+     58,
+     102
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 8, đã train": {
+   "counts": {
+    "official": [
+     15,
+     48
+    ],
+    "v2": [
+     24,
+     48
+    ],
+    "v3": [
+     30,
+     48
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "seed 3000": {
+   "counts": {
+    "official": [
+     38,
+     100
+    ],
+    "v2": [
+     45,
+     100
+    ],
+    "v3": [
+     42,
+     100
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "seed 4000": {
+   "counts": {
+    "official": [
+     41,
+     100
+    ],
+    "v2": [
+     45,
+     100
+    ],
+    "v3": [
+     49,
+     100
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "seed 5000": {
+   "counts": {
+    "official": [
+     42,
+     100
+    ],
+    "v2": [
+     36,
+     100
+    ],
+    "v3": [
+     43,
+     100
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  }
+ },
+ "forgetting": {
+  "tổng 8 task": {
+   "counts": {
+    "official": [
+     127,
+     160
+    ],
+    "v2": [
+     108,
+     160
+    ],
+    "v3": [
+     115,
+     160
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 1": {
+   "counts": {
+    "official": [
+     17,
+     20
+    ],
+    "v2": [
+     12,
+     20
+    ],
+    "v3": [
+     16,
+     20
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 2": {
+   "counts": {
+    "official": [
+     16,
+     20
+    ],
+    "v2": [
+     11,
+     20
+    ],
+    "v3": [
+     16,
+     20
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 3": {
+   "counts": {
+    "official": [
+     20,
+     20
+    ],
+    "v2": [
+     20,
+     20
+    ],
+    "v3": [
+     20,
+     20
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 4": {
+   "counts": {
+    "official": [
+     13,
+     20
+    ],
+    "v2": [
+     12,
+     20
+    ],
+    "v3": [
+     9,
+     20
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 5": {
+   "counts": {
+    "official": [
+     18,
+     20
+    ],
+    "v2": [
+     17,
+     20
+    ],
+    "v3": [
+     17,
+     20
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 6": {
+   "counts": {
+    "official": [
+     9,
+     20
+    ],
+    "v2": [
+     9,
+     20
+    ],
+    "v3": [
+     10,
+     20
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 7": {
+   "counts": {
+    "official": [
+     16,
+     20
+    ],
+    "v2": [
+     10,
+     20
+    ],
+    "v3": [
+     12,
+     20
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  },
+  "task 9": {
+   "counts": {
+    "official": [
+     18,
+     20
+    ],
+    "v2": [
+     17,
+     20
+    ],
+    "v3": [
+     15,
+     20
+    ],
+    "v4": [
+     0,
+     0
+    ]
+   },
+   "v4_vs_official": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   },
+   "v4_vs_v3": {
+    "n_pairs": 0,
+    "k_a": 0,
+    "k_b": 0,
+    "only_a": 0,
+    "only_b": 0,
+    "p": 1.0
+   }
+  }
+ },
+ "predictions": {}
+}

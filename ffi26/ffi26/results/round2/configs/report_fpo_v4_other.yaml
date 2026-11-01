@@ -1,0 +1,20 @@
+# Forgetting report for FPO v4, seed 1000, expert fp32 (other 8 tasks x 20): official / v2 from outputs/fpo_v2/eval_s1000, v3 from outputs/fpo_v3/eval_s1000.
+trained_tasks: [0, 8]
+other_tasks: [1, 2, 3, 4, 5, 6, 7, 9]
+heldout_from: ~/ffi26/results/round2/configs/round1.yaml  # same init_ids as fpo_v4.yaml collect (checked)
+reference: official
+out_dir: ~/ffi26/results/round2/fpo_v4/seed1000_other
+gap_pairs: []
+models:
+  - name: official
+    label: checkpoint chính thức, expert fp32, seed 1000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s1000/official
+  - name: fpo_v2_sel
+    label: FPO v2 θ4, expert fp32, seed 1000
+    root: ~/ffi26/improve/outputs/fpo_v2/eval_s1000/fpo_v2_sel
+  - name: fpo_v3_sel
+    label: FPO v3 θ4, expert fp32, seed 1000
+    root: ~/ffi26/improve/outputs/fpo_v3/eval_s1000/fpo_v3_sel
+  - name: fpo_v4_sel
+    label: FPO v4 (checkpoint theo quy tắc collapse), expert fp32, seed 1000
+    root: ~/ffi26/improve/outputs/fpo_v4/eval_s1000/fpo_v4_sel

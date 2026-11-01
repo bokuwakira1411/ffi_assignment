@@ -1069,3 +1069,193 @@ Task 4 (20 ep, seed 1000), thành công 13 / 12 / 9:
   - (b) v3 có thêm số hạng demo, trong khi grad norm bị clip về 10 ở 80 % số bước của v2 và 91 % số bước của v3. Một phần bước cập nhật vì thế dành cho demo thay vì PPO.
 - Không phải do gai grad_norm: gai xuất hiện ở cả hai bản (v2 iter0 bước 14–15 với 349 và 1257; v3 iter0 bước 84 với 1960).
 - Kết luận: **"khớp với log", chưa xác nhận.**
+
+## 01/11/2026 ~14:05–14:30: danh sách cho reviewer (theo yêu cầu) và đo mức thay đổi trọng số (CPU)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Viết và chạy `improve/scripts/fpo_weight_delta.py`: ‖W − W0‖/‖W0‖ theo tensor của v2/v3 θ1..θ4 so với `lerobot/smolvla_libero`, và ngưỡng clip theo đơn vị loss CFM | **SỬA REPO**: thêm `results/round2/fpo_v3/weight_delta.csv` |
+| 2 | Kiểm tra nạp checkpoint: `load_policy(v3 θ4, 10, device="cpu", expert_fp32=True)`, so từng tensor đã train với `model.safetensors` (script inline, không lưu) | chỉ đọc |
+| 3 | Đọc lại `fpo_train_v3.py:200–226` (dấu của objective PPO) và `src/rollout.py:52–80` | chỉ đọc |
+| 4 | Viết `results/round2/fpo_v3/REVIEW_CHECKLIST.md` | **SỬA REPO**. Chưa commit (không được yêu cầu) |
+
+Kết quả:
+
+- **Thay đổi trọng số tương đối của v3 θ4:** trung vị 0,089 %, max 0,146 %, toàn bộ tham số train 0,083 %. Với v2 θ4 lần lượt là 0,047 %, 0,081 % và 0,044 %. Có 155/500 tensor đổi: 145 của `lm_expert` và 10 projection.
+- **Ngưỡng clip:** c = 24,61, nên một mẫu bị clip khi |l_old − l_new| > 0,0074, tức 18 % của l_old trung bình. Nếu c = 1 thì ngưỡng là 0,18.
+- **Nạp checkpoint đúng:** 155/155 tensor đã train được nạp đúng từng bit ở fp32 khi eval, nên update không bị mất do làm tròn bf16.
+- **Dấu của objective PPO đúng.**
+- **So sánh learning rate:** SmolVLA gốc fine-tune với lr 1e-4, warmup 1000, decay 25 000 bước (`config.json` của checkpoint). FPO dùng lr 1e-6 và tổng cộng 84 bước (v2) / 402 bước (v3).
+- **Giả thuyết chính (chưa xác nhận):** update quá nhỏ do early stop đến rất sớm, vì ratio được scale ×24,6 và lr là 1e-6. Cần đối chiếu định nghĩa ratio với bài FPO (mục 1 trong checklist).
+
+### 2026-11-01 13:58 — Chạy lại noise probe (bước 1)
+- Chạy `python scripts/dsrl_probe.py --out outputs/dsrl/probe` trong tmux `dsrl_probe`, khởi động bằng `setsid`. Log ghi tiếp vào `outputs/dsrl/probe.log`.
+- Script chạy tiếp từ phần đã có (`probe/episodes.csv` từ lần 11:03).
+- Lúc khởi động: RAM trống 52 GB, GPU trống.
+
+## 01/11/2026 ~14:40–15:00: kiểm tra advantage thô, kiểm tra 1–3 (CPU, chỉ đọc; theo yêu cầu)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Đọc `src/reward_r2.py:173–217` (`group_segment_labels`) và `scripts/fpo_collect.py:60–96` | chỉ đọc |
+| 2 | Viết và chạy `improve/scripts/fpo_adv_check.py` trên `outputs/fpo_v{2,3}/iter{0..3}`: chỉ đọc các khoá env / step / n_exec / adv / rejected / task_id / group của `decisions/g*.npz`, và `rollouts.csv`, `segments.csv`, `groups.csv` | **SỬA REPO**: thêm `results/round2/fpo_v3/adv_check.md` và `adv_check_{1_group_stage,2_weighting,3_alignment,3_success_sign}.csv`. Không train, không sửa code train |
+| 3 | Kiểm tra độ dài rollout thất bại (inline) | chỉ đọc |
+
+Kết quả (chi tiết trong `adv_check.md`):
+
+- **Kiểm tra 3 (khớp decision ↔ rollout ↔ segment):** khớp ở mọi (run, vòng, task).
+  - Mỗi rollout có ⌈độ dài/10⌉ decision, tại các bước 0, 10, 20, …; n_exec đúng.
+  - Mỗi decision nằm trong đúng 1 segment, và adv lưu trùng với `segments.csv` (sai lệch ≤ 6e-08).
+- **Kiểm tra 1:** trung bình advantage trong mỗi (nhóm, stage), theo rollout: trung vị 0,0000, lớn nhất 0,0376.
+- **Kiểm tra 2 (trọng số):**
+  - Trung bình theo segment ≈ 0 (|mean| ≤ 0,0023); theo decision từ −0,028 đến −0,107.
+  - Cả 1172 rollout thất bại đều dài đúng 520 bước, tức 52 decision; rollout thành công có 29–42 decision.
+  - Tương quan giữa số decision của segment và adv: −0,28 đến −0,51.
+  - → Trung bình âm là do trọng số theo decision, không phải tính sai.
+- **v3, sau chuẩn hoá per-task:** mean_t tính **theo decision** (`fpo_train_v3.py:101–102`).
+  - Decision của rollout thành công có Â < 0: 0,0–3,6 % (thô: 13,6–29,5 %).
+  - Decision của rollout thất bại có Â > 0: 26–53 % (thô: 15,3–27,9 %). Task 0 cao nhất: 44,7–52,6 %.
+- **Không chạy kiểm tra 4–7:** kiểm tra 1–3 không cho thấy lỗi trong cách tính advantage thô.
+- **Ghi chú:** v3 có trừ mean nhưng task 0 vẫn giảm, nên không kết luận gì về nguyên nhân task 0 giảm ở v2; chỉ báo số liệu.
+
+## FPO v4: dự đoán ghi TRƯỚC khi chạy (01/11/2026 14:46:59, chưa có bất kỳ kết quả v4 nào)
+
+v4 = v3 + đúng một thay đổi: bỏ độ lệch theo độ dài trong advantage (`adv_weighting: rollout`, `adv_center: none`).
+
+"Giả thuyết: task 0 giảm ở v2/v3 một phần do advantage lệch theo độ dài episode (v3 trừ mean theo decision → ~50% decision của rollout thất bại ở task 0 có Â > 0).
+Dự đoán nếu đúng: (a) task 0 của v4 không còn kém official có ý nghĩa (p > 0.05) và cao hơn v3; (b) task 8 vẫn hơn official có ý nghĩa; (c) forgetting không tệ hơn v3.
+Nếu task 0 vẫn giảm như v3 → độ lệch theo độ dài không phải nguyên nhân chính."
+
+Cách đối chiếu (định nghĩa trước, cố định):
+- (a): McNemar chính xác v4 vs official trên task 0 (150 cặp, seed 3000/4000/5000) có p > 0,05, VÀ số thành công task 0 của v4 > v3 (46/150).
+- (b): McNemar v4 vs official trên task 8 có p < 0,05 và v4 > official.
+- (c): tổng forgetting 8 task × 20 (seed 1000) của v4 ≥ v3 (115/160).
+
+Lúc ghi: GPU đang bận bởi `dsrl_probe` (tmux, phiên khác, bắt đầu 14:37; 8,7/16 GB đã dùng). v3 train cần đỉnh 11,4 GB, nên chưa chạy được song song.
+
+### 2026-11-01 14:52 — Probe bị CUDA OOM ở ep 10, chạy lại
+- Probe chạy từ 14:37. Đã xong ep 0–9 (toàn bộ tập task 8) thì bị `torch.OutOfMemoryError` ở ep 10, ngay đầu tập task 0.
+- Lúc lỗi, process của mình chỉ dùng 1.36 GiB, GPU chỉ còn trống 27 MiB. Vậy GPU đã bị một process khác chiếm tạm thời. Lúc kiểm tra lại (14:52), GPU đã trống.
+- Chạy lại lúc 14:52 trong tmux `dsrl_probe2`. Script chạy tiếp theo từng episode.
+- **Lỗi ghi exit code:** các dòng "exit N" trước đây trong `queue_status.txt` không đáng tin. Biến `$?` được đọc sau `$(date)`, nên luôn ra 0. Lần này đã sửa: lưu `rc=$?` ngay sau lệnh python.
+  - Lần DSRL run1 vẫn được xác nhận là xong, vì `summary.md` và `info.json` đầy đủ.
+- **Kết quả tạm của task 8**, số rollout thành công trên 160 (10 episode × 16 rollout):
+  - N1: 11
+  - N1.5: 12
+  - N2: 32
+  - CEM: 31
+  - Số episode có ít nhất 1 thành công: N1 2/10, N1.5 2/10, N2 6/10, CEM 3/10.
+
+## FPO v4: cập nhật giả thuyết và cách đặt trọng số (01/11/2026 14:53:07, vẫn TRƯỚC khi train, chưa có kết quả v4)
+
+**Đổi trọng số từ rollout sang SEGMENT** (theo quyết định của bạn sau sanity check). Config: `adv_weighting: segment`, `adv_center: none`.
+- Trọng số: w = 1 / n_decisions(segment của decision), chuẩn hoá để mean w trên mỗi batch = 1. Không trừ mean_t; Â = clip(A / std_t, −5, 5), std_t có trọng số w, theo task, theo iteration.
+- Lý do đổi:
+  - Advantage được ước lượng theo segment (baseline V[k]), và mean theo segment ≈ 0 (`adv_check.md`: |mean| ≤ 0,0023).
+  - Trọng số theo rollout vẫn để segment cuối dài của rollout thất bại chi phối: mean Â theo rollout vẫn là −0,128 (task 0) / −0,107 (task 8), gần v2 (−0,145 / −0,094).
+
+Bảng iter 0 (`results/round2/fpo_v4/sanity.md`, script `improve/scripts/fpo_v4_sanity.py`):
+
+| task | cách | TC: Â < 0 | TB: Â > 0 | Â TB theo segment | Â TB theo rollout | Â TB theo decision | tổng w rollout TC / TB |
+|---|---|---|---|---|---|---|---|
+| 0 | v2 (A / std chung) | 29,5 % | 19,9 % | −0,003 | −0,145 | −0,306 | 1674 / 3380 |
+| 0 | v3 (decision, trừ mean_t) | 1,1 % | 52,6 % | 0,265 | 0,141 | 0,000 | 1674 / 3380 |
+| 0 | v4-rollout (bỏ) | 29,5 % | 19,9 % | −0,002 | −0,128 | −0,271 | 55 / 65 |
+| 0 | **v4-segment (chạy)** | 29,5 % | 19,9 % | **−0,002** | −0,135 | −0,286 | 110 / 98 |
+| 8 | v2 (A / std chung) | 16,6 % | 21,5 % | −0,002 | −0,094 | −0,157 | 1719 / 4472 |
+| 8 | v3 (decision, trừ mean_t) | 1,6 % | 37,0 % | 0,180 | 0,073 | 0,000 | 1719 / 4472 |
+| 8 | v4-rollout (bỏ) | 16,6 % | 21,5 % | −0,002 | −0,107 | −0,178 | 42 / 86 |
+| 8 | **v4-segment (chạy)** | 16,6 % | 21,5 % | **−0,002** | −0,107 | −0,178 | 84 / 141 |
+
+- Unit test (`fpo_v4_sanity.py`): đạt.
+  - Rollout thành công ngắn và rollout thất bại dài có tổng w bằng nhau (chế độ rollout).
+  - Mỗi segment có tổng w = 1 (chế độ segment).
+  - Chế độ mặc định (decision / mean) cho đúng từng bit công thức của v3.
+- Số v3 trong bảng trùng với `adv_check.md`.
+
+**Giả thuyết (đã cập nhật):** "task 0 giảm ở v2/v3 một phần do **độ lệch theo độ dài ở cấp segment** (v3 trừ mean theo decision → ~50 % decision của rollout thất bại ở task 0 có Â > 0)."
+
+**Dự đoán (giữ nguyên):**
+- (a) Task 0 của v4 không còn kém official có ý nghĩa (p > 0,05) và cao hơn v3.
+- (b) Task 8 vẫn hơn official có ý nghĩa.
+- (c) Forgetting không tệ hơn v3.
+- Nếu task 0 vẫn giảm như v3 → độ lệch theo độ dài không phải nguyên nhân chính.
+
+Cách đối chiếu: giữ như mục trước.
+- (a): p > 0,05 (v4 vs official, task 0, 150 cặp) **và** v4 > 46/150.
+- (b): p < 0,05 và v4 > official trên task 8.
+- (c): v4 ≥ 115/160.
+
+**Sự cố GPU:** probe DSRL (phiên khác) **dừng lỗi lúc 14:52:20**, CUDA out of memory: GPU chỉ còn trống 27 MiB / 15,5 GB, trong khi probe chỉ dùng 1,36 GiB. Vậy có tiến trình khác chiếm GPU, **không phải** của phiên này: mọi lệnh của phiên này chạy với `CUDA_VISIBLE_DEVICES=""`. Lúc 14:52:39 GPU trống (58 MiB).
+
+## 01/11/2026 14:40–14:57: FPO v4, cài đặt, sanity check, khởi động (theo yêu cầu)
+
+| # | Thao tác | Tác động |
+|---|---|---|
+| 1 | Thêm `improve/src/fpo_adv.py` (trọng số advantage và chuẩn hoá, dùng chung cho trainer và sanity check) | **SỬA REPO** (file mới) |
+| 2 | Sửa `improve/scripts/fpo_train_v3.py`: thêm `fpo.adv_weighting` (`decision` mặc định / `segment` / `rollout`) và `fpo.adv_center` (`mean` mặc định / `none`). Mặc định = v3: cùng công thức, cùng thứ tự RNG; unit test kiểm tra cho đúng từng bit. Log thêm cột `clip_frac_w` (có trọng số), `adv_*` trong `train_info.json`, và 9 cột cuối trong `iter_summary.csv`. Early stop vẫn dùng clip_frac không trọng số. BC và demo không nhân w | **SỬA REPO**. Bản gốc lưu ở scratch `fpo_train_v3.orig.py` |
+| 3 | `results/round2/configs/fpo_v4.yaml` = bản sao của `fpo_v3.yaml`. `diff` chỉ khác `out_root` và 2 flag (`adv_weighting: segment`, `adv_center: none`). Phần chú thích đầu file giữ nguyên như v3 để diff chỉ còn 3 dòng đó | **SỬA REPO** |
+| 4 | `improve/scripts/fpo_v4_sanity.py`: unit test + bảng dấu Â ở iter 0 (xem mục dự đoán đã cập nhật ở trên). Lần 1 phát hiện mean Â theo rollout vẫn khoảng −0,13 khi dùng trọng số rollout → **DỪNG và báo**; bạn chọn trọng số segment; lần 2 đạt (mean theo segment −0,002) | **SỬA REPO**: `results/round2/fpo_v4/sanity.{md,csv}` |
+| 5 | Config eval và report của v4: `eval_fpo_v4_s{1000,3000,4000,5000}.tmpl.yaml`, `report_fpo_v4_{s3000,s4000,s5000,other}.yaml` (thêm arm v3); `improve/scripts/fpo_v4_loop.sh` (= v3 loop; eval theo thứ tự task 0+8 seed 3000/4000/5000 TRƯỚC, rồi mới đến quên seed 1000); `fpo_v4_pooled.py` (v4 vs official và v4 vs v3, tách task × init, đối chiếu dự đoán theo tiêu chí cố định); `failure_labels_v4.py` | **SỬA REPO** |
+| 6 | Smoke test GPU: `fpo_train_v3.py --config fpo_v4.yaml --max_steps 3 --no_probe` trên `outputs/fpo_v2/iter0`, output vào scratch. Kết quả: chạy được; trên 384 decision/task, mean Â có trọng số ≈ 0 (−0,0003) | scratch |
+| 7 | **14:56:23** khởi động `bash scripts/fpo_v4_loop.sh` trong tmux `fpo_v4` (`setsid`). Log: `outputs/fpo_v4/loop.log`. iter 0 dùng lại `outputs/fpo_v2/iter0` (đã kiểm tra các trường config giống hệt) | GPU, chạy dài |
+
+- Trước khi khởi động: GPU trống (0 %, 58 MiB) sau khi probe DSRL dừng lỗi; bạn chọn "Start v4 now".
+- **Probe DSRL không được chạy lại khi v4 đang chạy**, vì không đủ bộ nhớ GPU cho cả hai.
+- `scripts/auto_commit_when_done.sh` không tồn tại trong repo, nên sẽ **commit tay** khi xong.
+
+## Chẩn đoán task 0 (v2/v3): nhãn thất bại + cosine gradient (01/11/2026 ~15:00, KHÔNG train, KHÔNG sửa code train)
+
+### 2026-11-01 14:58 — Phần A: nhãn thất bại (CPU)
+- Lệnh: `CUDA_VISIBLE_DEVICES="" OMP_NUM_THREADS=2 nice -n 19 python scripts/task0_diag_labels.py` (từ `~/ffi26/improve`). Chạy xong trong 5 s.
+- Ảnh hưởng: chỉ ghi file mới, không sửa file cũ.
+  - Script mới: `improve/scripts/task0_diag_labels.py`.
+  - Kết quả: `improve/outputs/task0_diag/` (`collect_labels.csv`, `A1_task0.csv`, `A2_task8.csv`, `A2_task4.csv`, `A2_forget.csv`, `A3_collect_task0.csv`, `A3_collect_task8.csv`).
+- A1/A2 (eval): KHÔNG gán nhãn lại, chỉ đọc nhãn đã commit.
+  - official và v2: `outputs/failure_labels/labels.csv`.
+  - v3: `outputs/failure_labels_v3/labels.csv` (commit ba47537).
+- A3 (collection): gán nhãn mới bằng `label_episode_v2` cho 1280 rollout collection của v3 (iter 0–4, task 0 + 8, `outputs/fpo_v3/iter*/logs`).
+  - Đã kiểm tra: cờ success trong log khớp `rollouts.csv`.
+  - Số thành công task 0 = 55/58/61/54/49, khớp `iter_summary.csv` và `collect_info.json` của iter4.
+- Định nghĩa "bắt đầu stall": bước đầu tiên của đoạn E đầu tiên cùng loại trong mỗi episode thất bại.
+  - `failure_labels_v3.py` lấy mọi đoạn, nên trung vị E_free của official khác một chút: 351 ở đây, 353 ở đó.
+
+### 2026-11-01 15:01 — Phần B: cosine gradient (CPU, nice 19, 8 thread)
+- Script mới: `improve/scripts/task0_diag_grad.py`. Không có optimizer step, không ghi checkpoint.
+- Mỗi iteration k = 0..3 của v3:
+  - θ_k = policy đã collect iteration k: θ0 = official, θ_k = `iter{k-1}/train/pretrained_model`. Đã kiểm tra khớp `train_info.json` "policy".
+  - Dữ liệu: decisions của iter k.
+  - Â: chuẩn hoá v3 theo task.
+  - c = `ratio_scale_used`; (τ, ε) = cặp 0 đã lưu khi train (`draw_pairs32`, seed 3000 + t).
+- Tại đầu iteration r = 1, nên gradient của số hạng PPO = (c/B) Σ Â ∇l. Ở đây g_t = (c/2) · mean(Â ∇l) (một step).
+- Cách chia: 5 lần chia rollout ngẫu nhiên thành 2 nửa, mỗi nửa 32 decision.
+  - g_demo = λ_demo · mean ∇L_CFM trên 32 mẫu demo phân tầng.
+- Smoke test (scratchpad, n = 2): 6 s/mẫu → ước tính ~5 h cho toàn bộ.
+- Chạy trong tmux `task0_grad` từ 15:01, log `outputs/task0_diag/grad.log`, kết quả `outputs/task0_diag/grad_cos.csv`.
+- Không dùng GPU, vì v4 đang ở pha train (train0 bắt đầu 14:56).
+- Watchdog `outputs/task0_diag/watchdog.sh`: dừng job nếu một lần collection của v4 có `seconds_rollout` > 900 s (v3 iter1–4: 738–749 s).
+
+### 2026-11-01 15:32 — Phần B bị DỪNG: làm chậm collection của v4
+- v4 bắt đầu collect1 lúc 15:19:25.
+  - Thời gian rollout mỗi group (`outputs/fpo_v4/loop.log`, "roll Ns") khi job gradient chạy song song: 42–45 s.
+  - Cùng loại group ở v3 iter1 (`outputs/fpo_v3/loop.log`): 22–26 s. Vậy chậm ~1,8×, dù job chạy `nice -n 19`.
+- Dừng tmux `task0_grad` lúc 15:32:27.
+- 3 group tiếp theo của v4: 36 s (chồng lên lúc dừng), 23 s, 21 s → v4 trở lại tốc độ bình thường. Nguyên nhân: job CPU của mình.
+- Watchdog không bắt được: nó chỉ kiểm tra `collect_info.json`, file này chỉ được ghi khi collection xong. Lỗi thiết kế watchdog.
+- Đã xong 8/20 lần chia: θ0 rep 0–4 và θ1 rep 0–2 (`outputs/task0_diag/grad_cos.csv`).
+  - Tốc độ: ~240 s/lần chia (nhanh hơn ước tính 15 phút).
+  - Script resume được: chạy lại cùng lệnh thì bỏ qua các dòng đã có.
+- Chưa chạy tiếp. Chờ quyết định: dùng GPU trong pha collect/eval của v4, hoặc CPU với ít thread hơn, hoặc chờ v4 xong.
+
+### 2026-11-01 16:01 — Phần B: chờ v4 xong rồi chạy GPU (quyết định của bạn: phương án 2)
+- tmux `task0_after_v4` chạy `outputs/task0_diag/run_after_v4.sh`, log `outputs/task0_diag/run_after_v4.log`.
+- Thứ tự:
+  1. Chờ `=== [done]` trong `outputs/fpo_v4/loop.log` (hoặc tmux `fpo_v4` không còn).
+  2. Chờ GPU trống ≥ 8192 MiB.
+  3. Chạy `task0_diag_grad.py --device cuda`, θ0–θ3, mỗi checkpoint 5 lần chia, theo 2 thiết kế:
+     - n = 32/nửa (thiết kế gốc) → `grad_cos_gpu_n32.csv`;
+     - n = 256/nửa → `grad_cos_gpu_n256.csv`.
+- Lý do thêm n = 256: với n = 32, đối chứng cùng task (CPU, θ0) là cos(g0a, g0b) = −0,070 ± 0,069 và cos(g8a, g8b) = +0,071 ± 0,039. Không có mức "đồng thuận" nào để so sánh.
+- Kích thước n = 256 bạn CHƯA xác nhận. Kết quả n = 32 vẫn chạy đủ để giữ đúng thiết kế gốc.
+- Kết quả CPU dở dang (`grad_cos.csv`, 8/20 lần chia) giữ nguyên, không trộn với kết quả GPU.
+- `task0_diag_report.py`: làm một bảng B cho mỗi file kết quả gradient.

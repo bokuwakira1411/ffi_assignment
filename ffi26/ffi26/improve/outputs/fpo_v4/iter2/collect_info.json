@@ -1,0 +1,12 @@
+{
+ "iter": 2,
+ "policy": "/home/student/ffi26/improve/outputs/fpo_v4/iter1/train/pretrained_model",
+ "seed0": 1400000,
+ "seconds_total": 736.0644149780273,
+ "seconds_rollout": 724.4504797458649,
+ "seconds_save": 2.2681829929351807,
+ "torch_max_mem_allocated_gb": 1.361101824,
+ "n_rollouts": 256,
+ "n_success": 124,
+ "n_decisions": 11363
+}

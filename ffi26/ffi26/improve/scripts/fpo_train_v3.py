@@ -10,6 +10,11 @@ pairs for l_old / l_new, fp32 master weights across iterations, warmup, clip, ea
       sum_t n_t // batch_size steps as in v2), rollout-BC bc_batch / 2 per task.
   (3) pairs_per_step: P stored (tau, eps) pairs per decision per step (distinct, of n_pairs), ratio
       r = exp(clamp(c * mean_p (l_old_p - l_new_p), -5, 5)) (v2: P = 1 random pair).
+  v4 flags (src/fpo_adv.py; defaults = v3 behaviour): fpo.adv_weighting ("decision" | "segment" (v4) | "rollout":
+      w = 1 / n_decisions of the decision's segment (or rollout), renormalised to mean 1 over each step's batch, multiplies each decision's PPO term),
+      fpo.adv_center ("mean" | "none": A^ = clip(A / weighted std_t, -5, 5)). With weighting != "decision" the two tasks' indices
+      of a step are drawn before the per-task loop (different RNG order from v3). clip_frac for early stop stays
+      unweighted; clip_frac_w (weighted) is logged. BC / demo terms are not weighted.
 Outputs: <out>/pretrained_model, train_log.csv, kl_log.csv, demo_probe.csv, train_info.json, one row in
 <out_root>/iter_summary.csv.
 
@@ -36,6 +41,7 @@ import torch  # noqa: E402
 import yaml  # noqa: E402
 
 from fpo_train import expand, load_decisions, make_batch, save_policy  # noqa: E402
+from fpo_adv import normalise, rollout_weights, sign_stats  # noqa: E402
 from fpo_train_v2 import build_policy_fp32, cfm, draw_pairs32, load_success_decisions, losses_fixed  # noqa: E402
 
 torch.set_float32_matmul_precision("highest")
@@ -98,9 +104,14 @@ def main():
         data = {t: {k: v[: B * (args.max_steps or 1)] for k, v in d.items()} for t, d in data.items()}
     if args.max_decisions:
         data = {t: {k: v[: args.max_decisions] for k, v in d.items()} for t, d in data.items()}
+    WMODE, CMODE = f.get("adv_weighting", "decision"), f.get("adv_center", "mean")
+    wdec = {t: rollout_weights(d, WMODE, data_dir) for t, d in data.items()}
+    adv_hat, adv_norm = {}, {}
+    for t, d in data.items():
+        adv_hat[t], adv_norm[t] = normalise(d, wdec[t], CMODE)
     adv_stats = {t: (float(d["adv"].mean()), float(d["adv"].std())) for t, d in data.items()}
-    adv_hat = {t: np.clip((d["adv"] - adv_stats[t][0]) / adv_stats[t][1], -5, 5).astype(np.float32)
-               for t, d in data.items()}
+    adv_signs = {int(t): sign_stats(d, adv_hat[t], wdec[t], data_dir) for t, d in data.items()}
+    print(f"[fpo_v3] adv_weighting {WMODE}, adv_center {CMODE}, norm {adv_norm}, signs {adv_signs}", flush=True)
     cdir = Path(cfg["demo"]["cache_dir"]).expanduser()
     demo = dict(np.load(cdir / "demo_train.npz"))
     probe = dict(np.load(cdir / "demo_probe.npz"))
@@ -187,7 +198,7 @@ def main():
     demo_streams = {t: Stream(len(ix), rng) for t, ix in demo_by_task.items()}
     fh = open(out / "train_log.csv", "w", newline="")
     cols = ["step", "epoch", "loss_ppo", "loss_bc", "loss_demo", "ratio_mean", "ratio_min", "ratio_max", "std_logr",
-            "clip_frac", "clip_frac_t0", "clip_frac_t8", "dl_absmean", "l_new", "grad_norm", "lr", "time_s",
+            "clip_frac", "clip_frac_w", "clip_frac_t0", "clip_frac_t8", "dl_absmean", "l_new", "grad_norm", "lr", "time_s",
             "step_s", "gpu_mem_gb"]
     wr = csv.DictWriter(fh, fieldnames=cols)
     wr.writeheader()
@@ -201,9 +212,13 @@ def main():
     while step < max_steps:
         ts = time.time()
         opt.zero_grad(set_to_none=True)
-        rs, dls, lns, cft, lp = [], [], [], {}, 0.0
+        rs, dls, lns, cft, lp, wns = [], [], [], {}, 0.0, []
+        if WMODE != "decision":  # v4: indices of both tasks first, w renormalised to mean 1 over the step's batch
+            pre_idx = {t: streams[t].take(B // 2) for t in tasks}
+            wnorm = float(np.mean(np.concatenate([wdec[t][pre_idx[t]] for t in tasks])))
         for t in tasks:  # (2) B/2 decisions of each task
-            d, (tau, eps), idx = data[t], pairs[t], streams[t].take(B // 2)
+            d, (tau, eps) = data[t], pairs[t]
+            idx = pre_idx[t] if WMODE != "decision" else streams[t].take(B // 2)
             # (3) P distinct pairs per decision
             pp = np.stack([rng.permutation(f["n_pairs"])[:P] for _ in idx])
             rt = []
@@ -218,6 +233,12 @@ def main():
                 r = torch.exp((c * dl).clamp(-5, 5))
                 A = torch.from_numpy(adv_hat[t][j]).to(dev)
                 surr = torch.minimum(r * A, r.clamp(1 - f["clip"], 1 + f["clip"]) * A)
+                if WMODE != "decision":
+                    wn = torch.from_numpy(wdec[t][j] / wnorm).to(dev).float()
+                    surr = surr * wn
+                else:
+                    wn = torch.ones_like(r)
+                wns.append(wn.detach())
                 loss = -surr.sum() / B
                 loss.backward()
                 lp += float(loss)
@@ -263,11 +284,13 @@ def main():
         r = torch.cat(rs); dl = torch.cat(dls)
         logr = (c * dl).clamp(-5, 5)
         cf = float(((r - 1).abs() > f["clip"]).float().mean())
+        wv = torch.cat(wns)
+        cfw = float((((r - 1).abs() > f["clip"]).float() * wv).sum() / wv.sum())
         clips.append(cf)
         ep_used = step / steps_per_epoch
         wr.writerow({"step": step, "epoch": int((step - 1) // steps_per_epoch), "loss_ppo": lp, "loss_bc": lb,
                      "loss_demo": ld, "ratio_mean": float(r.mean()), "ratio_min": float(r.min()),
-                     "ratio_max": float(r.max()), "std_logr": float(logr.std()), "clip_frac": cf,
+                     "ratio_max": float(r.max()), "std_logr": float(logr.std()), "clip_frac": cf, "clip_frac_w": cfw,
                      "clip_frac_t0": cft.get(tasks[0]), "clip_frac_t8": cft.get(tasks[1]),
                      "dl_absmean": float(dl.abs().mean()), "l_new": float(torch.cat(lns).mean()),
                      "grad_norm": float(gn), "lr": sched.get_last_lr()[0], "time_s": round(time.time() - t0, 1),
@@ -299,7 +322,9 @@ def main():
     log = pd.read_csv(out / "train_log.csv")
     info = {"policy": args.policy, "data": str(data_dir), "decisions": {int(t): len(d["adv"]) for t, d in data.items()},
             "success_decisions": {int(t): len(d["adv"]) for t, d in bcdata.items()},
-            "adv_mean_std_per_task": {int(t): v for t, v in adv_stats.items()}, "batch_size": B, "micro_batch": MB,
+            "adv_mean_std_per_task": {int(t): v for t, v in adv_stats.items()}, "adv_weighting": WMODE,
+            "adv_center": CMODE, "adv_norm_per_task": {int(t): v for t, v in adv_norm.items()},
+            "adv_signs_per_task": adv_signs, "clip_frac_w_mean": float(log.clip_frac_w.mean()), "batch_size": B, "micro_batch": MB,
             "pairs_per_step": P, "steps": step, "steps_per_epoch": steps_per_epoch, "epochs_used": ep_used,
             "stop_reason": stop_reason, "warmup_steps": warm, "ratio_scale_used": c, "mean_l_old": mean_lold,
             "kl_start": kl_start, "kl_end": kl_end, "demo_probe_untrained_start": dp_start,
@@ -329,11 +354,15 @@ def main():
                 w.writerow(["iter_dir", "batch_size", "pairs_per_step", "steps", "epochs_used", "stop_reason",
                             "clip_frac_mean", "clip_frac_last10", "kl_start", "kl_end", "demo_probe_untrained_start",
                             "demo_probe_untrained_end", "collect_success", "collect_task0", "collect_task8",
-                            "seconds_train"])
+                            "seconds_train", "adv_weighting", "adv_center", "clip_frac_w_mean",
+                            "t0_succ_hat_neg_pct", "t0_fail_hat_pos_pct", "t0_hat_mean_rollout",
+                            "t8_succ_hat_neg_pct", "t8_fail_hat_pos_pct", "t8_hat_mean_rollout"])
             w.writerow([data_dir.name, B, P, step, round(ep_used, 3), stop_reason, round(info["clip_frac_mean"], 4),
                         round(info["clip_frac_last10"], 4), f"{kl_start['kl_proxy']:.3e}", f"{kl_end['kl_proxy']:.3e}",
                         f"{dp_start:.5f}", f"{dp_end:.5f}", info["collect_success"], cs.get(0, ""), cs.get(8, ""),
-                        round(info["seconds_total"])])
+                        round(info["seconds_total"]), WMODE, CMODE, round(info["clip_frac_w_mean"], 4),
+                        *[round(adv_signs[t][k], 3) for t in (0, 8)
+                          for k in ("succ_hat_neg_pct", "fail_hat_pos_pct", "hat_mean_rollout")]])
     print(f"[done] {json.dumps({k: v for k, v in info.items() if k != 'fpo'})}")
 
 
