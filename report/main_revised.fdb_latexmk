@@ -1,10 +1,10 @@
 # Fdb version 4
-["xdvipdfmx"] 1793560645.52168 "main_revised.xdv" "main_revised.pdf" "main_revised" 1793560646.0613 0
-  "main_revised.xdv" 1793560645.48245 156308 b64f6702d5929645cf810c0ada9f1838 "xelatex"
+["xdvipdfmx"] 1793593502.21423 "main_revised.xdv" "main_revised.pdf" "main_revised" 1793593502.75346 0
+  "main_revised.xdv" 1793593502.17667 162672 1be188ae0984bd7acd9c3766fcd2a93a "xelatex"
   (generated)
   "main_revised.pdf"
   (rewritten before read)
-["xelatex"] 1793560645.01281 "main_revised.tex" "main_revised.xdv" "main_revised" 1793560646.06028 0
+["xelatex"] 1793593501.68542 "main_revised.tex" "main_revised.xdv" "main_revised" 1793593502.75242 0
   "/etc/texmf/web2c/texmf.cnf" 1792381766.03516 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -177,9 +177,9 @@
   "figures/fig_fpo_final_simple.pdf" 1793555185.46454 16935 9072bee0a459386b72a73b0f47fd7e3a ""
   "figures/fig_keyframes.pdf" 1793542621.66644 579088 a1e82a1e5716f738aa60e69b08dedf73 ""
   "figures/overview_smolvla.png" 1793443671.83475 473438 aabd16a72b06b2cb058a61856ac4ace5 ""
-  "main_revised.aux" 1793560645.4812 9316 c2564f02de8d83fc5bbb3b3bc10c4ecc "xelatex"
-  "main_revised.out" 1793560645.4812 1842 ab1ebe5b6a8c840fc2419975369fe792 "xelatex"
-  "main_revised.tex" 1793560644.45228 24394 f1ffbd9d0c18fe48c7dea969aea7efae ""
+  "main_revised.aux" 1793593502.1761 9316 85c1545112a1628601a39336515a53ed "xelatex"
+  "main_revised.out" 1793593502.1761 1842 ab1ebe5b6a8c840fc2419975369fe792 "xelatex"
+  "main_revised.tex" 1793593448.09901 25352 ce0aa86bc5cba86a8ac6a6c8383e8a2d ""
   (generated)
   "main_revised.aux"
   "main_revised.log"

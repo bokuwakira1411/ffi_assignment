@@ -42,4 +42,6 @@ docs/WORKLOG.md
 report/MAIN_TEX_NOTES.md
 
 # Báo cáo (ẩn theo yêu cầu 01/11/2026)
-#report/
+report/
+experimental_results/
+code/

@@ -1,10 +1,10 @@
 # Fdb version 4
-["xdvipdfmx"] 1793556881.71983 "literature_matrix.xdv" "literature_matrix.pdf" "literature_matrix" 1793556881.86298 0
-  "literature_matrix.xdv" 1793556881.68878 119368 c35e31a75158c37bae4245ba8ee5391a "xelatex"
+["xdvipdfmx"] 1793589503.58312 "literature_matrix.xdv" "literature_matrix.pdf" "literature_matrix" 1793589503.71048 0
+  "literature_matrix.xdv" 1793589503.55903 94776 61a8de8fc3617db12d9049016e19625e "xelatex"
   (generated)
   "literature_matrix.pdf"
   (rewritten before read)
-["xelatex"] 1793556881.30043 "literature_matrix.tex" "literature_matrix.xdv" "literature_matrix" 1793556881.86242 0
+["xelatex"] 1793589503.20848 "literature_matrix.tex" "literature_matrix.xdv" "literature_matrix" 1793589503.70993 0
   "/etc/texmf/web2c/texmf.cnf" 1792381766.03516 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -91,9 +91,9 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1792382025 5949989 ae70b31d31530128252915c49f7fd13a ""
-  "literature_matrix.aux" 1793556881.68821 1277 adf1958c30b49e21972067541f90a1a2 "xelatex"
-  "literature_matrix.out" 1793556881.66085 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
-  "literature_matrix.tex" 1793556880.76795 17283 f7e9d176adfe72ec5a416df2deefbade ""
+  "literature_matrix.aux" 1793589503.55793 1277 adf1958c30b49e21972067541f90a1a2 "xelatex"
+  "literature_matrix.out" 1793589503.53629 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "literature_matrix.tex" 1793589489.66339 14603 5e8a7b880c9fd9a4a27f46f30174b71d ""
   (generated)
   "literature_matrix.aux"
   "literature_matrix.log"

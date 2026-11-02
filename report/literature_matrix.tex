@@ -128,7 +128,6 @@ Bài & Model nền, dạng action & Mục tiêu học & Reward & Cách huấn lu
 \item \textbf{Reward thưa.} Reward nhị phân không cho gradient khi không rollout nào thành công (SimpleVLA-RL, RIPT-VLA); reward quá trình (VLA-RL) lại dựa trên heuristic.
 \item \textbf{Hiệu quả mẫu và reset.} RL online cần nhiều rollout và reset về cùng cảnh ban đầu; trên robot thật phải cần người ($\pi^*_{0.6}$).
 \item \textbf{Log-likelihood cho policy flow.} Chưa có cách tốt nhất cho mọi model ($\pi_{\text{RL}}$: Flow-Noise hay Flow-SDE tuỳ model); RECAP và FPO tránh log-prob; DSRL tránh cả gradient qua base policy.
-\item \textbf{Tổng quát hoá và trần hiệu năng.} Kết quả OOD không ổn định; policy có thể học đường tắt; SFT càng mạnh thì RL tăng càng ít.
 \end{enumerate}
 
 % ===================================================================== 2 Diffusion vs flow
@@ -174,37 +173,35 @@ $\mathcal{L}=\mathrm{MSE}\big(\varepsilon^k,\ \varepsilon_\theta(O_t,\,x^0+\vare
 \midrule
 \textbf{Hệ quả cho RL}
 & policy gradient (PPO, GRPO) dùng trực tiếp log-prob theo từng bước khử nhiễu
-& cần một trong các hướng: (1) chèn nhiễu học được vào mỗi bước Euler, mỗi bước thành Gauss ($\pi_{\text{RL}}$ Flow-Noise); (2) đổi ODE thành SDE giữ nguyên phân phối biên, thành MDP hai tầng ($\pi_{\text{RL}}$ Flow-SDE); (3) bỏ log-prob, điều kiện policy theo advantage (RECAP); (4) xấp xỉ tỉ lệ likelihood bằng chênh lệch loss flow matching (FPO, arXiv:2507.21053). SmolVLA cùng cấu trúc với $\pi_0$ nên (1), (2) áp dụng được bằng cách thêm nhiễu vào vòng Euler và thêm critic. \\
+& cần một trong các hướng: (1) chèn nhiễu học được vào mỗi bước Euler, mỗi bước thành Gauss ($\pi_{\text{RL}}$ Flow-Noise); (2) đổi ODE thành SDE giữ nguyên phân phối biên, thành MDP hai tầng ($\pi_{\text{RL}}$ Flow-SDE); (3) bỏ log-prob, điều kiện policy theo advantage (RECAP); (4) xấp xỉ tỉ lệ likelihood bằng chênh lệch loss flow matching (FPO). SmolVLA cùng cấu trúc với $\pi_0$ nên (1), (2) áp dụng được bằng cách thêm nhiễu vào vòng Euler và thêm critic. \\
 \end{longtable}}
-
-\review{Kiểm tra lại các số và vị trí trích từ bài báo trong Bảng~\ref{tab:rl} và~\ref{tab:gen}; tên tác giả, năm, venue (ba bài SimpleVLA-RL, RIPT-VLA, VLA-RL chưa ghi tác giả).}
 
 % ===================================================================== 3 Nền
 \section*{3. Tài liệu nền}
 \begin{itemize}
-\item \textbf{Reward shaping} (Ng, Harada, Russell, 1999). Thêm vào reward một số hạng $F=\gamma\Phi(s')-\Phi(s)$ (shaping theo
+\item \textbf{Reward shaping} Thêm vào reward một số hạng $F=\gamma\Phi(s')-\Phi(s)$ (shaping theo
 thế năng) thì policy tối ưu không đổi. Đây là cơ sở cho thành phần tiến độ trong reward của phần Improve.
-\item \textbf{LIBERO} (Liu và cộng sự, 2023). 130 task trong bốn bộ: Spatial, Object, Goal (mỗi bộ 10 task) và LIBERO-100
+\item \textbf{LIBERO} 130 task trong bốn bộ: Spatial, Object, Goal (mỗi bộ 10 task) và LIBERO-100
 (LIBERO-90 + LIBERO-10/Long); mỗi task 50 demo do người điều khiển. Báo cáo dùng LIBERO-10 (Long).
 \end{itemize}
 
 \section*{Tài liệu tham khảo}
 {\scriptsize\raggedright
 \begin{itemize}
-\item SimpleVLA-RL (2025). arXiv:2509.09674. (ICLR 2026, theo \code{git show e852bb7:docs/DAY1.md} mục D.)
-\item Chen và cộng sự (2025). $\pi_{\text{RL}}$: Online RL fine-tuning for flow-based VLA. arXiv:2510.25889.
-\item Physical Intelligence (2025). $\pi^*_{0.6}$ / RECAP. arXiv:2511.14759.
+\item SimpleVLA-RL (2025). arXiv:2509.09674.
+\item $\pi_{\text{RL}}$: Online RL fine-tuning for flow-based VLA. arXiv:2510.25889.
+\item $\pi^*_{0.6}$ / RECAP. arXiv:2511.14759.
 \item RIPT-VLA (2025). arXiv:2505.17016.
 \item VLA-RL (2025). arXiv:2505.18719.
-\item Chi và cộng sự (2023). Diffusion Policy. arXiv:2303.04137.
-\item Black và cộng sự (2024). $\pi_0$. arXiv:2410.24164.
-\item Shukor và cộng sự (2025). SmolVLA. arXiv:2506.01844.
-\item Lipman và cộng sự (2022). Flow Matching for Generative Modeling. arXiv:2210.02747.
-\item McAllister và cộng sự (2025). Flow Matching Policy Gradients (FPO). arXiv:2507.21053.
-\item Lyu và cộng sự (2025). Reinforcement Fine-Tuning of Flow-Matching Policies for VLA Models ($\pi_0$-FPO). arXiv:2510.09976.
-\item Wagenmaker và cộng sự (2025). Steering diffusion policy with latent space RL (DSRL). arXiv:2506.15799.
-\item Ng, Harada, Russell (1999). Policy invariance under reward transformations: theory and application to reward shaping. ICML.
-\item Liu và cộng sự (2023). LIBERO. NeurIPS Datasets and Benchmarks. arXiv:2306.03310.
+\item Diffusion Policy. arXiv:2303.04137.
+\item $\pi_0$. arXiv:2410.24164.
+\item SmolVLA. arXiv:2506.01844.
+\item Flow Matching for Generative Modeling. arXiv:2210.02747.
+\item Flow Matching Policy Gradients (FPO). arXiv:2507.21053.
+\item Reinforcement Fine-Tuning of Flow-Matching Policies for VLA Models ($\pi_0$-FPO). arXiv:2510.09976.
+\item Steering diffusion policy with latent space RL (DSRL). arXiv:2506.15799.
+\item Policy invariance under reward transformations: theory and application to reward shaping. ICML.
+\item LIBERO. NeurIPS Datasets and Benchmarks. arXiv:2306.03310.
 \end{itemize}}
 
 \end{document}

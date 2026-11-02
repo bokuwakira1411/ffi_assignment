@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.10.19)  2 NOV 2026 02:17
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.10.19)  2 NOV 2026 11:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1002,12 +1002,7 @@ File: figures/fig_fpo_final_simple.pdf Graphic file (type pdf)
  [5]
 File: figures/fig_keyframes.pdf Graphic file (type pdf)
 <use figures/fig_keyframes.pdf>
-
-Underfull \hbox (badness 10000) in paragraph at lines 367--367
-
- []
-
-[6] [7] (./main_revised.aux)
+ [6] [7] (./main_revised.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -1016,12 +1011,12 @@ Package rerunfilecheck Info: File `main_revised.out' has not changed.
 (rerunfilecheck)             Checksum: AB1EBE5B6A8C840FC2419975369FE792;1842.
  ) 
 Here is how much of TeX's memory you used:
- 27324 strings out of 468173
- 560203 string characters out of 5435519
- 1014321 words of memory out of 5000000
- 55571 multiletter control sequences out of 15000+600000
- 636346 words of font info for 120 fonts, out of 8000000 for 9000
+ 27320 strings out of 468173
+ 560061 string characters out of 5435519
+ 1012322 words of memory out of 5000000
+ 55568 multiletter control sequences out of 15000+600000
+ 636338 words of font info for 119 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  84i,15n,94p,480b,891s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main_revised.xdv (7 pages, 156308 bytes).
+Output written on main_revised.xdv (7 pages, 162672 bytes).

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.10.19)  2 NOV 2026 01:14
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.10.19)  2 NOV 2026 10:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -643,15 +643,9 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 LaTeX Warning: No \author given.
 
-ignored error: Infinite glue shrinkage found in box being split [1
+[1
 
-]
-ignored error: Infinite glue shrinkage found in box being split [2]
-Underfull \hbox (badness 10000) in paragraph at lines 183--183
-
- []
-
-[3] (./literature_matrix.aux)
+] [2] [3] (./literature_matrix.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -660,12 +654,12 @@ Package rerunfilecheck Info: File `literature_matrix.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 15076 strings out of 468173
- 294190 string characters out of 5435519
- 802328 words of memory out of 5000000
- 43584 multiletter control sequences out of 15000+600000
- 634785 words of font info for 112 fonts, out of 8000000 for 9000
+ 15071 strings out of 468173
+ 294034 string characters out of 5435519
+ 800328 words of memory out of 5000000
+ 43580 multiletter control sequences out of 15000+600000
+ 634777 words of font info for 111 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 73i,11n,93p,611b,553s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 73i,11n,93p,534b,553s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on literature_matrix.xdv (3 pages, 119368 bytes).
+Output written on literature_matrix.xdv (3 pages, 94776 bytes).

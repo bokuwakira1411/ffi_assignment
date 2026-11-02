@@ -78,7 +78,7 @@ policy chuyển được sang vật thứ hai; lỗi gắp chưa được sửa.
 \section{Reproduce}
 
 \begin{figure}[H]
-\centering\includegraphics[width=\linewidth]{overview_smolvla.png}
+\centering\includegraphics[width=0.8\linewidth]{overview_smolvla.png}
 \caption{Kiến trúc SmolVLA.}
 \label{fig:arch}
 \end{figure}
@@ -208,7 +208,7 @@ ra ngoài.
 
 \paragraph{Hệ quả cho Improve.} L3 đã được xử lý bằng NAS=10. L1 và L2 nằm trong chính policy, nên đó là việc của RL.
 Improve tập trung vào hai task yếu nhất: \textbf{task 0} (hai lon vào giỏ, lỗi chủ yếu là L2) và \textbf{task 8} (hai ấm
-lên bếp, lỗi chủ yếu là L1). Cả hai thành công khoảng 40\%, tức policy \emph{đôi khi} đã làm được, nên RL có rollout tốt
+lên bếp, lỗi chủ yếu là L1). Cả hai thành công khoảng 40\%, tức policy đôi khi đã làm được, nên RL có rollout tốt
 để học theo.
 
 % ===================================================================== IMPROVE
@@ -218,7 +218,7 @@ lên bếp, lỗi chủ yếu là L1). Cả hai thành công khoảng 40\%, tứ
 
 \paragraph{Vì sao RL có thể sửa được mà BC không sửa được?}
 BC chỉ học từ demo thành công. Trên horizon dài, lệch nhỏ ở đầu tích lũy thành thất bại ở cuối, và những trạng thái như
-``vừa đặt xong ấm thứ nhất'' hay ``lon vừa trượt khỏi kẹp'' hiếm khi có trong demo. RL học trên chính các trạng thái mà
+lúc vừa đặt xong ấm thứ nhất, hay lúc lon vừa trượt khỏi kẹp, hiếm khi có trong demo. RL học trên chính các trạng thái mà
 policy gặp, và đẩy policy về phía cách xử lý dẫn tới bước tiếp theo.
 
 \paragraph{Giả thuyết.} Fine-tune action expert bằng FPO, với reward thưởng theo tiến độ và phạt lỗi thao tác, sẽ:
@@ -276,7 +276,7 @@ shaping này không đổi policy tối ưu (Ng và cộng sự, 1999).
 \item \textbf{Môi trường:} LIBERO-10, cùng thiết lập như Reproduce (NAS=10). Train trên task 0 và 8, mỗi task 16 cảnh;
 34 cảnh còn lại mỗi task để kiểm tra (held-out). Mỗi vòng thu 256 episode, tổng 4 vòng.
 \item \textbf{Được train:} chỉ action expert (khoảng 100M trên 450M tham số). VLM đóng băng.
-\item \textbf{Vì sao?} L1 và L2 là lỗi \emph{hành động}, không phải lỗi hiểu câu lệnh, và action expert là phần sinh ra
+\item \textbf{Vì sao?} L1 và L2 là lỗi hành động, không phải lỗi hiểu câu lệnh, và action expert là phần sinh ra
 hành động. Giữ nguyên VLM cũng giảm rủi ro quên các task khác.
 \end{itemize}
 
@@ -285,9 +285,9 @@ hành động. Giữ nguyên VLM cũng giảm rủi ro quên các task khác.
 Trước khi đi sâu vào FPO, ba hướng được thử nhanh trên cùng một phép đo: task 0 và 8, mỗi task 50 cảnh, một seed
 (100 episode), so theo cặp với SmolVLA gốc. Trên phép đo này SmolVLA gốc đạt 44\%.
 \begin{itemize}
-\item \textbf{A1, gắn nhãn advantage (kiểu RECAP).} Khi train, mỗi mẫu được gắn nhãn ``tốt'' hoặc ``xấu'' theo advantage,
-vào câu lệnh hoặc qua một embedding học được; khi chạy thì gắn nhãn ``tốt''. Kết quả 31--44\%, không bản nào hơn
-bản gốc; gắn nhãn ``tốt'' vào câu lệnh còn kém hơn (31\%, $p=0{,}04$). Nhãn ``tốt'' và ``xấu'' cho kết quả gần như nhau,
+\item \textbf{A1, gắn nhãn advantage (kiểu RECAP).} Khi train, mỗi mẫu được gắn nhãn tốt hoặc xấu theo advantage,
+vào câu lệnh hoặc qua một embedding học được; khi chạy thì gắn nhãn tốt. Kết quả 31--44\%, không bản nào hơn
+bản gốc; gắn nhãn tốt vào câu lệnh còn kém hơn (31\%, $p=0{,}04$). Nhãn tốt và xấu cho kết quả gần như nhau,
 tức mô hình không học được ý nghĩa của nhãn.
 \item \textbf{A2, AWR.} Loss flow matching được nhân trọng số theo advantage. Kết quả 41--47\%, không khác bản gốc, kể
 cả khi train tới 6000 bước.
@@ -347,7 +347,7 @@ task 0 + 8 & 40{,}3\% & 32{,}7\% \dn & 42{,}0\% & 44{,}7\% & \textbf{46{,}7\%} \
 \begin{itemize}
 \item \textbf{H1 đúng.} Task 0 + 8 tăng từ 40{,}3\% lên 46{,}7\% ($p=0{,}025$). Toàn bộ mức tăng nằm ở task 8; task 0 giữ
 nguyên.
-\item \textbf{H2 đúng ở task 8.} Số thất bại ``xong một ấm rồi dừng'' giảm từ 75 xuống 53 ($p=0{,}002$). RL đã dạy policy
+\item \textbf{H2 đúng ở task 8.} Số thất bại mà robot xong một ấm rồi dừng giảm từ 75 xuống 53 ($p=0{,}002$). RL đã dạy policy
 chuyển sang ấm thứ hai, đúng điều reward tiến độ thưởng.
 \item \textbf{H3 chưa đúng.} Trượt, va chạm, làm rơi và gắp hỏng không giảm có ý nghĩa. Vì vậy task 0, nơi lỗi chủ yếu
 là gắp, không tăng.
@@ -364,18 +364,27 @@ có khoản phạt riêng. Các giải thích này chưa được kiểm chứng
 \caption{Cùng một cảnh: SmolVLA gốc, FPO v3, FPO v4. Viền xanh: thành công; đỏ: thất bại.}
 \label{fig:keyframes}
 \end{figure}
-\review{Mô tả ngắn hành vi khác nhau giữa v4 và bản gốc/v3 sau khi xem video.}
+Hình~\ref{fig:keyframes} so sánh SmolVLA gốc, FPO v3 và FPO v4 trên ba cảnh của phép đo cuối (video của các cảnh này có
+trong thư mục kết quả thực nghiệm).
+\begin{itemize}
+\item \textbf{Task 0, init 4, seed 5000.} Cả ba model đều nhấc được lon thứ nhất. Với lon thứ hai, cả ba đều gắp trượt.
+SmolVLA gốc và FPO v3 thử lại nhiều lần nhưng vẫn hụt, và thất bại khi hết 520 bước. FPO v4 chỉnh càng kẹp sát về phía lon,
+gắp được và thành công ở bước 498.
+\item \textbf{Task 8, init 0, seed 3000.} SmolVLA gốc và FPO v3 đều đặt được ấm thứ nhất lên bếp. Với ấm thứ hai, càng kẹp
+bám vào đầu ấm rồi đứng yên tới hết giờ (lỗi L1). FPO v4 đặt được cả hai ấm và thành công ở bước 391.
+\item \textbf{Task 8, init 6, seed 3000.} Trường hợp ngược lại: SmolVLA gốc và FPO v3 thành công (bước 386 và 379). FPO v4
+gắp ấm thứ nhất nhanh nhưng không chắc, làm rơi ấm; sau đó vẫn đặt được ấm thứ hai, nhưng episode thất bại khi hết 520 bước.
+\end{itemize}
 
 % ===================================================================== CONCLUSION
 \section{Hạn chế và hướng tiếp theo}
 \begin{itemize}
 \item Mỗi phiên bản chỉ train một lần, nên khác biệt giữa các bản có thể một phần do ngẫu nhiên.
-\item Trên các cảnh không dùng để train, mức tăng của v4 chưa có ý nghĩa thống kê.
 \item Nhãn lỗi là tự động, chưa kiểm hết bằng video.
 \item Chỉ train 2/10 task; chưa thử Flow-SDE (tính log-prob chính xác).
 \end{itemize}
 \paragraph{Hướng tiếp theo: DSRL} (Wagenmaker và cộng sự, 2025). Giữ nguyên SmolVLA, học một policy nhỏ chọn nhiễu ban đầu
-$\varepsilon$ của flow matching, nên không cần gradient qua VLA. Đề xuất này xuất phát từ ba quan sát ở kết quả FPO:
+$\varepsilon$ của flow matching, nên không cần gradient qua VLA. Đề xuất này xuất phát từ hai quan sát ở kết quả FPO:
 \begin{itemize}
 \item \textbf{Sửa trọng số dễ gây quên.} v1--v3 đều làm giảm 8 task còn lại; phải thêm demo của cả 10 task và sửa cách
 cân advantage (v4) mới giữ được. DSRL không đụng vào trọng số SmolVLA nên tránh được vấn đề này từ đầu.
