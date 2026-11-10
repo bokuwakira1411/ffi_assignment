@@ -1,134 +1,154 @@
-# FFI26: SmolVLA trên LIBERO — Reproduce, Analyse, Study, Improve
+# SmolVLA on LIBERO — Reproduce, Analyse, Study, Improve
 
-Checkpoint `lerobot/smolvla_libero` trên LeRobot, 1 GPU 16 GB. Cấu hình chính: libero_10, `n_action_steps = 10`.
+Checkpoint `lerobot/smolvla_libero` on LeRobot, 1 GPU with 16 GB. Main setting: libero_10, `n_action_steps = 10`.
 
-![Agent view: official và FPO v4 trên cùng episode](docs/images/official_vs_v4.png)
+![Agent view: official vs FPO v4 on the same episodes](docs/images/official_vs_v4.png)
 
-*Official và FPO v4 (ours) trên cùng episode, camera agent. Hai episode v4 thành công còn official thất bại, chọn để minh hoạ (v4 cũng có episode thua official); thống kê trên toàn bộ 300 episode nằm ở mục Kết quả. Video: `ffi26/ffi26/results/videos/3_v4_paired/`. Hình: `docs/images/make_readme_fig.py`.*
+*Official vs FPO v4 (ours) on the same episodes, agent camera. These two episodes, where v4 succeeds and official fails, were
+chosen for illustration (v4 also loses some episodes to official); statistics over all 300 episodes are in [Results](#results).
+Videos: [Videos](#videos). Figure: `docs/images/make_readme_fig.py`.*
 
-## Kết quả
+## Videos
+
+> **Result videos — official fails, FPO v4 succeeds (same initial state and seed):**
+> https://github.com/bokuwakira1411/ffi_assignment/tree/main/ffi26/ffi26/results/videos/4_official_fail_v4_success
+
+More side-by-side videos of the methods: `ffi26/ffi26/results/videos/` (e.g. `3_v4_paired/`).
+
+## Results
 
 ### Reproduce
 
-| Suite | `n_action_steps` | Episode | Thành công |
+| Suite | `n_action_steps` | Episodes | Success |
 |---|---|---|---|
-| libero_10 | 10 | 3 seed × 10 task × 50 init | **72,8%** (paper: 71%, chưa kiểm chứng) |
-| libero_10 | 1 | 3 seed × 10 task × 10 init | 52,7% |
-| libero_spatial | 1 | 3 seed × 10 task × 10 init | 79,0% |
+| libero_10 | 10 | 3 seeds × 10 tasks × 50 init | **72.8%** (paper: 71%, not verified) |
+| libero_10 | 1 | 3 seeds × 10 tasks × 10 init | 52.7% |
+| libero_spatial | 1 | 3 seeds × 10 tasks × 10 init | 79.0% |
 
-Nguồn: `docs/reproduce.md`.
+Source: `docs/reproduce.md`.
 
-### Improve: RL trên task 0 và task 8 của libero_10
+### Improve: RL on task 0 and task 8 of libero_10
 
-Cách so sánh:
+Protocol:
 
-- Mọi phương pháp chạy trên cùng init state và seed, nên so sánh được theo từng cặp episode.
-- Task đã train (task 0, task 8): mỗi task 50 init × 3 seed (3000 / 4000 / 5000), tổng 300 episode.
-- Quên (8 task còn lại): mỗi task 20 init, seed 1000, tổng 160 episode.
+- All methods run on the same initial states and seeds, so they can be compared episode by episode (paired).
+- Trained tasks (task 0, task 8): 50 init × 3 seeds (3000 / 4000 / 5000) per task, 300 episodes in total.
+- Forgetting (the other 8 tasks): 20 init per task, seed 1000, 160 episodes in total.
 
-| Phương pháp | Thay đổi so với bản trước | Task 0 | Task 8 | Task 0 + 8 | 8 task còn lại |
+| Method | Change from previous version | Task 0 | Task 8 | Task 0 + 8 | Other 8 tasks |
 |---|---|---|---|---|---|
-| official | checkpoint gốc | 40,7% | 40,0% | 40,3% | 79,4% |
-| FPO v1 | PPO-clip với tỉ số tính từ loss flow matching, on-policy, 4 vòng | 41,3% | 24,0% | 32,7% | 69,4% |
-| FPO v2 | expert fp32, batch 128, thêm loss BC trên rollout thành công | 33,3% | 50,7% | 42,0% | 67,5% |
-| FPO v3 | + demo replay chống quên, chuẩn hoá advantage theo task | 30,7% | 58,7% | 44,7% | 71,9% |
-| **FPO v4** | + trọng số advantage theo segment, không trừ mean | 40,0% | 53,3% | **46,7%** | **78,1%** |
+| official | original checkpoint | 40.7% | 40.0% | 40.3% | 79.4% |
+| FPO v1 | PPO-clip with ratio computed from the flow-matching loss, on-policy, 4 rounds | 41.3% | 24.0% | 32.7% | 69.4% |
+| FPO v2 | fp32 expert, batch 128, BC loss on successful rollouts | 33.3% | 50.7% | 42.0% | 67.5% |
+| FPO v3 | + demo replay against forgetting, per-task advantage normalization | 30.7% | 58.7% | 44.7% | 71.9% |
+| **FPO v4** | + per-segment advantage weighting, no mean subtraction | 40.0% | 53.3% | **46.7%** | **78.1%** |
 
-- **v4 là phương pháp duy nhất hơn official có ý nghĩa thống kê** (McNemar theo cặp, p = 0,025). Phần tăng đến từ task 8 (p = 0,002); task 0 ngang official.
-- v4 gần như không quên: 78,1% so với 79,4% (p = 0,83). v1, v2, v3 đều kém official rõ ở 8 task còn lại (p = 0,014 / 0,003 / 0,017).
-- v4 hơn v3 về tổng nhưng chưa có ý nghĩa (p = 0,55). v4 kéo task 0 về lại mức official (v3: 30,7%).
-- v1 đạt 57% ở vòng sàng lọc (bảng dưới) nhưng không lặp lại ở seed 2000. Trong bảng trên, v1 còn kém official (p = 0,03).
+- **v4 is the only method significantly better than official** (paired McNemar, p = 0.025). The gain comes from task 8
+  (p = 0.002); task 0 is on par with official.
+- v4 shows almost no forgetting: 78.1% vs 79.4% (p = 0.83). v1, v2 and v3 are all clearly worse than official on the other
+  8 tasks (p = 0.014 / 0.003 / 0.017).
+- v4 beats v3 overall, but not significantly (p = 0.55). v4 brings task 0 back to the official level (v3: 30.7%).
+- v1 reached 57% in the screening round (table below), but this did not hold up on seed 2000. In the table above, v1 is
+  worse than official (p = 0.03).
 
-Nguồn: `ffi26/ffi26/results/round2/fpo_v4/pooled.md` (official, v2, v3, v4), `fpo_v2/seed*/episodes.csv` (v1).
+Source: `ffi26/ffi26/results/round2/fpo_v4/pooled.md` (official, v2, v3, v4), `fpo_v2/seed*/episodes.csv` (v1).
 
-#### Vòng sàng lọc: A1, A2 (offline), FPO v1
+#### Screening round: A1, A2 (offline), FPO v1
 
-Trước FPO đã thử hai cách offline. Cả hai đều dùng rollout của checkpoint gốc, chấm reward theo tiến độ và tính advantage theo nhóm rollout cùng init state.
+Before FPO, two offline approaches were tried. Both use rollouts of the original checkpoint, score them with a progress-based
+reward, and compute advantages within groups of rollouts that share the same initial state.
 
-- **A1** (kiểu RECAP): gắn nhãn advantage positive / negative cho từng segment, rồi fine-tune có điều kiện theo nhãn. Khi chạy thì chọn nhãn positive. Có 2 cách đưa nhãn vào: hậu tố trong prompt, hoặc embedding học được đưa vào action expert.
-- **A2** (AWR): fine-tune flow matching có trọng số theo advantage, không dùng nhãn.
+- **A1** (RECAP-style): label each segment with a positive / negative advantage, then fine-tune conditioned on the label.
+  At test time the positive label is used. Two ways of injecting the label: a prompt suffix, or a learned embedding fed to
+  the action expert.
+- **A2** (AWR): advantage-weighted flow-matching fine-tuning, no labels.
 
-Giao thức khác bảng trên nên không so trực tiếp: seed 1000, 50 init mỗi task, expert bf16; 8 task còn lại × 20 init.
+The protocol differs from the table above, so the numbers are not directly comparable: seed 1000, 50 init per task,
+bf16 expert; other 8 tasks × 20 init.
 
-| Phương pháp | Task 0 + 8 | 8 task còn lại |
+| Method | Task 0 + 8 | Other 8 tasks |
 |---|---|---|
 | official | 44/100 | 126/160 |
-| A1, hậu tố prompt, nhãn positive | 31/100 | 88/160 |
-| A1, embedding, nhãn positive | 38/100 | 118/160 |
-| A2 AWR, 2000 bước | 43/100 | 128/160 |
-| A2 AWR, 6000 bước (tốt nhất: bước 2000) | 47/100 | 121/160 |
+| A1, prompt suffix, positive label | 31/100 | 88/160 |
+| A1, embedding, positive label | 38/100 | 118/160 |
+| A2 AWR, 2000 steps | 43/100 | 128/160 |
+| A2 AWR, 6000 steps (best: step 2000) | 47/100 | 121/160 |
 | FPO v1 θ3 | 57/100 | 122/160 |
 | FPO v1 θ3, seed 2000 (official: 45/100) | 46/100 | — |
 
-- A1: nhãn không có tác dụng. Chọn nhãn positive còn kém nhãn negative 6 điểm % (p = 0,29); hậu tố prompt còn làm hỏng các task khác.
-- A2: ngang official ở mọi checkpoint (p ≥ 0,68).
-- Từ đây chuyển sang RL on-policy (FPO), vì hai cách offline trên không cải thiện được so với checkpoint gốc.
+- A1: the label has no effect. Choosing the positive label is even 6 percentage points worse than the negative label
+  (p = 0.29); the prompt suffix also hurts the other tasks.
+- A2: on par with official at every checkpoint (p ≥ 0.68).
+- Since neither offline approach improved on the original checkpoint, the work moved to on-policy RL (FPO).
 
-Nguồn: `ffi26/ffi26/results/round2/summary.md`, `readme_ROUND2.md`.
+Source: `ffi26/ffi26/results/round2/summary.md`, `readme_ROUND2.md`.
 
-**DSRL (chưa chạy, chỉ là kỳ vọng).** DSRL giữ nguyên SmolVLA và học một policy nhỏ chọn nhiễu ban đầu ε của flow matching.
+**DSRL (not run, expectations only).** DSRL keeps SmolVLA frozen and learns a small policy that chooses the initial noise ε
+of flow matching.
 
-- Kỳ vọng: vì không sửa trọng số SmolVLA nên không quên các task khác, và không cần gradient qua VLA.
-- Hạn chế dự kiến: chỉ chọn được trong những hành vi mà SmolVLA đã tạo ra được từ nhiễu.
-- Repo này chưa có số liệu nào cho DSRL.
+- Expected: since SmolVLA's weights are not changed, there is no forgetting of other tasks, and no gradient through the VLA
+  is needed.
+- Expected limitation: it can only select among behaviours that SmolVLA can already produce from noise.
+- This repository has no results for DSRL yet.
 
-Chi tiết: `docs/analyse.md`, `docs/study.md`, `ffi26/ffi26/results/round2/readme_ROUND2.md`.
+Details: `docs/analyse.md`, `docs/study.md`, `ffi26/ffi26/results/round2/readme_ROUND2.md`.
 
-## Cấu trúc
+## Structure
 
 ```
-docs/                     Reproduce / Analyse / Study, phân tích thất bại
-differences.md            khác biệt so với paper, nhật ký lỗi
-setup_lerobot.sh, check_env.py, smoke_test.sh     cài đặt
-run_queue.sh, collect_results.py                  eval Reproduce
+docs/                     Reproduce / Analyse / Study, failure analysis
+differences.md            differences from the paper, bug log
+setup_lerobot.sh, check_env.py, smoke_test.sh     installation
+run_queue.sh, collect_results.py                  Reproduce evaluation
 ffi26/ffi26/
-  improve/                code Improve (src/, scripts/), output eval
-  results/runs/           kết quả Reproduce
-  results/round2/         config + bảng kết quả Improve
-  results/videos/         video so sánh các phương pháp
-  demo/                   chạy demo một checkpoint
+  improve/                Improve code (src/, scripts/), evaluation outputs
+  results/runs/           Reproduce results
+  results/round2/         configs + Improve result tables
+  results/videos/         videos comparing the methods
+  demo/                   run a demo of one checkpoint
 ```
 
-## Cài đặt
+## Installation
 
-Các script dùng đường dẫn `~/ffi26`, nên cần tạo symlink trước:
+The scripts use the path `~/ffi26`, so create the symlink first:
 
 ```bash
 git clone <repo> && cd <repo>
 ln -s "$PWD/ffi26/ffi26" ~/ffi26
-LEROBOT_REF=72e1d9e5e76ee719bacfc78bc34d817bee5fb521 bash setup_lerobot.sh   # env conda `lerobot`, LeRobot, LIBERO
+LEROBOT_REF=72e1d9e5e76ee719bacfc78bc34d817bee5fb521 bash setup_lerobot.sh   # conda env `lerobot`, LeRobot, LIBERO
 conda activate lerobot && python check_env.py && bash smoke_test.sh
 export MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
 ```
 
-Các script `improve/scripts/*.sh` gọi `source /opt/miniconda3/etc/profile.d/conda.sh`. Nếu conda cài ở chỗ khác thì sửa dòng này.
+The `improve/scripts/*.sh` scripts call `source /opt/miniconda3/etc/profile.d/conda.sh`. If conda is installed elsewhere,
+edit this line.
 
-## Chạy lại Reproduce
+## Re-running Reproduce
 
 ```bash
 TAG=D_nas10 NAS=10 CM=relative N_EP=50 SEEDS="1000 1001 1002" bash run_queue.sh
 python collect_results.py --tag D_nas10
 ```
 
-Kết quả nằm ở `~/ffi26/results/runs/D_nas10/`.
+Results are in `~/ffi26/results/runs/D_nas10/`.
 
-## Chạy lại Improve (FPO v3, v4)
+## Re-running Improve (FPO v3, v4)
 
 ```bash
 cd ~/ffi26/improve && R=~/ffi26/results/round2/configs
-# 1. dữ liệu demo (một lần)
+# 1. demonstration data (once)
 python scripts/download_demos.py
 python scripts/phase2_demos_subset.py --config $R/round1.yaml
 python scripts/fpo_build_demo_cache.py --config $R/fpo_v3.yaml
-# 2. v2 (v3 và v4 dùng lại rollout vòng 0 và eval official của v2)
+# 2. v2 (v3 and v4 reuse the round-0 rollouts and the official evaluation of v2)
 bash scripts/fpo_v2_loop.sh
-# 3. v3, v4 (mỗi cái khoảng 3 giờ)
+# 3. v3, v4 (about 3 hours each)
 bash scripts/fpo_v3_loop.sh
 bash scripts/fpo_v4_loop.sh
 ```
 
-Mỗi loop: train 4 vòng → chọn checkpoint → eval → bảng `results/round2/fpo_v{3,4}/pooled.md`.
-Checkpoint lưu ở `improve/outputs/fpo_v{3,4}/iter3/train/pretrained_model` (không có trong repo).
-Khi chạy lại, script bỏ qua các bước đã xong.
+Each loop: train 4 rounds → select the checkpoint → evaluate → table `results/round2/fpo_v{3,4}/pooled.md`.
+Checkpoints are saved in `improve/outputs/fpo_v{3,4}/iter3/train/pretrained_model` (not included in the repository).
+When re-run, the scripts skip steps that are already done.
 
-Demo nhanh một checkpoint: `ffi26/ffi26/demo/readme_DEMO.md`.
+Quick demo of one checkpoint: `ffi26/ffi26/demo/readme_DEMO.md`.
